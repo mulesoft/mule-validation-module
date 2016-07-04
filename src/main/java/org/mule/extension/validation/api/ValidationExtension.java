@@ -4,9 +4,15 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.validation.internal;
+package org.mule.extension.validation.api;
 
 import static org.mule.runtime.core.config.i18n.MessageFactory.createStaticMessage;
+import org.mule.extension.validation.internal.CommonValidationOperations;
+import org.mule.extension.validation.internal.CustomValidatorOperation;
+import org.mule.extension.validation.internal.DefaultExceptionFactory;
+import org.mule.extension.validation.internal.NumberValidationOperation;
+import org.mule.extension.validation.internal.ValidationMessages;
+import org.mule.extension.validation.internal.ValidationStrategies;
 import org.mule.runtime.core.AbstractAnnotatedObject;
 import org.mule.runtime.core.api.MuleContext;
 import org.mule.runtime.core.api.MuleRuntimeException;
@@ -17,6 +23,7 @@ import org.mule.runtime.core.api.lifecycle.Initialisable;
 import org.mule.runtime.core.api.lifecycle.InitialisationException;
 import org.mule.runtime.core.api.registry.MuleRegistry;
 import org.mule.runtime.core.api.registry.RegistrationException;
+import org.mule.runtime.core.util.ObjectNameHelper;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Export;
 import org.mule.runtime.extension.api.annotation.Extensible;
@@ -24,12 +31,9 @@ import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.Parameter;
 import org.mule.runtime.extension.api.annotation.param.Optional;
-import org.mule.runtime.extension.api.introspection.config.ConfigurationModel;
 import org.mule.runtime.extension.api.introspection.ExtensionModel;
+import org.mule.runtime.extension.api.introspection.config.ConfigurationModel;
 import org.mule.runtime.extension.api.introspection.operation.OperationModel;
-import org.mule.extension.validation.api.ExceptionFactory;
-import org.mule.extension.validation.api.Validator;
-import org.mule.runtime.core.util.ObjectNameHelper;
 
 import java.util.Locale;
 

@@ -4,11 +4,10 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.validation.internal;
+package org.mule.extension.validation.api;
 
 
 import org.mule.runtime.extension.api.annotation.Alias;
-import org.mule.extension.validation.api.ExceptionFactory;
 
 /**
  * A {@link ObjectSource} for instance of {@link ExceptionFactory}.

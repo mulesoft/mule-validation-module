@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.validation.internal;
+package org.mule.extension.validation.api;
 
 import static org.mule.runtime.core.util.StringUtils.EMPTY;
 import org.mule.runtime.extension.api.annotation.Alias;
