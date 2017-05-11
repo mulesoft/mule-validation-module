@@ -12,7 +12,7 @@ import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 /**
  * List of {@link ErrorTypeDefinition} that throws the {@link ValidationExtension}
  *
- * @since 4.0
+ * @since 1.0
  */
 public enum ValidationErrorTypes implements ErrorTypeDefinition<ValidationErrorTypes> {
 

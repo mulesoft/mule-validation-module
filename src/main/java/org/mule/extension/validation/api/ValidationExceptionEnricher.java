@@ -16,7 +16,7 @@ import org.mule.runtime.extension.api.runtime.exception.ExceptionHandler;
  * {@link ExceptionHandler} implementation for {@link ValidationException} to wrap them and throw
  * an {@link ModuleException} specifying the correspondent {@link ErrorTypeDefinition}
  *
- * @since 4.0
+ * @since 1.0
  */
 public class ValidationExceptionEnricher extends ExceptionHandler {
 

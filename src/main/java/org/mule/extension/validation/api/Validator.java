@@ -11,7 +11,7 @@ package org.mule.extension.validation.api;
  * <p/>
  * Thread safeness is not to be assumed over instances of this class since the validator could be stateful.
  *
- * @since 4.0
+ * @since 1.0
  */
 public interface Validator {
 
