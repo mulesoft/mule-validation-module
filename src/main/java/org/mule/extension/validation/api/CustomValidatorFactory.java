@@ -38,7 +38,7 @@ import java.util.Objects;
  * <p>
  * Instances of this class are to be considered thread-safe and reusable.
  *
- * @since 4.0
+ * @since 1.0
  */
 @ExclusiveOptionals(isOneRequired = true)
 public final class CustomValidatorFactory {
