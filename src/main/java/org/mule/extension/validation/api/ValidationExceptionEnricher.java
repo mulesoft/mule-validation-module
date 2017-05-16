@@ -23,7 +23,7 @@ public class ValidationExceptionEnricher extends ExceptionHandler {
   @Override
   public Exception enrichException(Exception e) {
     if (e instanceof ValidationException) {
-      return new ModuleException(e, VALIDATION);
+      return new ModuleException(VALIDATION, e);
     }
     return e;
   }
