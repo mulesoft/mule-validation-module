@@ -13,11 +13,12 @@ import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.runtime.core.api.NestedProcessor;
-import org.mule.runtime.core.util.ExceptionUtils;
 import org.mule.runtime.extension.api.annotation.RestrictedTo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * A class containing operations which performs validations according to different strategies
