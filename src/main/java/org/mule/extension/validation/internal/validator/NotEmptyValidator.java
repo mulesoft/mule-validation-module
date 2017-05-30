@@ -11,11 +11,11 @@ import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.i18n.I18nMessage;
-import org.mule.runtime.core.util.ArrayUtils;
 
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
