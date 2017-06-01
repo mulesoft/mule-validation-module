@@ -6,7 +6,7 @@
  */
 package org.mule.extension.validation.internal;
 
-import static org.mule.runtime.core.util.StringUtils.EMPTY;
+import static org.mule.runtime.core.api.util.StringUtils.EMPTY;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.extension.validation.api.ValidationResult;
 
