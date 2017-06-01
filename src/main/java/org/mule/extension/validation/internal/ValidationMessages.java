@@ -11,7 +11,7 @@ import org.mule.extension.validation.api.Validator;
 import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.i18n.I18nMessageFactory;
-import org.mule.runtime.core.util.StringUtils;
+import org.mule.runtime.core.api.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
