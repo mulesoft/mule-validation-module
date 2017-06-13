@@ -15,7 +15,7 @@
     <packaging>mule-extension</packaging>
     <version>0.8.0-SNAPSHOT</version>
 
-    <name>Mule Validation Extension</name>
+    <name>Validations Module</name>
     <description>A Mule extension that provides functionality for performing validations</description>
 
     <properties>
