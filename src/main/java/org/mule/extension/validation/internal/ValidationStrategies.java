@@ -18,7 +18,7 @@ import org.mule.runtime.extension.api.annotation.RestrictedTo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
  * A class containing operations which performs validations according to different strategies

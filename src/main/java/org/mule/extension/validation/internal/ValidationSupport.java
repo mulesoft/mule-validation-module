@@ -6,7 +6,7 @@
  */
 package org.mule.extension.validation.internal;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.api.ValidationExtension;
@@ -16,7 +16,7 @@ import org.mule.extension.validation.api.Validator;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

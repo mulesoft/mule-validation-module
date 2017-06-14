@@ -15,8 +15,8 @@ import org.mule.runtime.api.i18n.I18nMessage;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Validates that {@link #value} is not empty. The definition of empty depends on the type of {@link #value}. If it's a

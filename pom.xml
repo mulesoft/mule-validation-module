@@ -19,7 +19,7 @@
     <description>A Mule extension that provides functionality for performing validations</description>
 
     <properties>
-        <commonsLangVersion>2.4</commonsLangVersion>
+        <commonsLangVersion>3.6</commonsLangVersion>
         <commonsValidatorVersion>1.4.0</commonsValidatorVersion>
         <guavaVersion>18.0</guavaVersion>
         <reflectionsVersion>0.9.10</reflectionsVersion>
@@ -35,8 +35,8 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
             <version>${commonsLangVersion}</version>
         </dependency>
 

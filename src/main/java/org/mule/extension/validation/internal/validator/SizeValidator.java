@@ -15,7 +15,7 @@ import org.mule.runtime.api.i18n.I18nMessage;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * An {@link AbstractValidator} which verifies that {@link #value} has a size between certain inclusive boundaries. This validator
