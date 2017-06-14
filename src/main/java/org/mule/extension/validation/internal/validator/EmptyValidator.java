@@ -14,8 +14,8 @@ import org.mule.runtime.api.i18n.I18nMessage;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A {@link AbstractValidator} which verifies that a given {@link #value} is empty. The definition of empty depends on the type of
