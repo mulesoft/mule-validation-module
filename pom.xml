@@ -20,7 +20,7 @@
 
     <properties>
         <commonsLangVersion>2.4</commonsLangVersion>
-        <commonsValidatorVersion>1.4.0</commonsValidatorVersion>
+        <commonsValidatorVersion>1.6</commonsValidatorVersion>
         <guavaVersion>18.0</guavaVersion>
         <reflectionsVersion>0.9.10</reflectionsVersion>
 
