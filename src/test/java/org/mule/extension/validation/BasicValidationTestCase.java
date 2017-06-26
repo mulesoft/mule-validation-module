@@ -29,7 +29,7 @@ import org.mule.extension.validation.api.Validator;
 import org.mule.functional.junit4.FlowRunner;
 import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.exception.MessagingException;
+import org.mule.runtime.core.api.exception.MessagingException;
 
 import java.util.Arrays;
 import java.util.HashMap;
