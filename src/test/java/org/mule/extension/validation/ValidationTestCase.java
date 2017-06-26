@@ -17,8 +17,7 @@ import org.mule.functional.junit4.FlowRunner;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.exception.MessagingException;
-import org.mule.runtime.core.exception.TypedException;
+import org.mule.runtime.core.api.exception.MessagingException;
 import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 @ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class})
