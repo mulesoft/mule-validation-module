@@ -22,7 +22,7 @@
         <commonsLangVersion>3.6</commonsLangVersion>
         <commonsValidatorVersion>1.6</commonsValidatorVersion>
         <guavaVersion>18.0</guavaVersion>
-        <springModuleVersion>1.0.0-SNAPSHOT</springModuleVersion>
+        <muleSpringModuleVersion>1.0.0-SNAPSHOT</muleSpringModuleVersion>
         <reflectionsVersion>0.9.10</reflectionsVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-spring-module</artifactId>
-            <version>${springModuleVersion}</version>
+            <version>${muleSpringModuleVersion}</version>
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
