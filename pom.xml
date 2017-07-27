@@ -13,7 +13,7 @@
     <groupId>org.mule.modules</groupId>
     <artifactId>mule-validation-module</artifactId>
     <packaging>mule-extension</packaging>
-    <version>0.8.0-SNAPSHOT</version>
+    <version>0.8.2-SNAPSHOT</version>
 
     <name>Validations Module</name>
     <description>A Mule extension that provides functionality for performing validations</description>
