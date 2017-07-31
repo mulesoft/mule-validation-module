@@ -26,7 +26,7 @@ import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
-import org.mule.functional.junit4.FlowRunner;
+import org.mule.functional.api.flow.FlowRunner;
 import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.api.exception.MessagingException;
