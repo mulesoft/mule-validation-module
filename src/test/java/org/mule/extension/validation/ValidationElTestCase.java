@@ -56,13 +56,13 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
 
     assertValid(expression, event);
 
-    event = Event.builder(event).message(Message.builder(event.getMessage()).payload("TRUE").build()).build();
+    event = Event.builder(event).message(Message.builder(event.getMessage()).value("TRUE").build()).build();
     assertValid(expression, event);
 
     event = Event.builder(event).addVariable("caseSensitive", true).build();
     assertInvalid(expression, event);
 
-    event = Event.builder(event).message(Message.builder(event.getMessage()).payload("tTrue").build()).build();
+    event = Event.builder(event).message(Message.builder(event.getMessage()).value("tTrue").build()).build();
     assertInvalid(expression, event);
   }
 
