@@ -18,7 +18,7 @@ import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
 import org.mule.extension.validation.internal.CustomValidatorOperation;
 import org.mule.runtime.core.api.MuleContext;
-import org.mule.runtime.core.registry.MuleRegistryHelper;
+import org.mule.runtime.core.api.registry.MuleRegistry;
 import org.mule.tck.junit4.AbstractMuleTestCase;
 import org.mule.tck.size.SmallTest;
 
@@ -28,7 +28,7 @@ import org.junit.Test;
 @SmallTest
 public class CustomValidationInjectionTestCase extends AbstractMuleTestCase {
 
-  private final MuleRegistryHelper registryHelper = mock(MuleRegistryHelper.class);
+  private final MuleRegistry registryHelper = mock(MuleRegistry.class);
   private final ValidationExtension config = mock(ValidationExtension.class);
   private final MuleContext muleContext = mock(MuleContext.class);
 
