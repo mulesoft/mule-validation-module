@@ -10,8 +10,10 @@ import org.mule.extension.validation.api.NumberType;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
+import org.mule.extension.validation.internal.error.NumberErrorType;
 import org.mule.extension.validation.internal.validator.NumberValidator;
 import org.mule.runtime.core.api.util.StringUtils;
+import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.Config;
@@ -37,6 +39,7 @@ public class NumberValidationOperation extends ValidationSupport {
    * @param numberType the type of number to test {@code value} against
    * @param options the {@link ValidationOptions}
    */
+  @Throws(NumberErrorType.class)
   public void isNumber(String value, @Optional String locale, @Optional String pattern,
                        @Optional String minValue,
                        @Optional String maxValue, NumberType numberType,

@@ -6,7 +6,9 @@
  */
 package org.mule.extension.validation.internal;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.MULTIPLE;
 import org.mule.extension.validation.api.MultipleValidationResult;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 
 import com.google.common.collect.ImmutableList;
@@ -74,6 +76,13 @@ public final class ImmutableMultipleValidationResult implements MultipleValidati
     return message;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ValidationErrorType getErrorType() {
+    return MULTIPLE;
+  }
 
   /**
    * {@inheritDoc}

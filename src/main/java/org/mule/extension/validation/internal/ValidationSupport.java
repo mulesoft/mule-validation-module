@@ -34,7 +34,7 @@ abstract class ValidationSupport {
     ValidationResult result = validator.validate();
     if (result.isError()) {
       result = evaluateCustomMessage(result, validationContext);
-      throw new ValidationException(result);
+      throw new ValidationException(result, result.getErrorType());
     } else {
       logSuccessfulValidation(validator);
     }

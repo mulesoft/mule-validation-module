@@ -6,11 +6,12 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
-
-import org.mule.runtime.api.i18n.I18nMessage;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
+import org.mule.runtime.api.i18n.I18nMessage;
 
 import com.google.common.net.InetAddresses;
 
@@ -33,6 +34,11 @@ public class IpValidator extends AbstractValidator {
   @Override
   public ValidationResult validate() {
     return InetAddresses.isInetAddress(ip) ? ok() : fail();
+  }
+
+  @Override
+  protected ValidationErrorType getErrorType() {
+    return INVALID_IP;
   }
 
   @Override

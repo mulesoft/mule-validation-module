@@ -6,7 +6,9 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.VALIDATION;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
@@ -45,6 +47,16 @@ abstract class AbstractValidator implements Validator {
   protected abstract I18nMessage getDefaultErrorMessage();
 
   /**
+   * Defines the error type associated to this validation. Default is {@link ValidationErrorType#VALIDATION} but implementations
+   * can override it.
+   *
+   * @return a {@link ValidationErrorType}
+   */
+  protected ValidationErrorType getErrorType() {
+    return VALIDATION;
+  }
+
+  /**
    * Generates a {@link ValidationResult} which {@link ValidationResult#isError()} method returns {@code true} and which message
    * is the return value of {@link #getDefaultErrorMessage()}. If the error messagee is an expression, it will be evaluated before
    * constructing the result object
@@ -52,6 +64,6 @@ abstract class AbstractValidator implements Validator {
    * @return a {@link ValidationResult}
    */
   protected ValidationResult fail() {
-    return error(getDefaultErrorMessage().getMessage());
+    return error(getDefaultErrorMessage().getMessage(), getErrorType());
   }
 }

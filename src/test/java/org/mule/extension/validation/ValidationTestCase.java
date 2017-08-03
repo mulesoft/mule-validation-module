@@ -11,6 +11,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.mule.extension.validation.AllureConstants.HttpFeature.VALIDATION_EXTENSION;
 import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.internal.ValidationMessages;
 import org.mule.functional.api.flow.FlowRunner;
@@ -20,7 +21,10 @@ import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.api.exception.MessagingException;
 import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
+import io.qameta.allure.Feature;
+
 @ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class})
+@Feature(VALIDATION_EXTENSION)
 abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
 
   static final String VALID_URL = "http://localhost:8080";

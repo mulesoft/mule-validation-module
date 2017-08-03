@@ -6,7 +6,9 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_EMPTY;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
@@ -66,6 +68,11 @@ public class EmptyValidator extends AbstractValidator {
     }
 
     return ok();
+  }
+
+  @Override
+  protected ValidationErrorType getErrorType() {
+    return NOT_EMPTY;
   }
 
   @Override

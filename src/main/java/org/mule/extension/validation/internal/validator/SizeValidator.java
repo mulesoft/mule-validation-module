@@ -6,8 +6,10 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_SIZE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
 import static org.mule.runtime.api.util.Preconditions.checkArgument;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
@@ -69,6 +71,11 @@ public class SizeValidator extends AbstractValidator {
                                                        "Only instances of Map, Collection, Array and String can be checked for size. Instance of %s was found instead",
                                                        value.getClass().getName()));
     }
+  }
+
+  @Override
+  protected ValidationErrorType getErrorType() {
+    return INVALID_SIZE;
   }
 
   @Override

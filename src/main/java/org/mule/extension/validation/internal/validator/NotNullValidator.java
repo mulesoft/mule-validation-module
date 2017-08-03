@@ -6,7 +6,9 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.NULL;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
@@ -28,6 +30,11 @@ public class NotNullValidator extends AbstractValidator {
   @Override
   public ValidationResult validate() {
     return value != null ? ok() : fail();
+  }
+
+  @Override
+  protected ValidationErrorType getErrorType() {
+    return NULL;
   }
 
   @Override

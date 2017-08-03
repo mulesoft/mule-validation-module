@@ -8,7 +8,9 @@ package org.mule.extension.validation.api;
 
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.runtime.api.exception.MuleException;
+import org.mule.runtime.extension.api.exception.ModuleException;
 
 /**
  * The exception to be thrown by default when a validation fails. It's a pretty simple {@link MuleException} with the added
@@ -19,7 +21,7 @@ import org.mule.runtime.api.exception.MuleException;
  * @since 3.7.0
  */
 // TODO MULE-12397 merge this with org.mule.runtime.core.api.routing.ValidationException
-public class ValidationException extends MuleException {
+public class ValidationException extends ModuleException {
 
   private final ValidationResult validationResult;
 
@@ -29,8 +31,8 @@ public class ValidationException extends MuleException {
    * @param validationResult a failing {@link ValidationResult}
    *
    */
-  public ValidationException(ValidationResult validationResult) {
-    super(createStaticMessage(validationResult.getMessage()));
+  public ValidationException(ValidationResult validationResult, ValidationErrorType errorType) {
+    super(createStaticMessage(validationResult.getMessage()), errorType);
     this.validationResult = validationResult;
   }
 
