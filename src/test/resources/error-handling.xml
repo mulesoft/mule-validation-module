@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xmlns:spring="http://www.mulesoft.org/schema/mule/spring"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
+        http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <configuration defaultErrorHandler-ref="validationsErrorHandler"/>
+
+    <error-handler name="validationsErrorHandler">
+        <on-error-continue type="VALIDATION:INVALID_URL">
+            <set-payload value="#['URL error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_EMAIL">
+            <set-payload value="#['Email error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_IP">
+            <set-payload value="#['IP error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_NUMBER">
+            <set-payload value="#['Number error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_SIZE">
+            <set-payload value="#['Size error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_TIME">
+            <set-payload value="#['Time error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:INVALID_BOOLEAN">
+            <set-payload value="#['Boolean error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:MISMATCH">
+            <set-payload value="#['Mismatch error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:NOT_NULL">
+            <set-payload value="#['Not null error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:NULL">
+            <set-payload value="#['Null error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:NOT_EMPTY">
+            <set-payload value="#['Not empty error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:EMPTY">
+            <set-payload value="#['Empty error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:MULTIPLE">
+            <set-payload value="#['Composed error: $(error.childErrors[0].errorType.identifier) $(error.childErrors[1].errorType.identifier)']"/>
+        </on-error-continue>
+        <on-error-continue type="VALIDATION:VALIDATION">
+            <set-payload value="#['Validation error: ' ++ error.description]"/>
+        </on-error-continue>
+        <on-error-continue>
+            <set-payload value="#['General error: ' ++ error.description]"/>
+        </on-error-continue>
+    </error-handler>
+
+</mule>

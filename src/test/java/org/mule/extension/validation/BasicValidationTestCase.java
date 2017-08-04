@@ -13,15 +13,9 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mule.extension.validation.api.ValidationErrorTypes.VALIDATION;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationResult;
@@ -31,15 +25,22 @@ import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.api.exception.MessagingException;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Test;
 
 public class BasicValidationTestCase extends ValidationTestCase {
 
   private static final String CUSTOM_VALIDATOR_MESSAGE = "Do you wanna build a snowman?";
   private static final String EMAIL_VALIDATION_FLOW = "email";
   private static final String VALIDATION_NAMESPACE = "VALIDATION";
+  private static final String MULTIPLE_ERROR = "MULTIPLE";
 
   @Override
   protected String getConfigFile() {
@@ -191,10 +192,10 @@ public class BasicValidationTestCase extends ValidationTestCase {
     MessagingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
-    MultipleValidationResult result = ((MultipleValidationException) error.getCause()).getMultipleValidationResult();
+    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
     assertThat(result.getFailedValidationResults(), hasSize(2));
     assertThat(result.isError(), is(true));
-    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, VALIDATION.getType())));
+    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
 
     String expectedMessage = Joiner.on('\n').join(messages.invalidUrl(INVALID_URL), messages.invalidEmail(INVALID_EMAIL));
 
@@ -212,8 +213,8 @@ public class BasicValidationTestCase extends ValidationTestCase {
     MessagingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
-    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, VALIDATION.getType())));
-    MultipleValidationResult result = ((MultipleValidationException) error.getCause()).getMultipleValidationResult();
+    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
+    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
     assertThat(result.getFailedValidationResults(), hasSize(1));
     assertThat(result.isError(), is(true));
     assertThat(result.getMessage(), is(messages.invalidEmail(INVALID_EMAIL).getMessage()));

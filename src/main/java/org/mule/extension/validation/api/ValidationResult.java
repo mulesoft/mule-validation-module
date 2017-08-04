@@ -6,6 +6,8 @@
  */
 package org.mule.extension.validation.api;
 
+import org.mule.extension.validation.api.error.ValidationErrorType;
+
 /**
  * The result of a validation
  *
@@ -22,6 +24,13 @@ public interface ValidationResult {
    * @return a {@link String} or {@code null}
    */
   String getMessage();
+
+  /**
+   * Returns the error type associated to the result, if {@link #isError()} is {@code true}.
+   *
+   * @return a {@link ValidationErrorType} or {@code null} if there was no error
+   */
+  ValidationErrorType getErrorType();
 
   /**
    * Whether the validation has failed or not

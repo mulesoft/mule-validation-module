@@ -8,18 +8,25 @@ package org.mule.extension.validation.api;
 
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 
+import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.runtime.api.exception.ErrorMessageAwareException;
 import org.mule.runtime.api.exception.MuleException;
+import org.mule.runtime.api.message.Error;
+import org.mule.runtime.api.message.Message;
+import org.mule.runtime.extension.api.exception.ModuleException;
 
 /**
  * The exception to be thrown by default when a validation fails. It's a pretty simple {@link MuleException} with the added
- * ability to provide the {@link ValidationResult} which failed.
+ * ability to provide the {@link ValidationResult} which failed as part of {@link Error#getErrorMessage()}.
  * <p>
  * The exception message is set to match the one in {@link ValidationResult#getMessage()}
  *
  * @since 3.7.0
  */
 // TODO MULE-12397 merge this with org.mule.runtime.core.api.routing.ValidationException
-public class ValidationException extends MuleException {
+public class ValidationException extends ModuleException implements ErrorMessageAwareException {
+
+  private static final long serialVersionUID = -7191589190396052480L;
 
   private final ValidationResult validationResult;
 
@@ -29,16 +36,21 @@ public class ValidationException extends MuleException {
    * @param validationResult a failing {@link ValidationResult}
    *
    */
-  public ValidationException(ValidationResult validationResult) {
-    super(createStaticMessage(validationResult.getMessage()));
+  public ValidationException(ValidationResult validationResult, ValidationErrorType errorType) {
+    super(createStaticMessage(validationResult.getMessage()), errorType);
     this.validationResult = validationResult;
   }
 
   /**
    * @return the {@link ValidationResult} which caused this exception
    */
-  public ValidationResult getValidationResult() {
-    return validationResult;
+  @Override
+  public Message getErrorMessage() {
+    return Message.of(validationResult);
   }
 
+  @Override
+  public Throwable getRootCause() {
+    return this;
+  }
 }

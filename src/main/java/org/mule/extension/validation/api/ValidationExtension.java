@@ -6,6 +6,8 @@
  */
 package org.mule.extension.validation.api;
 
+import org.mule.extension.validation.api.error.BasicValidationErrorType;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.internal.CommonValidationOperations;
 import org.mule.extension.validation.internal.CustomValidatorOperation;
 import org.mule.extension.validation.internal.NumberValidationOperation;
@@ -22,7 +24,6 @@ import org.mule.runtime.core.api.config.Config;
 import org.mule.runtime.extension.api.annotation.Export;
 import org.mule.runtime.extension.api.annotation.Extensible;
 import org.mule.runtime.extension.api.annotation.Extension;
-import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 import org.mule.runtime.extension.api.annotation.error.Throws;
@@ -49,9 +50,8 @@ import javax.inject.Inject;
 @Extensible(alias = "validator-message-processor")
 @Export(
     resources = {"/META-INF/org/mule/runtime/core/i18n/validation-messages.properties"})
-@ErrorTypes(ValidationErrorTypes.class)
-@OnException(ValidationExceptionEnricher.class)
-@Throws(ValidationErrorTypeProvider.class)
+@ErrorTypes(ValidationErrorType.class)
+@Throws(BasicValidationErrorType.class)
 public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public static final String DEFAULT_LOCALE = Locale.getDefault().getLanguage();

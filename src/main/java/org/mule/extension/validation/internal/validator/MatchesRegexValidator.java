@@ -6,11 +6,14 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static org.mule.extension.validation.api.error.ValidationErrorType.MISMATCH;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
-import org.apache.commons.validator.routines.RegexValidator;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
+
+import org.apache.commons.validator.routines.RegexValidator;
 
 /**
  * An {@link AbstractValidator} which tests that a {@link #value} matches a given {@link #regex}
@@ -46,6 +49,11 @@ public class MatchesRegexValidator extends AbstractValidator {
   public ValidationResult validate() {
     RegexValidator validator = new RegexValidator(new String[] {regex}, caseSensitive);
     return validator.isValid(value) ? ok() : fail();
+  }
+
+  @Override
+  protected ValidationErrorType getErrorType() {
+    return MISMATCH;
   }
 
   @Override

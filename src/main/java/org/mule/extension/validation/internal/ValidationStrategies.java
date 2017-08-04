@@ -12,10 +12,15 @@ import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationResult;
+import org.mule.extension.validation.internal.error.AllErrorType;
+import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.api.NestedProcessor;
+import org.mule.runtime.core.api.exception.MessagingException;
 import org.mule.runtime.extension.api.annotation.RestrictedTo;
+import org.mule.runtime.extension.api.annotation.error.Throws;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -41,25 +46,29 @@ public final class ValidationStrategies {
    * @param validations the nested validation operations
    * @throws MultipleValidationException if at least one validator fails and {@code throwsException} is {@code true}
    */
+  @Throws(AllErrorType.class)
   public void all(@RestrictedTo(ValidationExtension.class) List<NestedProcessor> validations)
       throws MultipleValidationException {
     List<ValidationResult> results = new ArrayList<>(validations.size());
+    List<Error> errors = new LinkedList<>();
     for (NestedProcessor validation : validations) {
       try {
         validation.process();
       } catch (Exception e) {
+
         Throwable rootCause = ExceptionUtils.getRootCause(e);
         if (rootCause == null) {
           rootCause = e;
         }
         results.add(error(rootCause.getMessage()));
+        errors.add(((MessagingException) e).getEvent().getError().get());
       }
     }
 
     MultipleValidationResult result = ImmutableMultipleValidationResult.of(results);
 
     if (result.isError()) {
-      throw new MultipleValidationException(result);
+      throw new MultipleValidationException(result, errors);
     }
   }
 }

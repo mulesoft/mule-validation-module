@@ -6,26 +6,30 @@
  */
 package org.mule.extension.validation.api;
 
+import org.mule.runtime.api.exception.ComposedErrorException;
+import org.mule.runtime.api.message.Error;
+
+import java.util.List;
+
 /**
  * A specialization of {@link ValidationResult} which takes a {@link MultipleValidationResult} as a result.
  *
  * @since 3.7.0
  */
-public final class MultipleValidationException extends ValidationException {
+public final class MultipleValidationException extends ValidationException implements ComposedErrorException {
 
-  private final MultipleValidationResult multipleValidationResult;
+  private static final long serialVersionUID = -5590935258390057130L;
 
-  public MultipleValidationException(MultipleValidationResult multipleValidationResult) {
-    super(multipleValidationResult);
-    this.multipleValidationResult = multipleValidationResult;
+  private final List<Error> errors;
+
+  public MultipleValidationException(MultipleValidationResult multipleValidationResult, List<Error> errors) {
+    super(multipleValidationResult, multipleValidationResult.getErrorType());
+    this.errors = errors;
   }
 
-  /**
-   * The {@link MultipleValidationResult} which this exception informs
-   * 
-   * @return a {@link MultipleValidationResult}
-   */
-  public MultipleValidationResult getMultipleValidationResult() {
-    return multipleValidationResult;
+  @Override
+  public List<Error> getErrors() {
+    return errors;
   }
+
 }
