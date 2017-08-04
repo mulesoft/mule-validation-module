@@ -92,8 +92,6 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
 
   @Test
   public void number() throws Exception {
-    // TODO MULE-10805: It's ignored when Allure is used because it fails with the Allure Surefire listener
-    assumeThat(System.getProperty("allure.profile.is.activated", "false"), is(equalTo("false")));
 
     verifyHandlerMessage(flowRunner("validateNumber")
         .withPayload(42)
