@@ -192,7 +192,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
     MessagingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
-    MultipleValidationResult result = ((MultipleValidationException) error.getCause()).getMultipleValidationResult();
+    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
     assertThat(result.getFailedValidationResults(), hasSize(2));
     assertThat(result.isError(), is(true));
     assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
@@ -214,7 +214,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
     assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
-    MultipleValidationResult result = ((MultipleValidationException) error.getCause()).getMultipleValidationResult();
+    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
     assertThat(result.getFailedValidationResults(), hasSize(1));
     assertThat(result.isError(), is(true));
     assertThat(result.getMessage(), is(messages.invalidEmail(INVALID_EMAIL).getMessage()));
