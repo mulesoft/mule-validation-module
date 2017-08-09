@@ -9,7 +9,7 @@ package org.mule.extension.validation;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import org.mule.runtime.core.api.Event;
+import org.mule.runtime.core.api.InternalEvent;
 
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class ValidationElFunctionalTestCase extends ValidationTestCase {
 
   @Test
   public void byClassInstanceReused() throws Exception {
-    final Event response = flowRunner("validationExpressionLanguage").withPayload("foo@bar.com").run();
+    final InternalEvent response = flowRunner("validationExpressionLanguage").withPayload("foo@bar.com").run();
 
     assertThat(response.getError().isPresent(), is(false));
   }

@@ -7,7 +7,7 @@
 package org.mule.extension.validation.internal.el;
 
 import org.mule.extension.validation.api.el.ValidatorElContext;
-import org.mule.runtime.core.api.Event;
+import org.mule.runtime.core.api.InternalEvent;
 import org.mule.runtime.core.api.el.ExpressionLanguageContext;
 import org.mule.runtime.core.api.el.ExpressionLanguageExtension;
 
@@ -17,7 +17,7 @@ import org.mule.runtime.core.api.el.ExpressionLanguageExtension;
  * <p/>
  * The {@code validator} variable is actually an alias which creates a new {@link ValidatorElContext} each time a
  * {@link ExpressionLanguageContext} is configured. This is necessary because the {@link ValidatorElContext} needs to receive the
- * current {@link Event} in its constructor.
+ * current {@link InternalEvent} in its constructor.
  *
  * @since 3.7.0
  */
