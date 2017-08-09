@@ -8,8 +8,8 @@ package org.mule.extension.validation.api;
 
 import static org.mule.runtime.core.api.util.StringUtils.EMPTY;
 import org.mule.runtime.extension.api.annotation.Alias;
+import org.mule.runtime.extension.api.annotation.dsl.xml.TypeDsl;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.dsl.xml.XmlHints;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 
 /**
@@ -18,7 +18,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
  * @since 3.7.0
  */
 @Alias("i18n")
-@XmlHints(allowTopLevelDefinition = true)
+@TypeDsl(allowTopLevelDefinition = true)
 public final class I18NConfig {
 
   /**

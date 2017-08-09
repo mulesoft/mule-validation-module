@@ -15,7 +15,7 @@ import org.mule.runtime.core.api.MuleContext;
 import org.mule.runtime.core.api.registry.MuleRegistry;
 import org.mule.runtime.core.api.util.ClassUtils;
 import org.mule.runtime.extension.api.annotation.Alias;
-import org.mule.runtime.extension.api.annotation.dsl.xml.XmlHints;
+import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.ExclusiveOptionals;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -52,7 +52,7 @@ public final class CustomValidatorFactory {
 
   @Parameter
   @Optional
-  @XmlHints(allowInlineDefinition = false)
+  @ParameterDsl(allowInlineDefinition = false)
   private Validator ref;
 
   public CustomValidatorFactory() {}
