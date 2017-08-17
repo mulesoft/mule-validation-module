@@ -7,10 +7,11 @@
 package org.mule.extension.validation.api;
 
 import static org.mule.runtime.core.api.util.StringUtils.EMPTY;
+
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.dsl.xml.TypeDsl;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 /**
  * A simple object to configure internationalization.
@@ -19,7 +20,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
  */
 @Alias("i18n")
 @TypeDsl(allowTopLevelDefinition = true)
-public final class I18NConfig {
+public class I18NConfig {
 
   /**
    * The path to a bundle file containing the messages. If {@code null} then the platform will choose a default one
