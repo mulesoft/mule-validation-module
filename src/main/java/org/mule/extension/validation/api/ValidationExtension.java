@@ -16,9 +16,6 @@ import org.mule.extension.validation.internal.ValidationStrategies;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.api.meta.NamedObject;
-import org.mule.runtime.api.meta.model.ExtensionModel;
-import org.mule.runtime.api.meta.model.config.ConfigurationModel;
-import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.core.api.MuleContext;
 import org.mule.runtime.core.api.config.Config;
 import org.mule.runtime.extension.api.annotation.Export;
@@ -35,16 +32,13 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 /**
- * An extension which provides validation capabilities by exposing a series of {@link Validator}s as {@link ExtensionModel}
- * {@link OperationModel}s
+ * A module which allows to perform data validations. If the validation fails, an Error is thrown.
  *
- * This class not only defines the extension but also acts as the only available {@link ConfigurationModel} for it. It allows
- * parametrizing the {@link Validator}s with i18n bundles (through a {@link I18NConfig}
+ * The error type might vary but it will always be a child of VALIDATION:VALIDATION
  *
- * @since 3.7.0
+ * @since 1.0
  */
-@Extension(name = "Validation",
-    description = "Allows performing validations and throw an Exception if the validation fails")
+@Extension(name = "Validation")
 @Operations({CommonValidationOperations.class, CustomValidatorOperation.class, ValidationStrategies.class,
     NumberValidationOperation.class})
 @Extensible(alias = "validator-message-processor")
@@ -61,6 +55,9 @@ public class ValidationExtension implements Config, NamedObject, Initialisable {
   @Inject
   private MuleContext muleContext;
 
+  /**
+   * Allows to configure I18n for the standard error messages
+   */
   @Parameter
   @Optional
   private I18NConfig i18n;
