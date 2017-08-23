@@ -43,8 +43,7 @@ import javax.inject.Inject;
  *
  * @since 3.7.0
  */
-@Extension(name = "Validation",
-    description = "Allows performing validations and throw an Exception if the validation fails")
+@Extension(name = "Validation")
 @Operations({CommonValidationOperations.class, CustomValidatorOperation.class, ValidationStrategies.class,
     NumberValidationOperation.class})
 @Extensible(alias = "validator-message-processor")
