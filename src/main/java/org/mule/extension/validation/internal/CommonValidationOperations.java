@@ -6,6 +6,7 @@
  */
 package org.mule.extension.validation.internal;
 
+import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
@@ -143,7 +144,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @throws IllegalArgumentException if {@code value} is something other than a {@link String},{@link Collection} or {@link Map}
    */
   @Throws(EmptyErrorType.class)
-  public void isNotEmpty(Object value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+  public void isNotEmpty(@Optional(defaultValue = PAYLOAD) Object value,
+                         @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                          @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
