@@ -6,30 +6,25 @@
  */
 package org.mule.extension.validation.internal;
 
-import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationException;
-import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.error.AllErrorType;
-import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.NestedProcessor;
-import org.mule.runtime.core.api.exception.MessagingException;
-import org.mule.runtime.extension.api.annotation.RestrictedTo;
+import org.mule.runtime.extension.api.annotation.Ignore;
 import org.mule.runtime.extension.api.annotation.error.Throws;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.mule.runtime.extension.api.annotation.param.stereotype.AllowedStereotypes;
+import org.mule.runtime.extension.api.annotation.param.stereotype.Stereotype;
+import org.mule.runtime.extension.api.runtime.process.CompletionCallback;
+import org.mule.runtime.extension.api.runtime.process.Chain;
+import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 
 /**
  * A class containing operations which performs validations according to different strategies
  *
  * @since 3.7.0
  */
+@Stereotype(ValidatorStereotype.class)
 public final class ValidationStrategies {
 
   /**
@@ -47,28 +42,32 @@ public final class ValidationStrategies {
    * @throws MultipleValidationException if at least one validator fails and {@code throwsException} is {@code true}
    */
   @Throws(AllErrorType.class)
-  public void all(@RestrictedTo(ValidationExtension.class) List<NestedProcessor> validations)
+  @Ignore
+  //TODO MULE-13440
+  public void all(@AllowedStereotypes(ValidatorStereotype.class) Chain validations,
+                  CompletionCallback<Void, Void> callback)
       throws MultipleValidationException {
-    List<ValidationResult> results = new ArrayList<>(validations.size());
-    List<Error> errors = new LinkedList<>();
-    for (NestedProcessor validation : validations) {
-      try {
-        validation.process();
-      } catch (Exception e) {
 
-        Throwable rootCause = ExceptionUtils.getRootCause(e);
-        if (rootCause == null) {
-          rootCause = e;
-        }
-        results.add(error(rootCause.getMessage()));
-        errors.add(((MessagingException) e).getEvent().getError().get());
-      }
-    }
-
-    MultipleValidationResult result = ImmutableMultipleValidationResult.of(results);
-
-    if (result.isError()) {
-      throw new MultipleValidationException(result, errors);
-    }
+    // final List<Error> errors = new LinkedList<>();
+    // final List<ValidationResult> results = new ArrayList<>(validations.getOperations().size());
+    //
+    // validations
+    //   .onEachError((previous, error) -> {
+    //     Throwable rootCause = ExceptionUtils.getRootCause(error);
+    //     if (rootCause == null) {
+    //       rootCause = error;
+    //     }
+    //     results.add(ImmutableValidationResult.error(rootCause.getMessage()));
+    //     errors.add(((MessagingException) error).getEvent().getError().get());
+    //     return previous;
+    //   })
+    //   .onSuccess(result -> {
+    //     MultipleValidationResult composedValidation = ImmutableMultipleValidationResult.of(results);
+    //     if (composedValidation.isError()) {
+    //       callback.error(new MultipleValidationException(composedValidation, errors));
+    //     }
+    //     callback.success(result);
+    //   })
+    //   .process();
   }
 }

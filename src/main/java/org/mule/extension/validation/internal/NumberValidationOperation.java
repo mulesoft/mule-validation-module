@@ -14,9 +14,11 @@ import org.mule.extension.validation.internal.error.NumberErrorType;
 import org.mule.extension.validation.internal.validator.NumberValidator;
 import org.mule.runtime.core.api.util.StringUtils;
 import org.mule.runtime.extension.api.annotation.error.Throws;
+import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
-import org.mule.runtime.extension.api.annotation.param.Config;
+import org.mule.runtime.extension.api.annotation.param.stereotype.Stereotype;
+import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 
 import java.util.Locale;
 
@@ -25,6 +27,7 @@ import java.util.Locale;
  *
  * @since 3.7.0
  */
+@Stereotype(ValidatorStereotype.class)
 public class NumberValidationOperation extends ValidationSupport {
 
   /**

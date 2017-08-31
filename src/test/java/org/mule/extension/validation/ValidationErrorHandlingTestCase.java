@@ -6,11 +6,8 @@
  */
 package org.mule.extension.validation;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
 import static org.mule.extension.validation.AllureConstants.HttpFeature.ValidationStory.ERROR_HANDLING;
 import static org.mule.extension.validation.api.NumberType.INTEGER;
 import static org.mule.functional.junit4.matchers.MessageMatchers.hasPayload;
@@ -18,6 +15,7 @@ import static org.mule.tck.junit4.matcher.EventMatcher.hasMessage;
 import org.mule.functional.api.flow.FlowRunner;
 
 import io.qameta.allure.Story;
+import org.junit.Ignore;
 import org.junit.Test;
 
 @Story(ERROR_HANDLING)
@@ -101,6 +99,7 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13440")
   public void all() throws Exception {
     verifyHandlerMessage(flowRunner("all")
         .withPayload(TEST_PAYLOAD)
