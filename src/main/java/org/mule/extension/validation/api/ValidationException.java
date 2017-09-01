@@ -49,8 +49,4 @@ public class ValidationException extends ModuleException implements ErrorMessage
     return Message.of(validationResult);
   }
 
-  @Override
-  public Throwable getRootCause() {
-    return this;
-  }
 }
