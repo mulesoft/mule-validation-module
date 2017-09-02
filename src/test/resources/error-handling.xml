@@ -57,4 +57,13 @@
         </on-error-continue>
     </error-handler>
 
+    <flow name="fallbackToMuleValidationError">
+        <validation:is-email email="#[payload]"/>
+        <error-handler>
+            <on-error-continue type="MULE:VALIDATION">
+                <set-payload value="HANDLED"/>
+            </on-error-continue>
+        </error-handler>
+    </flow>
+
 </mule>

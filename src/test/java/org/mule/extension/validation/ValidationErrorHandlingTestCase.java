@@ -107,6 +107,12 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
         .withVariable("url", INVALID_URL), "Composed error: INVALID_EMAIL INVALID_URL");
   }
 
+  @Test
+  public void genericMuleValidationError() throws Exception {
+    verifyHandlerMessage(flowRunner("fallbackToMuleValidationError").withPayload("NotAnEmail"),
+                         "HANDLED");
+  }
+
   private void verifyHandlerMessage(FlowRunner runnerConfig, String value) throws Exception {
     assertThat(runnerConfig.run(), hasMessage(hasPayload(containsString(value))));
   }
