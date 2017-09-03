@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BasicValidationTestCase extends ValidationTestCase {
@@ -177,6 +178,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13440")
   public void keepsPayloadWhenAllValidationsPass() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, VALID_EMAIL, VALID_URL);
@@ -186,6 +188,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13440")
   public void twoFailuresInAllWithoutException() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, INVALID_URL);
@@ -207,6 +210,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13440")
   public void oneFailInAll() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, VALID_URL);

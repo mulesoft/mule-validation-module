@@ -11,9 +11,11 @@ import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
 import org.mule.runtime.core.api.registry.MuleRegistry;
-import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.Config;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.param.stereotype.Stereotype;
+import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -34,6 +36,7 @@ import com.google.common.cache.LoadingCache;
  *
  * @since 3.7.0
  */
+@Stereotype(ValidatorStereotype.class)
 public final class CustomValidatorOperation extends ValidationSupport {
 
   private final LoadingCache<CustomValidatorFactory, Validator> validatorCache =

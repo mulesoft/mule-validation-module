@@ -41,7 +41,6 @@ import javax.inject.Inject;
 @Extension(name = "Validation")
 @Operations({CommonValidationOperations.class, CustomValidatorOperation.class, ValidationStrategies.class,
     NumberValidationOperation.class})
-@Extensible(alias = "validator-message-processor")
 @Export(
     resources = {"/META-INF/org/mule/runtime/core/i18n/validation-messages.properties"})
 @ErrorTypes(ValidationErrorType.class)

@@ -37,6 +37,8 @@ import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.stereotype.Stereotype;
+import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 
 import java.util.Collection;
 import java.util.Map;
@@ -49,6 +51,7 @@ import java.util.Map;
  * @see ValidationExtension
  * @since 3.7.0
  */
+@Stereotype(ValidatorStereotype.class)
 public final class CommonValidationOperations extends ValidationSupport {
 
   /**
