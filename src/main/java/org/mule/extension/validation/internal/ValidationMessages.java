@@ -8,7 +8,6 @@ package org.mule.extension.validation.internal;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import org.mule.extension.validation.api.Validator;
-import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.i18n.I18nMessageFactory;
 import org.mule.runtime.core.api.util.StringUtils;
@@ -186,15 +185,6 @@ public final class ValidationMessages extends I18nMessageFactory {
    */
   public I18nMessage mapIsEmpty() {
     return createMessage(bundlePath, 12);
-  }
-
-  /**
-   * Generates a {@link I18nMessage} for a value that was expected to not be a {@link BlankLiteral} but was
-   *
-   * @return a {@link I18nMessage}
-   */
-  public I18nMessage valueIsBlankLiteral() {
-    return createMessage(bundlePath, 13);
   }
 
   /**
