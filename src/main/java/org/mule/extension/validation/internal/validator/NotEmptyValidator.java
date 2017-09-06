@@ -8,10 +8,9 @@ package org.mule.extension.validation.internal.validator;
 
 import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
-import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationContext;
-import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.i18n.I18nMessage;
 
 import java.util.Collection;
@@ -62,9 +61,6 @@ public class NotEmptyValidator extends AbstractValidator {
         errorMessage = getMessages().arrayIsEmpty();
         return fail();
       }
-    } else if (value instanceof BlankLiteral) {
-      errorMessage = getMessages().valueIsBlankLiteral();
-      return fail();
     } else {
       throw new IllegalArgumentException(String.format(
                                                        "Only instances of Map, Collection, Array and String can be checked for emptyness. Instance of %s was found instead",
