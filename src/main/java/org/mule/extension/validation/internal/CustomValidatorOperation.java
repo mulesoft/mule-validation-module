@@ -10,12 +10,12 @@ import org.mule.extension.validation.api.CustomValidatorFactory;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
+import org.mule.extension.validation.api.error.BasicValidationErrorType;
 import org.mule.runtime.core.api.registry.MuleRegistry;
+import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
-import org.mule.runtime.extension.api.annotation.param.stereotype.Stereotype;
-import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -36,7 +36,7 @@ import com.google.common.cache.LoadingCache;
  *
  * @since 3.7.0
  */
-@Stereotype(ValidatorStereotype.class)
+@org.mule.runtime.extension.api.annotation.param.stereotype.Validator
 public final class CustomValidatorOperation extends ValidationSupport {
 
   private final LoadingCache<CustomValidatorFactory, Validator> validatorCache =
@@ -48,6 +48,7 @@ public final class CustomValidatorOperation extends ValidationSupport {
         }
       });
 
+  @Throws(BasicValidationErrorType.class)
   public void customValidator(@Placement(order = 0) @ParameterGroup(name = "Validator") CustomValidatorFactory source,
                               @Placement(order = 1) @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                               @Config ValidationExtension config)
