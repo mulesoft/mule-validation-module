@@ -15,8 +15,8 @@ import static org.mule.extension.validation.ValidationTestCase.VALID_URL;
 import static org.mule.runtime.api.message.Message.of;
 import org.mule.extension.validation.api.NumberType;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.core.api.InternalEvent;
 import org.mule.runtime.core.api.el.ExpressionManager;
+import org.mule.runtime.core.api.event.BaseEvent;
 import org.mule.tck.junit4.AbstractMuleContextTestCase;
 
 import com.google.common.collect.ImmutableList;
@@ -38,11 +38,11 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
   @Test
   public void email() throws Exception {
     final String expression = "#[mel:validator.validateEmail(email)]";
-    InternalEvent event = eventBuilder().message(of("")).addVariable("email", VALID_EMAIL).build();
+    BaseEvent event = eventBuilder().message(of("")).addVariable("email", VALID_EMAIL).build();
 
     assertValid(expression, event);
 
-    event = InternalEvent.builder(event).addVariable("email", INVALID_EMAIL).build();
+    event = BaseEvent.builder(event).addVariable("email", INVALID_EMAIL).build();
     assertInvalid(expression, event);
   }
 
@@ -51,18 +51,18 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
     final String regex = "[tT]rue";
     final String expression = "#[mel:validator.matchesRegex(payload, regexp, caseSensitive)]";
 
-    InternalEvent event = eventBuilder().message(of("true")).addVariable("regexp", regex)
+    BaseEvent event = eventBuilder().message(of("true")).addVariable("regexp", regex)
         .addVariable("caseSensitive", false).build();
 
     assertValid(expression, event);
 
-    event = InternalEvent.builder(event).message(Message.builder(event.getMessage()).value("TRUE").build()).build();
+    event = BaseEvent.builder(event).message(Message.builder(event.getMessage()).value("TRUE").build()).build();
     assertValid(expression, event);
 
-    event = InternalEvent.builder(event).addVariable("caseSensitive", true).build();
+    event = BaseEvent.builder(event).addVariable("caseSensitive", true).build();
     assertInvalid(expression, event);
 
-    event = InternalEvent.builder(event).message(Message.builder(event.getMessage()).value("tTrue").build()).build();
+    event = BaseEvent.builder(event).message(Message.builder(event.getMessage()).value("tTrue").build()).build();
     assertInvalid(expression, event);
   }
 
@@ -70,7 +70,7 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
   public void isTime() throws Exception {
     final String time = "12:08 PM";
 
-    InternalEvent event = InternalEvent.builder(eventBuilder()
+    BaseEvent event = BaseEvent.builder(eventBuilder()
         .message(of(time)).build())
         .addVariable("validPattern", "h:mm a")
         .addVariable("invalidPattern", "yyMMddHHmmssZ")
@@ -185,9 +185,9 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
     assertInvalid(expression, getNumberValidationEvent(lowerBoundaryViolation, numberType, minValue, maxValue));
   }
 
-  private InternalEvent getNumberValidationEvent(Object value, NumberType numberType, Object minValue, Object maxValue)
+  private BaseEvent getNumberValidationEvent(Object value, NumberType numberType, Object minValue, Object maxValue)
       throws Exception {
-    InternalEvent event = InternalEvent.builder(eventBuilder()
+    BaseEvent event = BaseEvent.builder(eventBuilder()
         .message(of(value)).build())
         .addVariable("numberType", numberType)
         .addVariable("minValue", minValue)
@@ -205,19 +205,19 @@ public class ValidationElTestCase extends AbstractMuleContextTestCase {
     testExpression("#[mel:validator.notEmpty(payload)]", eventBuilder().message(of(value)).build(), expected);
   }
 
-  private boolean evaluate(String expression, InternalEvent event) {
+  private boolean evaluate(String expression, BaseEvent event) {
     return (boolean) expressionManager.evaluate(expression, event).getValue();
   }
 
-  private void assertValid(String expression, InternalEvent event) {
+  private void assertValid(String expression, BaseEvent event) {
     testExpression(expression, event, true);
   }
 
-  private void assertInvalid(String expression, InternalEvent event) {
+  private void assertInvalid(String expression, BaseEvent event) {
     testExpression(expression, event, false);
   }
 
-  private void testExpression(String expression, InternalEvent event, boolean expected) {
+  private void testExpression(String expression, BaseEvent event, boolean expected) {
     assertThat(evaluate(expression, event), is(expected));
   }
 }
