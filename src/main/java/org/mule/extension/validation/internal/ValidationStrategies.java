@@ -22,7 +22,7 @@ import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 /**
  * A class containing operations which performs validations according to different strategies
  *
- * @since 3.7.0
+ * @since 1.0
  */
 @Validator
 public final class ValidationStrategies {

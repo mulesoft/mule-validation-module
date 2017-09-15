@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A specialization of {@link ValidationResult} which takes a {@link MultipleValidationResult} as a result.
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public final class MultipleValidationException extends ValidationException implements ComposedErrorException {
 

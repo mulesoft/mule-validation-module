@@ -6,14 +6,17 @@
  */
 package org.mule.extension.validation.internal;
 
+import static org.mule.extension.validation.api.ValidationExtension.nullSafeLocale;
 import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
+import org.mule.extension.validation.internal.error.BlankErrorType;
 import org.mule.extension.validation.internal.error.BooleanErrorType;
 import org.mule.extension.validation.internal.error.EmailErrorType;
 import org.mule.extension.validation.internal.error.EmptyErrorType;
 import org.mule.extension.validation.internal.error.IpErrorType;
+import org.mule.extension.validation.internal.error.NotBlankErrorType;
 import org.mule.extension.validation.internal.error.NotEmptyErrorType;
 import org.mule.extension.validation.internal.error.NotNullErrorType;
 import org.mule.extension.validation.internal.error.NullErrorType;
@@ -21,12 +24,14 @@ import org.mule.extension.validation.internal.error.RegexErrorType;
 import org.mule.extension.validation.internal.error.SizeErrorType;
 import org.mule.extension.validation.internal.error.TimeErrorType;
 import org.mule.extension.validation.internal.error.UrlErrorType;
+import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
 import org.mule.extension.validation.internal.validator.EmailValidator;
-import org.mule.extension.validation.internal.validator.EmptyValidator;
+import org.mule.extension.validation.internal.validator.EmptyCollectionValidator;
 import org.mule.extension.validation.internal.validator.IpValidator;
 import org.mule.extension.validation.internal.validator.MatchesRegexValidator;
-import org.mule.extension.validation.internal.validator.NotEmptyValidator;
+import org.mule.extension.validation.internal.validator.NotBlankStringValidator;
+import org.mule.extension.validation.internal.validator.NotEmptyCollectionValidator;
 import org.mule.extension.validation.internal.validator.NotNullValidator;
 import org.mule.extension.validation.internal.validator.NullValidator;
 import org.mule.extension.validation.internal.validator.SizeValidator;
@@ -47,7 +52,7 @@ import java.util.Map;
  * the box
  *
  * @see ValidationExtension
- * @since 3.7.0
+ * @since 1.0
  */
 @org.mule.runtime.extension.api.annotation.param.stereotype.Validator
 public final class CommonValidationOperations extends ValidationSupport {
@@ -135,40 +140,66 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that {@code value} is not empty. The definition of empty depends on the type of {@code value}. If it's a
-   * {@link String} it will check that it is not blank. If it's a {@link Collection}, array or {@link Map} it will check that it's
-   * not empty. No other types are supported, an {@link IllegalArgumentException} will be thrown if any other type is supplied
+   * Validates that {@code value} is not a blank String.
    *
-   * @param value the value to check
+   * @param value the String to check
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
-   * @throws IllegalArgumentException if {@code value} is something other than a {@link String},{@link Collection} or {@link Map}
    */
-  @Throws(EmptyErrorType.class)
-  public void isNotEmpty(@Optional(defaultValue = PAYLOAD) Object value,
-                         @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
-                         @Config ValidationExtension config)
+  @Throws(BlankErrorType.class)
+  public void isNotBlankString(@Optional(defaultValue = PAYLOAD) String value,
+                               @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                               @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new NotEmptyValidator(value, context), context);
+    validateWith(new NotBlankStringValidator(value, context), context);
   }
 
   /**
-   * Validates that {@code value} is empty. The definition of empty depends on the type of {@code value}. If it's a {@link String}
-   * it will check that it is not blank. If it's a {@link Collection}, array or {@link Map} it will check that it's not empty. No
-   * other types are supported, an {@link IllegalArgumentException} will be thrown if any other type is supplied
+   * Validates that {@code value} is not an empty collection.
+   *
+   * @param values the value to check
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   */
+  @Throws(EmptyErrorType.class)
+  public void isNotEmptyCollection(@Optional(defaultValue = PAYLOAD) Collection<Object> values,
+                                   @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                                   @Config ValidationExtension config)
+      throws Exception {
+    ValidationContext context = createContext(options, config);
+    validateWith(new NotEmptyCollectionValidator(values, context), context);
+  }
+
+  /**
+   * Validates that {@code value} is a blank String.
    *
    * @param value the value to check
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
-   * @throws IllegalArgumentException if {@code value} is something other than a {@link String},{@link Collection} or {@link Map}
    */
-  @Throws(NotEmptyErrorType.class)
-  public void isEmpty(Object value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
-                      @Config ValidationExtension config)
+  @Throws(NotBlankErrorType.class)
+  public void isBlankString(String value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                            @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new EmptyValidator(value, context), context);
+    validateWith(new BlankStringValidator(value, context), context);
+  }
+
+  /**
+   * Validates that {@code value} is an empty collection.
+   *
+   * @param values the value to check
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   */
+  @Throws(NotEmptyErrorType.class)
+  public void isEmptyCollection(@Optional(defaultValue = PAYLOAD) Collection<Object> values,
+                                @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                                @Config ValidationExtension config)
+      throws Exception {
+    ValidationContext context = createContext(options, config);
+    validateWith(new EmptyCollectionValidator(values, context), context);
   }
 
   /**
@@ -252,9 +283,5 @@ public final class CommonValidationOperations extends ValidationSupport {
       throws Exception {
     ValidationContext context = createContext(options, config);
     validateWith(new MatchesRegexValidator(value, regex, caseSensitive, context), context);
-  }
-
-  private String nullSafeLocale(String locale) {
-    return locale == null ? ValidationExtension.DEFAULT_LOCALE : locale;
   }
 }

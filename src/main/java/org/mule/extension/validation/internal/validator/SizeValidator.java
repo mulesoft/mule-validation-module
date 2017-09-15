@@ -23,7 +23,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * An {@link AbstractValidator} which verifies that {@link #value} has a size between certain inclusive boundaries. This validator
  * is capable of handling instances of {@link String}, {@link Collection}, {@link Map} and arrays
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class SizeValidator extends AbstractValidator {
 

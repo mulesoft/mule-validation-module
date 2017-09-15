@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Base class for validation operations with common concerns
  *
- * @since 3.7.0
+ * @since 1.0
  */
 abstract class ValidationSupport {
 

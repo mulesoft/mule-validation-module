@@ -17,7 +17,7 @@ import org.mule.extension.validation.internal.ValidationContext;
 /**
  * An {@link AbstractValidator} which tests a {@link #value} to match a {@link #expected} one
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class BooleanValidator extends AbstractValidator {
 

@@ -17,7 +17,7 @@ import org.mule.extension.validation.api.ValidationResult;
  * in which the validation succeeded ({@link #ok()}), and for validations that failed ({@link #error(I18nMessage)},
  * {@link #error(String)} {@link #error(I18nMessage, ValidationErrorType)} and {@link #error(String, ValidationErrorType)}).
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class ImmutableValidationResult implements ValidationResult {
 

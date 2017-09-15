@@ -20,7 +20,7 @@ import java.util.List;
  * <p/>
  * Instances are to be created using the {@link #of(Iterable)} factory method
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public final class ImmutableMultipleValidationResult implements MultipleValidationResult {
 

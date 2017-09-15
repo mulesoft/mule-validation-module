@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Defines operations to validate numbers
  *
- * @since 3.7.0
+ * @since 1.0
  */
 @org.mule.runtime.extension.api.annotation.param.stereotype.Validator
 public class NumberValidationOperation extends ValidationSupport {
