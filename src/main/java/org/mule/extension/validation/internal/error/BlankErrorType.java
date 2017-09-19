@@ -6,15 +6,15 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_EMPTY_COLLECTION;
+import static org.mule.extension.validation.api.error.ValidationErrorType.BLANK_STRING;
 import org.mule.extension.validation.api.error.BasicValidationErrorType;
 import org.mule.extension.validation.api.error.ValidationErrorType;
 
-public class NotEmptyErrorType extends BasicValidationErrorType {
+public class BlankErrorType extends BasicValidationErrorType {
 
   @Override
   protected ValidationErrorType getErrorType() {
-    return NOT_EMPTY_COLLECTION;
+    return BLANK_STRING;
   }
 
 }

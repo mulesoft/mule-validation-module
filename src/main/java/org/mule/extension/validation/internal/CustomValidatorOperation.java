@@ -34,7 +34,7 @@ import com.google.common.cache.LoadingCache;
  * In either case, the referenced {@link Validator} is expected to be reusable and thread-safe. If you used a reference, then that
  * reference will most likely always point to the same instance. If you use a class, then an instance will be created and reused.
  *
- * @since 3.7.0
+ * @since 1.0
  */
 @org.mule.runtime.extension.api.annotation.param.stereotype.Validator
 public final class CustomValidatorOperation extends ValidationSupport {

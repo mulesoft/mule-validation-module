@@ -21,7 +21,7 @@ import org.mule.runtime.extension.api.exception.ModuleException;
  * <p>
  * The exception message is set to match the one in {@link ValidationResult#getMessage()}
  *
- * @since 3.7.0
+ * @since 1.0
  */
 // TODO MULE-12397 merge this with org.mule.runtime.core.internal.routing.ValidationException
 public class ValidationException extends ModuleException implements ErrorMessageAwareException {

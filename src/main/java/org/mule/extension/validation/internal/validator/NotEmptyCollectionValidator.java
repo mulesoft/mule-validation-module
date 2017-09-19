@@ -6,52 +6,52 @@
  */
 package org.mule.extension.validation.internal.validator;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_URL;
+import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY_COLLECTION;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
-import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Collection;
 
 /**
- * An {@link AbstractValidator} which verifies that an instance of {@link URL} can be created from a given {@link #url}. If
- * {@link URL#URL(String)} throws exception when invoked with {@link #url}, then the validation will fail
+ * Validates that {@link #value} is not an empty collection.
  *
  * @since 1.0
  */
-public class UrlValidator extends AbstractValidator {
+public class NotEmptyCollectionValidator extends AbstractValidator {
 
-  /**
-   * the url to be tested
-   */
-  private final String url;
+  private final Collection<?> value;
+  private I18nMessage errorMessage;
 
-
-  public UrlValidator(String url, ValidationContext validationContext) {
+  public NotEmptyCollectionValidator(Collection<?> value, ValidationContext validationContext) {
     super(validationContext);
-    this.url = url;
+    this.value = value;
   }
 
   @Override
   public ValidationResult validate() {
-    try {
-      new URL(url);
-      return ok();
-    } catch (MalformedURLException e) {
+    if (value == null) {
+      errorMessage = getMessages().valueIsNull();
       return fail();
     }
+
+    if (value.isEmpty()) {
+      errorMessage = getMessages().collectionIsEmpty();
+      return fail();
+    }
+
+    return ok();
   }
 
   @Override
   protected ValidationErrorType getErrorType() {
-    return INVALID_URL;
+    return EMPTY_COLLECTION;
   }
 
   @Override
   protected I18nMessage getDefaultErrorMessage() {
-    return getMessages().invalidUrl(url);
+    return errorMessage;
   }
 }

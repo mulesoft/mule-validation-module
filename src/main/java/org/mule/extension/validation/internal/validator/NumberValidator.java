@@ -21,7 +21,7 @@ import java.util.Locale;
  * A validator which tets that a given {@link String} {@link #value} can be parsed into a {@link Number} per the rules of a
  * {@link NumberType}, and that the resulting number is between two inclusive {@link #minValue} and {@link #maxValue} boundaries.
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class NumberValidator extends AbstractValidator {
 

@@ -20,7 +20,7 @@ import com.google.common.net.InetAddresses;
  *
  * In the case of IPV6, both full and collapsed addresses are supported, but addresses containing ports are not
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class IpValidator extends AbstractValidator {
 

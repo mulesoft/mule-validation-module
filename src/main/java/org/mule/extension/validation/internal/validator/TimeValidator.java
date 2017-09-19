@@ -19,7 +19,7 @@ import java.util.Locale;
  * An {@link AbstractValidator} which verifies that a {@link #time} represented as a {@link String} can be parsed using a given
  * {@link #locale} and {@link #pattern}
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class TimeValidator extends AbstractValidator {
 

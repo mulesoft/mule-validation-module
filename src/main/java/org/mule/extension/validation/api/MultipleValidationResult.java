@@ -17,7 +17,7 @@ import java.util.List;
  * Additionally, the {@link #getFailedValidationResults()} method is added to give more detailed access to the validations that
  * failed
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public interface MultipleValidationResult extends ValidationResult {
 

@@ -6,7 +6,7 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY;
+import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY_COLLECTION;
 import org.mule.extension.validation.api.error.BasicValidationErrorType;
 import org.mule.extension.validation.api.error.ValidationErrorType;
 
@@ -14,6 +14,6 @@ public class EmptyErrorType extends BasicValidationErrorType {
 
   @Override
   protected ValidationErrorType getErrorType() {
-    return EMPTY;
+    return EMPTY_COLLECTION;
   }
 }

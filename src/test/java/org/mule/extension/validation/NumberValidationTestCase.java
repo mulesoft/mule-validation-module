@@ -6,9 +6,6 @@
  */
 package org.mule.extension.validation;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assume.assumeThat;
 import org.mule.extension.validation.api.NumberType;
 import org.mule.functional.api.flow.FlowRunner;
 import org.mule.test.runner.RunnerDelegateTo;
@@ -60,7 +57,6 @@ public class NumberValidationTestCase extends ValidationTestCase {
 
   @Test
   public void validateNumber() throws Exception {
-
     assertValid(configureNumberValidationRunner(flowRunner(FLOW_NAME), value, minValue, maxValue));
     final String invalid = "unparseable";
     assertInvalid(configureNumberValidationRunner(flowRunner(FLOW_NAME), invalid, minValue, maxValue),

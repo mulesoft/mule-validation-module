@@ -16,7 +16,7 @@ import org.mule.runtime.api.i18n.I18nMessage;
 /**
  * An {@link AbstractValidator} which verifies that a {@link #email} address is valid
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class EmailValidator extends AbstractValidator {
 

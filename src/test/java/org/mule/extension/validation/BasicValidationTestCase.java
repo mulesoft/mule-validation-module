@@ -26,7 +26,6 @@ import org.mule.runtime.core.api.exception.MessagingException;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -146,33 +145,42 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void notEmpty() throws Exception {
     final String flow = "notEmpty";
 
-    assertValid(flowRunner(flow).withPayload("a"));
     assertValid(flowRunner(flow).withPayload(singletonList("a")));
     assertValid(flowRunner(flow).withPayload(new String[] {"a"}));
-    assertValid(flowRunner(flow).withPayload(ImmutableMap.of("a", "A")));
+    assertInvalid(flowRunner(flow).withPayload(null), messages.valueIsNull());
+    assertInvalid(flowRunner(flow).withPayload(ImmutableList.of()), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new String[] {}), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new Object[] {}), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new int[] {}), messages.collectionIsEmpty());
+  }
+
+  @Test
+  public void notBlank() throws Exception {
+    final String flow = "notBlank";
+
+    assertValid(flowRunner(flow).withPayload("a"));
     assertInvalid(flowRunner(flow).withPayload(null), messages.valueIsNull());
     assertInvalid(flowRunner(flow).withPayload(""), messages.stringIsBlank());
-    assertInvalid(flowRunner(flow).withPayload(ImmutableList.of()), messages.collectionIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new String[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new Object[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new int[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new HashMap<String, String>()), messages.mapIsEmpty());
   }
 
   @Test
   public void empty() throws Exception {
     final String flow = "empty";
 
-    assertValid(flowRunner(flow).withPayload(""));
     assertValid(flowRunner(flow).withPayload(ImmutableList.of()));
     assertValid(flowRunner(flow).withPayload(new String[] {}));
-    assertValid(flowRunner(flow).withPayload(new HashMap<String, String>()));
-    assertInvalid(flowRunner(flow).withPayload("a"), messages.stringIsNotBlank());
     assertInvalid(flowRunner(flow).withPayload(singletonList("a")), messages.collectionIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new String[] {"a"}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new Object[] {new Object()}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new int[] {0}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(ImmutableMap.of("a", "a")), messages.mapIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new String[] {"a"}), messages.collectionIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new Object[] {new Object()}), messages.collectionIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new int[] {0}), messages.collectionIsNotEmpty());
+  }
+
+  @Test
+  public void blank() throws Exception {
+    final String flow = "blank";
+
+    assertValid(flowRunner(flow).withPayload(""));
+    assertInvalid(flowRunner(flow).withPayload("a"), messages.stringIsNotBlank());
   }
 
   @Test

@@ -12,7 +12,7 @@ import org.mule.extension.validation.api.ValidationOptions;
 /**
  * A context object to gather different components that are necessary for performing a validation
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public final class ValidationContext {
 
