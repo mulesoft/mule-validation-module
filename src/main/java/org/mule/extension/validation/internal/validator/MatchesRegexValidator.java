@@ -18,7 +18,7 @@ import org.apache.commons.validator.routines.RegexValidator;
 /**
  * An {@link AbstractValidator} which tests that a {@link #value} matches a given {@link #regex}
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public class MatchesRegexValidator extends AbstractValidator {
 

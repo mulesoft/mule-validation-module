@@ -24,7 +24,7 @@ import org.slf4j.Logger;
  * By default, it uses a default bundle with the default messages in english language, but it is also possible to provide a custom
  * bundle and {@link java.util.Locale}
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public final class ValidationMessages extends I18nMessageFactory {
 
@@ -241,15 +241,6 @@ public final class ValidationMessages extends I18nMessageFactory {
   }
 
   /**
-   * Generates a {@link I18nMessage} for an array which was expected to be not empty but was
-   *
-   * @return a {@link I18nMessage}
-   */
-  public I18nMessage arrayIsEmpty() {
-    return createMessage(bundlePath, 18);
-  }
-
-  /**
    * Generates a {@link I18nMessage} for a String which was expected to be blank but wasn't
    *
    * @return a {@link I18nMessage}
@@ -274,14 +265,5 @@ public final class ValidationMessages extends I18nMessageFactory {
    */
   public I18nMessage mapIsNotEmpty() {
     return createMessage(bundlePath, 21);
-  }
-
-  /**
-   * Generates a {@link I18nMessage} for an array which was expected to be empty but wasn't
-   *
-   * @return a {@link I18nMessage}
-   */
-  public I18nMessage arrayIsNotEmpty() {
-    return createMessage(bundlePath, 22);
   }
 }

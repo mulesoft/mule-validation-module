@@ -13,13 +13,14 @@ import org.mule.extension.validation.internal.CustomValidatorOperation;
 import org.mule.extension.validation.internal.NumberValidationOperation;
 import org.mule.extension.validation.internal.ValidationMessages;
 import org.mule.extension.validation.internal.ValidationStrategies;
+import org.mule.extension.validation.internal.el.ValidationFunctions;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.api.meta.NamedObject;
 import org.mule.runtime.core.api.MuleContext;
 import org.mule.runtime.core.api.config.Config;
 import org.mule.runtime.extension.api.annotation.Export;
-import org.mule.runtime.extension.api.annotation.Extensible;
+import org.mule.runtime.extension.api.annotation.ExpressionFunctions;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
@@ -44,10 +45,15 @@ import javax.inject.Inject;
 @Export(
     resources = {"/META-INF/org/mule/runtime/core/i18n/validation-messages.properties"})
 @ErrorTypes(ValidationErrorType.class)
+@ExpressionFunctions(ValidationFunctions.class)
 @Throws(BasicValidationErrorType.class)
 public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public static final String DEFAULT_LOCALE = Locale.getDefault().getLanguage();
+
+  public static String nullSafeLocale(String locale) {
+    return locale == null ? DEFAULT_LOCALE : locale;
+  }
 
   private ValidationMessages messageFactory;
 

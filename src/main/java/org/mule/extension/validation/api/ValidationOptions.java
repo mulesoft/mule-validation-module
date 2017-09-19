@@ -12,7 +12,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 /**
  * A class which groups parameters which configure a {@link Validator} but are not the subject of the validation
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public final class ValidationOptions {
 

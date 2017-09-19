@@ -16,7 +16,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 /**
  * A simple object to configure internationalization.
  *
- * @since 3.7.0
+ * @since 1.0
  */
 @Alias("i18n")
 @TypeDsl(allowTopLevelDefinition = true)

@@ -42,11 +42,19 @@
     </flow>
 
     <flow name="notEmpty">
-        <validation:is-not-empty value="#[payload]"/>
+        <validation:is-not-empty-collection values="#[payload]"/>
     </flow>
 
     <flow name="empty">
-        <validation:is-empty value="#[payload]"/>
+        <validation:is-empty-collection values="#[payload]"/>
+    </flow>
+
+    <flow name="notBlank">
+        <validation:is-not-blank-string value="#[payload]"/>
+    </flow>
+
+    <flow name="blank">
+        <validation:is-blank-string value="#[payload]"/>
     </flow>
 
     <flow name="isNull">
@@ -65,7 +73,7 @@
 
     <flow name="choice">
         <choice>
-            <when expression="#[mel:validator.validateEmail(payload)]">
+            <when expression="#[Validation::isEmail(payload)]">
                 <set-payload value="valid" />
             </when>
             <otherwise>

@@ -17,7 +17,7 @@ import org.apache.commons.validator.routines.ShortValidator;
 /**
  * Defines types of {@link Number}s against which validations can be performed
  *
- * @since 3.7.0
+ * @since 1.0
  */
 public enum NumberType {
   INTEGER {

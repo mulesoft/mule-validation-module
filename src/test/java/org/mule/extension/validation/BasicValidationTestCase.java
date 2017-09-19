@@ -21,13 +21,11 @@ import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
 import org.mule.functional.api.flow.FlowRunner;
-import org.mule.mvel2.compiler.BlankLiteral;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.api.exception.MessagingException;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -147,34 +145,42 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void notEmpty() throws Exception {
     final String flow = "notEmpty";
 
-    assertValid(flowRunner(flow).withPayload("a"));
     assertValid(flowRunner(flow).withPayload(singletonList("a")));
     assertValid(flowRunner(flow).withPayload(new String[] {"a"}));
-    assertValid(flowRunner(flow).withPayload(ImmutableMap.of("a", "A")));
+    assertInvalid(flowRunner(flow).withPayload(null), messages.valueIsNull());
+    assertInvalid(flowRunner(flow).withPayload(ImmutableList.of()), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new String[] {}), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new Object[] {}), messages.collectionIsEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new int[] {}), messages.collectionIsEmpty());
+  }
+
+  @Test
+  public void notBlank() throws Exception {
+    final String flow = "notBlank";
+
+    assertValid(flowRunner(flow).withPayload("a"));
     assertInvalid(flowRunner(flow).withPayload(null), messages.valueIsNull());
     assertInvalid(flowRunner(flow).withPayload(""), messages.stringIsBlank());
-    assertInvalid(flowRunner(flow).withPayload(ImmutableList.of()), messages.collectionIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new String[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new Object[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new int[] {}), messages.arrayIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new HashMap<String, String>()), messages.mapIsEmpty());
-    assertInvalid(flowRunner(flow).withPayload(BlankLiteral.INSTANCE), messages.valueIsBlankLiteral());
   }
 
   @Test
   public void empty() throws Exception {
     final String flow = "empty";
 
-    assertValid(flowRunner(flow).withPayload(""));
     assertValid(flowRunner(flow).withPayload(ImmutableList.of()));
     assertValid(flowRunner(flow).withPayload(new String[] {}));
-    assertValid(flowRunner(flow).withPayload(new HashMap<String, String>()));
-    assertInvalid(flowRunner(flow).withPayload("a"), messages.stringIsNotBlank());
     assertInvalid(flowRunner(flow).withPayload(singletonList("a")), messages.collectionIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new String[] {"a"}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new Object[] {new Object()}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(new int[] {0}), messages.arrayIsNotEmpty());
-    assertInvalid(flowRunner(flow).withPayload(ImmutableMap.of("a", "a")), messages.mapIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new String[] {"a"}), messages.collectionIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new Object[] {new Object()}), messages.collectionIsNotEmpty());
+    assertInvalid(flowRunner(flow).withPayload(new int[] {0}), messages.collectionIsNotEmpty());
+  }
+
+  @Test
+  public void blank() throws Exception {
+    final String flow = "blank";
+
+    assertValid(flowRunner(flow).withPayload(""));
+    assertInvalid(flowRunner(flow).withPayload("a"), messages.stringIsNotBlank());
   }
 
   @Test
@@ -192,7 +198,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void twoFailuresInAllWithoutException() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, INVALID_URL);
-    MessagingException e = runner.runExpectingException();
+    MessagingException e = (MessagingException) runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
     MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
@@ -214,7 +220,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void oneFailInAll() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, VALID_URL);
-    MessagingException e = runner.runExpectingException();
+    MessagingException e = (MessagingException) runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
     assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
@@ -250,7 +256,8 @@ public class BasicValidationTestCase extends ValidationTestCase {
 
   private void assertCustomValidator(String flowName, String customMessage, String expectedMessage) throws Exception {
     MessagingException e =
-        flowRunner(flowName).withPayload("").withVariable("customMessage", customMessage).runExpectingException();
+        (MessagingException) flowRunner(flowName).withPayload("").withVariable("customMessage", customMessage)
+            .runExpectingException();
     assertThat(e.getCause().getMessage(), containsString(expectedMessage));
     assertThat(e.getEvent().getError().get().getErrorType(), is(errorType("VALIDATION", "VALIDATION")));
   }

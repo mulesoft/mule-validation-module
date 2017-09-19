@@ -12,7 +12,7 @@ import org.mule.extension.validation.api.error.ValidationErrorType;
  * The result of a validation
  *
  * @see Validator
- * @since 3.7.0
+ * @since 1.0
  */
 public interface ValidationResult {
 
