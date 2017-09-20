@@ -11,7 +11,7 @@ import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
 import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.runtime.core.api.registry.MuleRegistry;
+import org.mule.runtime.api.artifact.Registry;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
@@ -23,13 +23,13 @@ import com.google.common.cache.LoadingCache;
 
 /**
  * Defines a stateful operation of {@link ValidationExtension} which is capable of executing custom validators provided by a third
- * party. The {@link Validator} can be provided via a {@link CustomValidatorFactory} which means that the user could have specified either a
- * classname or a named reference to it.
+ * party. The {@link Validator} can be provided via a {@link CustomValidatorFactory} which means that the user could have
+ * specified either a classname or a named reference to it.
  * <p/>
  * If the user provided a classname, then the {@link Class} that it represents is expected to have a default public constructor
  * which can be used to instantiate it.
  * <p/>
- * If the {@link Validator} is provided via a reference, then a lookup to the {@link MuleRegistry} will be performed.
+ * If the {@link Validator} is provided via a reference, then a lookup to the artifact's {@link Registry} will be performed.
  * <p/>
  * In either case, the referenced {@link Validator} is expected to be reusable and thread-safe. If you used a reference, then that
  * reference will most likely always point to the same instance. If you use a class, then an instance will be created and reused.

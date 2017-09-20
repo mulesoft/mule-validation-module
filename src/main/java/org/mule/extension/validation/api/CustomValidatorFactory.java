@@ -9,11 +9,11 @@ package org.mule.extension.validation.api;
 import static java.lang.String.format;
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 import static org.mule.runtime.api.util.Preconditions.checkArgument;
+import static org.mule.runtime.core.api.util.ClassUtils.loadClass;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
+
 import org.mule.runtime.api.exception.MuleRuntimeException;
 import org.mule.runtime.core.api.MuleContext;
-import org.mule.runtime.core.api.registry.MuleRegistry;
-import org.mule.runtime.core.api.util.ClassUtils;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.ExclusiveOptionals;
@@ -25,13 +25,10 @@ import java.util.Objects;
 
 /**
  * A factory object for providing instances by either referencing their classname (through the {@link #type} attribute, or a
- * {@link MuleRegistry} reference (through the {@link #ref} one.
+ * reference.
  * <p>
  * When the {@link #type} attribute is used to reference a type, then a new instance is returned each time that
  * {@link CustomValidatorFactory#getObject()} is invoked. That type is also expected to have a public default {@link Constructor}.
- * <p>
- * When a {@link #ref} is provided, then that value is searched by using the {@link MuleRegistry#get(String)}. Notice however that
- * the reference will be re fetched each time that {@link CustomValidatorFactory#getObject()} is invoked
  * <p>
  * The {@link #type} and {@link #ref} attributes are mutually exclusive. A {@link IllegalArgumentException} is thrown if both are
  * set by the time {@link CustomValidatorFactory#getObject()} is invoked. The same exception is also thrown if none of them are.
@@ -71,7 +68,7 @@ public final class CustomValidatorFactory {
     Class<Validator> objectClass;
 
     try {
-      objectClass = (Class<Validator>) ClassUtils.loadClass(type, getClass());
+      objectClass = loadClass(type, getClass());
     } catch (ClassNotFoundException e) {
       throw new IllegalArgumentException(format("Could not find class %s", type), e);
     } catch (ClassCastException e) {
@@ -80,7 +77,7 @@ public final class CustomValidatorFactory {
 
     try {
       Validator validator = objectClass.newInstance();
-      muleContext.getRegistry().applyProcessors(validator);
+      muleContext.getInjector().inject(validator);
       return validator;
     } catch (Exception e) {
       throw new MuleRuntimeException(createStaticMessage("Could not create instance of " + type), e);
