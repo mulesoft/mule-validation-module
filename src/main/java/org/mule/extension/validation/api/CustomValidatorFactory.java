@@ -9,11 +9,11 @@ package org.mule.extension.validation.api;
 import static java.lang.String.format;
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 import static org.mule.runtime.api.util.Preconditions.checkArgument;
+import static org.mule.runtime.core.api.util.ClassUtils.loadClass;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 
 import org.mule.runtime.api.exception.MuleRuntimeException;
 import org.mule.runtime.core.api.MuleContext;
-import org.mule.runtime.core.api.util.ClassUtils;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.ExclusiveOptionals;
@@ -68,7 +68,7 @@ public final class CustomValidatorFactory {
     Class<Validator> objectClass;
 
     try {
-      objectClass = ClassUtils.loadClass(type, getClass());
+      objectClass = loadClass(type, getClass());
     } catch (ClassNotFoundException e) {
       throw new IllegalArgumentException(format("Could not find class %s", type), e);
     } catch (ClassCastException e) {
