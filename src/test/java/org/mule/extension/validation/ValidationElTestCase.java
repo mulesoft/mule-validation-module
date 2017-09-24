@@ -14,7 +14,7 @@ import org.mule.extension.validation.api.NumberType;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.core.api.construct.FlowConstruct;
 import org.mule.runtime.core.api.el.ExpressionManager;
-import org.mule.runtime.core.api.event.BaseEvent;
+import org.mule.runtime.core.api.event.CoreEvent;
 import org.mule.runtime.core.api.event.BaseEventContext;
 
 import org.junit.Test;
@@ -36,11 +36,11 @@ public class ValidationElTestCase extends ValidationTestCase {
   @Test
   public void email() throws Exception {
     final String expression = "#[Validation::isEmail(vars.email)]";
-    BaseEvent event = createEventBuilder().message(of("")).addVariable("email", VALID_EMAIL).build();
+    CoreEvent event = createEventBuilder().message(of("")).addVariable("email", VALID_EMAIL).build();
 
     assertValid(expression, event);
 
-    event = BaseEvent.builder(event).addVariable("email", INVALID_EMAIL).build();
+    event = CoreEvent.builder(event).addVariable("email", INVALID_EMAIL).build();
     assertInvalid(expression, event);
   }
 
@@ -49,20 +49,20 @@ public class ValidationElTestCase extends ValidationTestCase {
     final String regex = "[tT]rue";
     final String expression = "#[Validation::matchesRegex(payload, vars.regexp, vars.caseSensitive)]";
 
-    BaseEvent event = createEventBuilder().message(of("true"))
+    CoreEvent event = createEventBuilder().message(of("true"))
         .addVariable("regexp", regex)
         .addVariable("caseSensitive", false)
         .build();
 
     assertValid(expression, event);
 
-    event = BaseEvent.builder(event).message(Message.builder(event.getMessage()).value("TRUE").build()).build();
+    event = CoreEvent.builder(event).message(Message.builder(event.getMessage()).value("TRUE").build()).build();
     assertValid(expression, event);
 
-    event = BaseEvent.builder(event).addVariable("caseSensitive", true).build();
+    event = CoreEvent.builder(event).addVariable("caseSensitive", true).build();
     assertInvalid(expression, event);
 
-    event = BaseEvent.builder(event).message(Message.builder(event.getMessage()).value("tTrue").build()).build();
+    event = CoreEvent.builder(event).message(Message.builder(event.getMessage()).value("tTrue").build()).build();
     assertInvalid(expression, event);
   }
 
@@ -70,7 +70,7 @@ public class ValidationElTestCase extends ValidationTestCase {
   public void isTime() throws Exception {
     final String time = "12:08 PM";
 
-    BaseEvent event = BaseEvent.builder(createEventBuilder()
+    CoreEvent event = CoreEvent.builder(createEventBuilder()
         .message(of(time)).build())
         .addVariable("validPattern", "h:mm a")
         .addVariable("invalidPattern", "yyMMddHHmmssZ")
@@ -114,8 +114,8 @@ public class ValidationElTestCase extends ValidationTestCase {
     assertInvalid(expression, getNumberValidationEvent(invalid, numberType));
   }
 
-  private BaseEvent getNumberValidationEvent(String value, NumberType numberType) throws Exception {
-    BaseEvent event = BaseEvent.builder(createEventBuilder()
+  private CoreEvent getNumberValidationEvent(String value, NumberType numberType) throws Exception {
+    CoreEvent event = CoreEvent.builder(createEventBuilder()
         .message(of(value)).build())
         .addVariable("numberType", numberType)
         .build();
@@ -123,24 +123,24 @@ public class ValidationElTestCase extends ValidationTestCase {
     return event;
   }
 
-  private boolean evaluate(String expression, BaseEvent event) {
+  private boolean evaluate(String expression, CoreEvent event) {
     return (boolean) expressionManager.evaluate(expression, event).getValue();
   }
 
-  private void assertValid(String expression, BaseEvent event) {
+  private void assertValid(String expression, CoreEvent event) {
     testExpression(expression, event, true);
   }
 
-  private void assertInvalid(String expression, BaseEvent event) {
+  private void assertInvalid(String expression, CoreEvent event) {
     testExpression(expression, event, false);
   }
 
-  private void testExpression(String expression, BaseEvent event, boolean expected) {
+  private void testExpression(String expression, CoreEvent event, boolean expected) {
     assertThat(evaluate(expression, event), is(expected));
   }
 
   //TODO: MULE-10013 use org.mule.tck.junit4.AbstractMuleContextTestCase.eventBuilder instead
-  private BaseEvent.Builder createEventBuilder() {
-    return BaseEvent.builder(BaseEventContext.create(mock(FlowConstruct.class), TEST_CONNECTOR_LOCATION));
+  private CoreEvent.Builder createEventBuilder() {
+    return CoreEvent.builder(BaseEventContext.create(mock(FlowConstruct.class), TEST_CONNECTOR_LOCATION));
   }
 }
