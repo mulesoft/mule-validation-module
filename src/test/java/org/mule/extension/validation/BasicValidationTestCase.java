@@ -22,7 +22,7 @@ import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
 import org.mule.functional.api.flow.FlowRunner;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.exception.MessagingException;
+import org.mule.runtime.core.api.exception.EventProcessingException;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -198,7 +198,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void twoFailuresInAllWithoutException() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, INVALID_URL);
-    MessagingException e = runner.runExpectingException();
+    EventProcessingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
     MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
@@ -220,7 +220,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void oneFailInAll() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, VALID_URL);
-    MessagingException e = runner.runExpectingException();
+    EventProcessingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
     assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
@@ -255,7 +255,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   private void assertCustomValidator(String flowName, String customMessage, String expectedMessage) throws Exception {
-    MessagingException e =
+    EventProcessingException e =
         flowRunner(flowName).withPayload("").withVariable("customMessage", customMessage).runExpectingException();
     assertThat(e.getCause().getMessage(), containsString(expectedMessage));
     assertThat(e.getEvent().getError().get().getErrorType(), is(errorType("VALIDATION", "VALIDATION")));
