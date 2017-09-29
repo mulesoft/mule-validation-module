@@ -18,7 +18,7 @@ import org.mule.functional.api.flow.FlowRunner;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.exception.MessagingException;
+import org.mule.runtime.core.api.exception.EventProcessingException;
 import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 import io.qameta.allure.Feature;
@@ -47,8 +47,7 @@ abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
   }
 
   protected void assertInvalid(FlowRunner runner, I18nMessage expectedMessage) throws Exception {
-    MessagingException e = runner.runExpectingException();
-    assertThat(e, is(instanceOf(MessagingException.class)));
+    EventProcessingException e = runner.runExpectingException();
     Error error = e.getEvent().getError().get();
     assertThat(error.getCause(), is(instanceOf(ValidationException.class)));
     assertThat(error.getDescription(), is(expectedMessage.getMessage()));
