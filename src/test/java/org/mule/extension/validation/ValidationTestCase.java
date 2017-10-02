@@ -10,15 +10,16 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.AllureConstants.HttpFeature.VALIDATION_EXTENSION;
+import static org.mule.functional.junit4.matchers.ThrowableMessageMatcher.hasMessage;
+
 import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.internal.ValidationMessages;
 import org.mule.functional.api.flow.FlowRunner;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.i18n.I18nMessage;
-import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.exception.EventProcessingException;
 import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 import io.qameta.allure.Feature;
@@ -47,12 +48,10 @@ abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
   }
 
   protected void assertInvalid(FlowRunner runner, I18nMessage expectedMessage) throws Exception {
-    EventProcessingException e = runner.runExpectingException();
-    Error error = e.getEvent().getError().get();
-    assertThat(error.getCause(), is(instanceOf(ValidationException.class)));
-    assertThat(error.getDescription(), is(expectedMessage.getMessage()));
-    // assert that all placeholders were replaced in message
-    assertThat(e.getMessage(), not(containsString("${")));
+    runner.runExpectingException(allOf(instanceOf(ValidationException.class),
+                                       hasMessage(allOf(is(expectedMessage.getMessage()),
+                                                        // assert that all placeholders were replaced in message
+                                                        not(containsString("${"))))));
     runner.reset();
   }
 }

@@ -15,14 +15,20 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
-import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
+
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.MultipleValidationResult;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
+import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
-import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.exception.EventProcessingException;
+import org.mule.runtime.api.message.Message;
+
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -31,15 +37,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 public class BasicValidationTestCase extends ValidationTestCase {
 
   private static final String CUSTOM_VALIDATOR_MESSAGE = "Do you wanna build a snowman?";
   private static final String EMAIL_VALIDATION_FLOW = "email";
   private static final String VALIDATION_NAMESPACE = "VALIDATION";
   private static final String MULTIPLE_ERROR = "MULTIPLE";
+
+  @Rule
+  public ExpectedError expected = ExpectedError.none();
 
   @Override
   protected String getConfigFile() {
@@ -198,21 +204,30 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void twoFailuresInAllWithoutException() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, INVALID_URL);
-    EventProcessingException e = runner.runExpectingException();
-    Error error = e.getEvent().getError().get();
-    assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
-    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
-    assertThat(result.getFailedValidationResults(), hasSize(2));
-    assertThat(result.isError(), is(true));
-    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
 
-    String expectedMessage = Joiner.on('\n').join(messages.invalidUrl(INVALID_URL), messages.invalidEmail(INVALID_EMAIL));
+    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectCause(is(instanceOf(MultipleValidationException.class)));
+    expected.expectErrorMessage(new TypeSafeMatcher<Message>(Message.class) {
 
-    assertThat(result.getMessage(), is(expectedMessage));
+      @Override
+      protected boolean matchesSafely(Message item) {
+        MultipleValidationResult result = (MultipleValidationResult) item.getPayload().getValue();
+        assertThat(result.getFailedValidationResults(), hasSize(2));
+        assertThat(result.isError(), is(true));
 
-    for (ValidationResult failedValidationResult : result.getFailedValidationResults()) {
-      assertThat(failedValidationResult.isError(), is(true));
-    }
+        assertThat(result.getMessage(),
+                   is(Joiner.on('\n').join(messages.invalidUrl(INVALID_URL), messages.invalidEmail(INVALID_EMAIL))));
+
+        for (ValidationResult failedValidationResult : result.getFailedValidationResults()) {
+          assertThat(failedValidationResult.isError(), is(true));
+        }
+
+        return true;
+      }
+
+      @Override
+      public void describeTo(Description description) {}
+    });
   }
 
   @Test
@@ -220,14 +235,26 @@ public class BasicValidationTestCase extends ValidationTestCase {
   public void oneFailInAll() throws Exception {
     FlowRunner runner = flowRunner("all");
     configureGetAllRunner(runner, INVALID_EMAIL, VALID_URL);
-    EventProcessingException e = runner.runExpectingException();
-    Error error = e.getEvent().getError().get();
-    assertThat(error.getCause(), is(instanceOf(MultipleValidationException.class)));
-    assertThat(error.getErrorType(), is(errorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR)));
-    MultipleValidationResult result = (MultipleValidationResult) error.getErrorMessage().getPayload().getValue();
-    assertThat(result.getFailedValidationResults(), hasSize(1));
-    assertThat(result.isError(), is(true));
-    assertThat(result.getMessage(), is(messages.invalidEmail(INVALID_EMAIL).getMessage()));
+
+    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectCause(is(instanceOf(MultipleValidationException.class)));
+    expected.expectErrorMessage(new TypeSafeMatcher<Message>(Message.class) {
+
+      @Override
+      protected boolean matchesSafely(Message item) {
+        MultipleValidationResult result = (MultipleValidationResult) item.getPayload().getValue();
+        assertThat(result.getFailedValidationResults(), hasSize(1));
+        assertThat(result.isError(), is(true));
+        assertThat(result.getMessage(), is(messages.invalidEmail(INVALID_EMAIL).getMessage()));
+
+        return true;
+      }
+
+      @Override
+      public void describeTo(Description description) {}
+    });
+
+    runner.run();
   }
 
   @Test
@@ -255,10 +282,10 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   private void assertCustomValidator(String flowName, String customMessage, String expectedMessage) throws Exception {
-    EventProcessingException e =
-        flowRunner(flowName).withPayload("").withVariable("customMessage", customMessage).runExpectingException();
-    assertThat(e.getCause().getMessage(), containsString(expectedMessage));
-    assertThat(e.getEvent().getError().get().getErrorType(), is(errorType("VALIDATION", "VALIDATION")));
+    expected.expectMessage(containsString(expectedMessage));
+    expected.expectErrorType("VALIDATION", "VALIDATION");
+
+    flowRunner(flowName).withPayload("").withVariable("customMessage", customMessage).run();
   }
 
   private void configureGetAllRunner(FlowRunner runner, String email, String url) {
