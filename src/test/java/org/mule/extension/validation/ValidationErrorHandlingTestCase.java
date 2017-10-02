@@ -12,11 +12,13 @@ import static org.mule.extension.validation.AllureConstants.HttpFeature.Validati
 import static org.mule.extension.validation.api.NumberType.INTEGER;
 import static org.mule.functional.junit4.matchers.MessageMatchers.hasPayload;
 import static org.mule.tck.junit4.matcher.EventMatcher.hasMessage;
+
 import org.mule.functional.api.flow.FlowRunner;
 
-import io.qameta.allure.Story;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import io.qameta.allure.Story;
 
 @Story(ERROR_HANDLING)
 public class ValidationErrorHandlingTestCase extends ValidationTestCase {
@@ -47,6 +49,7 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13688")
   public void regex() throws Exception {
     final String regex = "[tT]rue";
     verifyHandlerMessage(flowRunner("matchesRegex")
@@ -74,11 +77,13 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   }
 
   @Test
+  @Ignore("MULE-13688")
   public void notEmpty() throws Exception {
     verifyHandlerMessage(flowRunner("notEmpty").withPayload(""), "Empty error");
   }
 
   @Test
+  @Ignore("MULE-13688")
   public void empty() throws Exception {
     verifyHandlerMessage(flowRunner("empty").withPayload("You know nothing, Jon Snow."), "Not empty error");
   }
