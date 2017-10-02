@@ -9,32 +9,22 @@ package org.mule.extension.validation;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mule.runtime.api.message.Message.of;
+import static org.mule.runtime.core.api.event.EventContextFactory.create;
 import org.mule.extension.validation.api.NumberType;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.core.api.construct.FlowConstruct;
 import org.mule.runtime.core.api.el.ExpressionManager;
 import org.mule.runtime.core.api.event.CoreEvent;
-
-import java.util.Optional;
-
 import org.junit.Test;
 
 public class ValidationElTestCase extends ValidationTestCase {
 
   private ExpressionManager expressionManager;
-  private static final String NOT_EXISTENT_FLOW = "not_existent";
 
   @Override
   protected void doSetUp() throws Exception {
     expressionManager = muleContext.getExpressionManager();
-
-    //Mock registry so that a flow that does not exist is lookedUp, it's found
-    FlowConstruct flow = mock(FlowConstruct.class);
-    when(flow.getName()).thenReturn(NOT_EXISTENT_FLOW);
-    registry = spy(registry);
-    when(registry.lookupByName(NOT_EXISTENT_FLOW)).thenReturn(Optional.of(flow));
   }
 
   @Override
@@ -45,8 +35,7 @@ public class ValidationElTestCase extends ValidationTestCase {
   @Test
   public void email() throws Exception {
     final String expression = "#[Validation::isEmail(vars.email)]";
-
-    CoreEvent event = flowRunner(NOT_EXISTENT_FLOW).withPayload("").withVariable("email", VALID_EMAIL).buildEvent();
+    CoreEvent event = createEventBuilder().message(of("")).addVariable("email", VALID_EMAIL).build();
 
     assertValid(expression, event);
 
@@ -59,10 +48,10 @@ public class ValidationElTestCase extends ValidationTestCase {
     final String regex = "[tT]rue";
     final String expression = "#[Validation::matchesRegex(payload, vars.regexp, vars.caseSensitive)]";
 
-    CoreEvent event = flowRunner(NOT_EXISTENT_FLOW).withPayload("true")
-        .withVariable("regexp", regex)
-        .withVariable("caseSensitive", false)
-        .buildEvent();
+    CoreEvent event = createEventBuilder().message(of("true"))
+        .addVariable("regexp", regex)
+        .addVariable("caseSensitive", false)
+        .build();
 
     assertValid(expression, event);
 
@@ -80,11 +69,11 @@ public class ValidationElTestCase extends ValidationTestCase {
   public void isTime() throws Exception {
     final String time = "12:08 PM";
 
-    CoreEvent event = flowRunner(NOT_EXISTENT_FLOW)
-        .withPayload(time)
-        .withVariable("validPattern", "h:mm a")
-        .withVariable("invalidPattern", "yyMMddHHmmssZ")
-        .buildEvent();
+    CoreEvent event = CoreEvent.builder(createEventBuilder()
+        .message(of(time)).build())
+        .addVariable("validPattern", "h:mm a")
+        .addVariable("invalidPattern", "yyMMddHHmmssZ")
+        .build();
 
     assertValid("#[Validation::isTime(payload, vars.validPattern)]", event);
     assertValid("#[Validation::isTime(payload, vars.validPattern, 'US')]", event);
@@ -107,15 +96,15 @@ public class ValidationElTestCase extends ValidationTestCase {
   @Test
   public void ip() throws Exception {
     final String expression = "#[Validation::isIp(payload)]";
-    assertValid(expression, flowRunner(NOT_EXISTENT_FLOW).withPayload("127.0.0.1").buildEvent());
-    assertInvalid(expression, flowRunner(NOT_EXISTENT_FLOW).withPayload("ET phone home").buildEvent());
+    assertValid(expression, createEventBuilder().message(of("127.0.0.1")).build());
+    assertInvalid(expression, createEventBuilder().message(of("ET phone home")).build());
   }
 
   @Test
   public void url() throws Exception {
     final String expression = "#[Validation::isUrl(payload)]";
-    assertValid(expression, flowRunner(NOT_EXISTENT_FLOW).withPayload(VALID_URL).buildEvent());
-    assertInvalid(expression, flowRunner(NOT_EXISTENT_FLOW).withPayload(INVALID_URL).buildEvent());
+    assertValid(expression, createEventBuilder().message(of(VALID_URL)).build());
+    assertInvalid(expression, createEventBuilder().message(of(INVALID_URL)).build());
   }
 
   private void assertNumberValue(String expression, NumberType numberType, String value) throws Exception {
@@ -125,10 +114,10 @@ public class ValidationElTestCase extends ValidationTestCase {
   }
 
   private CoreEvent getNumberValidationEvent(String value, NumberType numberType) throws Exception {
-    CoreEvent event = flowRunner(NOT_EXISTENT_FLOW)
-        .withPayload(value)
-        .withVariable("numberType", numberType)
-        .buildEvent();
+    CoreEvent event = CoreEvent.builder(createEventBuilder()
+        .message(of(value)).build())
+        .addVariable("numberType", numberType)
+        .build();
 
     return event;
   }
@@ -147,5 +136,10 @@ public class ValidationElTestCase extends ValidationTestCase {
 
   private void testExpression(String expression, CoreEvent event, boolean expected) {
     assertThat(evaluate(expression, event), is(expected));
+  }
+
+  //TODO: MULE-10013 use org.mule.tck.junit4.AbstractMuleContextTestCase.eventBuilder instead
+  private CoreEvent.Builder createEventBuilder() {
+    return CoreEvent.builder(create(mock(FlowConstruct.class), TEST_CONNECTOR_LOCATION));
   }
 }
