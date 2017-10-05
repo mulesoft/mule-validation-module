@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <flow name="sizeOfRegularIteratorIsOne">
+        <set-variable variableName="size" value="#[sizeOf(payload)]" />
+        <logger message="#[vars.size]" level="ERROR" />
+        <validation:is-true expression="#[vars.size == 1]" />
+    </flow>
+
+    <flow name="sizeOfStreamingIteratorIsOne">
+        <logger message="#[sizeOf(payload)]" level="ERROR" />
+        <validation:is-true expression="#[sizeOf(payload) == 1]" />
+    </flow>
+
+
+</mule>
