@@ -65,15 +65,12 @@
         <validation:is-null value="#[payload]"/>
     </flow>
 
-    <!--TODO MULE-13440-->
-    <!--<flow name="all">-->
-        <!--<validation:all>-->
-            <!--<validation:validations>-->
-                <!--<validation:is-url url="#[vars.url]"/>-->
-                <!--<validation:is-email email="#[vars.email]"/>-->
-            <!--</validation:validations>-->
-        <!--</validation:all>-->
-    <!--</flow>-->
+    <flow name="all">
+        <validation:all>
+            <validation:is-url url="#[vars.url]"/>
+            <validation:is-email email="#[vars.email]"/>
+        </validation:all>
+    </flow>
 
     <flow name="choice">
         <choice>
