@@ -45,6 +45,10 @@
         <validation:is-not-empty-collection values="#[payload]"/>
     </flow>
 
+    <flow name="notEmptyWithCustomMessage">
+        <validation:is-not-empty-collection values="#[payload]" message="Payload is empty"/>
+    </flow>
+
     <flow name="empty">
         <validation:is-empty-collection values="#[payload]"/>
     </flow>
