@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.AllureConstants.HttpFeature.VALIDATION_EXTENSION;
 import org.mule.extension.validation.api.ValidationException;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationMessages;
 import org.mule.functional.api.flow.FlowRunner;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
@@ -23,7 +24,7 @@ import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 import io.qameta.allure.Feature;
 
-@ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class})
+@ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class, ValidationErrorType.class})
 @Feature(VALIDATION_EXTENSION)
 abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
 
@@ -35,6 +36,10 @@ abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
 
   protected ValidationMessages messages;
 
+  @Override
+  protected boolean isDisposeContextPerClass() {
+    return true;
+  }
 
   @Override
   protected void doSetUp() throws Exception {

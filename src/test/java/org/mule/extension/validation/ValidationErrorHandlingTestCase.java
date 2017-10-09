@@ -6,20 +6,44 @@
  */
 package org.mule.extension.validation;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.AllureConstants.HttpFeature.ValidationStory.ERROR_HANDLING;
 import static org.mule.extension.validation.api.NumberType.INTEGER;
+import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY_COLLECTION;
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_BOOLEAN;
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_NUMBER;
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_SIZE;
+import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_TIME;
+import static org.mule.extension.validation.api.error.ValidationErrorType.MISMATCH;
+import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_EMPTY_COLLECTION;
 import static org.mule.functional.junit4.matchers.MessageMatchers.hasPayload;
+import static org.mule.functional.junit4.rules.ExpectedError.none;
 import static org.mule.tck.junit4.matcher.EventMatcher.hasMessage;
+
+import org.mule.extension.validation.api.ValidationException;
+import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.functional.api.flow.FlowRunner;
+import org.mule.functional.junit4.rules.ExpectedError;
+import org.mule.runtime.core.api.InternalEvent;
+import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 import io.qameta.allure.Story;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 @Story(ERROR_HANDLING)
+@ArtifactClassLoaderRunnerConfig(exportPluginClasses = ValidationErrorType.class)
 public class ValidationErrorHandlingTestCase extends ValidationTestCase {
+
+  private static final String VALIDATION = "VALIDATION";
+
+  @Rule
+  public ExpectedError expectedError = none();
 
   @Override
   protected String[] getConfigFiles() {
@@ -28,26 +52,34 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
 
   @Test
   public void email() throws Exception {
-    verifyHandlerMessage(flowRunner("email").withPayload(INVALID_EMAIL), "Email error");
+    expectedError.expectError(VALIDATION, ValidationErrorType.INVALID_EMAIL, ValidationException.class,
+                              "@mulesoft.com is not a valid email address");
+    flowRunner("email").withPayload(INVALID_EMAIL).run();
   }
 
   @Test
   public void ip() throws Exception {
-    verifyHandlerMessage(flowRunner("ip").withPayload("1.1.256.0"), "IP error");
+    expectedError.expectError(VALIDATION, INVALID_IP, ValidationException.class, "1.1.256.0 is not a valid ip address");
+    flowRunner("ip").withPayload("1.1.256.0").run();
   }
 
   @Test
   public void url() throws Exception {
-    verifyHandlerMessage(flowRunner("url").withPayload(INVALID_URL), "URL error");
+    expectedError.expectError(VALIDATION, ValidationErrorType.INVALID_URL, ValidationException.class, "here is not a valid url");
+    flowRunner("url").withPayload(INVALID_URL).run();
   }
 
   @Test
   public void time() throws Exception {
+    expectedError.expectError(VALIDATION, INVALID_TIME, ValidationException.class,
+                              "12:08 PM is not a valid time for the pattern yyMMddHHmmssZ under locale en");
     verifyHandlerMessage(flowRunner("time").withPayload("12:08 PM").withVariable("pattern", "yyMMddHHmmssZ"), "Time error");
   }
 
   @Test
   public void regex() throws Exception {
+    expectedError.expectError(VALIDATION, MISMATCH, ValidationException.class,
+                              "tTrue is not valid under the terms of regex [tT]rue");
     final String regex = "[tT]rue";
     verifyHandlerMessage(flowRunner("matchesRegex")
         .withPayload("tTrue")
@@ -57,6 +89,8 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
 
   @Test
   public void size() throws Exception {
+    expectedError.expectError(VALIDATION, INVALID_SIZE, ValidationException.class,
+                              "value abcd was expected to have a length of at most 3 characters but it has 4");
     verifyHandlerMessage(flowRunner("size")
         .withPayload("abcd")
         .withVariable("minLength", 1)
@@ -65,32 +99,45 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
 
   @Test
   public void isTrue() throws Exception {
+    expectedError.expectError(VALIDATION, INVALID_BOOLEAN, ValidationException.class,
+                              "Value was expected to be true but it was false instead");
     verifyHandlerMessage(flowRunner("isTrue").withPayload(false), "Boolean error");
   }
 
   @Test
   public void isFalse() throws Exception {
+    expectedError.expectError(VALIDATION, INVALID_BOOLEAN, ValidationException.class,
+                              "Value was expected to be false but it was true instead");
     verifyHandlerMessage(flowRunner("isFalse").withPayload(true), "Boolean error");
   }
 
   @Test
   public void notEmpty() throws Exception {
-    verifyHandlerMessage(flowRunner("notEmpty").withPayload(""), "Empty error");
+    expectedError.expectError(VALIDATION, EMPTY_COLLECTION, ValidationException.class, "Collection is empty");
+    flowRunner("notEmpty").withPayload(emptyList()).run();
+  }
+
+  @Test
+  public void notEmptyWithCustomMessage() throws Exception {
+    expectedError.expectError(VALIDATION, EMPTY_COLLECTION, ValidationException.class, "Payload is empty");
+    flowRunner("notEmptyWithCustomMessage").withPayload(emptyList()).run();
   }
 
   @Test
   public void empty() throws Exception {
-    verifyHandlerMessage(flowRunner("empty").withPayload("You know nothing, Jon Snow."), "Not empty error");
+    expectedError.expectError(VALIDATION, NOT_EMPTY_COLLECTION, ValidationException.class, "Collection is not empty");
+    verifyHandlerMessage(flowRunner("empty").withPayload(singletonList("A")), "Not empty error");
   }
 
   @Test
   public void customValidation() throws Exception {
+    expectedError.expectError(VALIDATION, VALIDATION, ValidationException.class, "Do you wanna build a snowman?");
     verifyHandlerMessage(flowRunner("customValidationByClass").withPayload(TEST_PAYLOAD), "Validation error");
   }
 
   @Test
   public void number() throws Exception {
-
+    expectedError.expectError(VALIDATION, INVALID_NUMBER, ValidationException.class, "42 is greater that 30");
     verifyHandlerMessage(flowRunner("validateNumber")
         .withPayload(42)
         .withVariable("minValue", 2)
@@ -114,7 +161,8 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   }
 
   private void verifyHandlerMessage(FlowRunner runnerConfig, String value) throws Exception {
-    assertThat(runnerConfig.run(), hasMessage(hasPayload(containsString(value))));
+    InternalEvent run = runnerConfig.run();
+    assertThat(run, hasMessage(hasPayload(containsString(value))));
   }
 
 }
