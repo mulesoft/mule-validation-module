@@ -44,7 +44,7 @@ abstract class ValidationSupport {
     String customMessage = validationContext.getOptions().getMessage();
     return isBlank(customMessage)
         ? result
-        : error(customMessage);
+        : error(customMessage, result.getErrorType());
   }
 
   protected ValidationContext createContext(ValidationOptions options, ValidationExtension config) {
