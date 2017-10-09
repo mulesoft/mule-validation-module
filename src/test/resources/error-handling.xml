@@ -7,62 +7,6 @@
         http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
         http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
-    <configuration defaultErrorHandler-ref="validationsErrorHandler"/>
-
-    <error-handler name="validationsErrorHandler">
-        <on-error-continue type="VALIDATION:INVALID_URL">
-            <set-payload value="#['URL error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_EMAIL">
-            <set-payload value="#['Email error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_IP">
-            <set-payload value="#['IP error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_NUMBER">
-            <set-payload value="#['Number error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_SIZE">
-            <set-payload value="#['Size error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_TIME">
-            <set-payload value="#['Time error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:INVALID_BOOLEAN">
-            <set-payload value="#['Boolean error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:MISMATCH">
-            <set-payload value="#['Mismatch error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:NOT_NULL">
-            <set-payload value="#['Not null error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:NULL">
-            <set-payload value="#['Null error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:NOT_EMPTY_COLLECTION">
-            <set-payload value="#['Not empty Collection error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:EMPTY_COLLECTION">
-            <set-payload value="#['Empty Collection error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:NOT_BLANK_STRING">
-            <set-payload value="#['Not blank String error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:BLANK_STRING">
-            <set-payload value="#['Empty String error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:MULTIPLE">
-            <set-payload value="#['Composed error: $(error.childErrors[0].errorType.identifier) $(error.childErrors[1].errorType.identifier)']"/>
-        </on-error-continue>
-        <on-error-continue type="VALIDATION:VALIDATION">
-            <set-payload value="#['Validation error: ' ++ error.description]"/>
-        </on-error-continue>
-        <on-error-continue>
-            <set-payload value="#['General error: ' ++ error.description]"/>
-        </on-error-continue>
-    </error-handler>
-
     <flow name="fallbackToMuleValidationError">
         <validation:is-email email="#[payload]"/>
         <error-handler>
