@@ -10,14 +10,20 @@ import org.mule.runtime.extension.api.loader.DeclarationEnricher;
 import org.mule.runtime.extension.api.loader.ExtensionLoadingContext;
 import org.mule.runtime.module.extension.api.loader.java.property.ComponentExecutorModelProperty;
 
+/**
+ * Sets {@link AllOperationExecutor} as the executor of the {@code all} operation
+ *
+ * @since 1.0
+ */
 public class AllOperationEnricher implements DeclarationEnricher {
 
   @Override
   public void enrich(ExtensionLoadingContext extensionLoadingContext) {
-    extensionLoadingContext.getExtensionDeclarer().getDeclaration().getOperations().forEach(operation -> {
-      if (operation.getName().equals("all")) {
-        operation.addModelProperty(new ComponentExecutorModelProperty(model -> new AllOperationExecutor()));
-      }
-    });
+    extensionLoadingContext.getExtensionDeclarer().getDeclaration().getOperations().stream()
+        .filter(operation -> operation.getName().equals("all"))
+        .findFirst()
+        .ifPresent(
+                   operation -> operation
+                       .addModelProperty(new ComponentExecutorModelProperty(model -> new AllOperationExecutor())));
   }
 }
