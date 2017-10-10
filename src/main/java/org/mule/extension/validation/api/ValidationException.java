@@ -49,4 +49,7 @@ public class ValidationException extends ModuleException implements ErrorMessage
     return Message.of(validationResult);
   }
 
+  public ValidationResult getValidationResult() {
+    return validationResult;
+  }
 }

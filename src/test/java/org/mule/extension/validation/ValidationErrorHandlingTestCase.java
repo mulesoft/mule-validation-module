@@ -23,14 +23,12 @@ import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_EM
 import static org.mule.functional.api.exception.ExpectedError.none;
 import static org.mule.functional.junit4.matchers.MessageMatchers.hasPayload;
 import static org.mule.tck.junit4.matcher.EventMatcher.hasMessage;
-
 import org.mule.extension.validation.api.ValidationException;
 import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
 
 import io.qameta.allure.Story;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -140,15 +138,6 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
         .withVariable("minValue", 2)
         .withVariable("maxValue", 30)
         .withVariable("numberType", INTEGER), "Number error");
-  }
-
-  @Test
-  @Ignore("MULE-13440")
-  public void all() throws Exception {
-    verifyHandlerMessage(flowRunner("all")
-        .withPayload(TEST_PAYLOAD)
-        .withVariable("email", INVALID_EMAIL)
-        .withVariable("url", INVALID_URL), "Composed error: INVALID_EMAIL INVALID_URL");
   }
 
   @Test
