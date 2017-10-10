@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
+import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
@@ -197,6 +198,18 @@ public class BasicValidationTestCase extends ValidationTestCase {
     expected.expectMessage(equalTo(messages.invalidUrl(INVALID_URL) + "\n" + messages.invalidEmail(INVALID_EMAIL)));
 
     configureGetAllRunner(flowRunner("all"), INVALID_EMAIL, INVALID_URL).run();
+  }
+
+  @Test
+  public void nonValidationErrorInsideAll() throws Exception {
+    expected.expectErrorType("MULE", EXPRESSION.getType());
+    configureGetAllRunner(flowRunner("allWithNonValidationError"), VALID_EMAIL, VALID_URL).run();
+  }
+
+  @Test
+  public void nonValidationErrorMixedWithValidationErrorsInsideAll() throws Exception {
+    expected.expectErrorType("MULE", EXPRESSION.getType());
+    configureGetAllRunner(flowRunner("allWithNonValidationError"), INVALID_EMAIL, INVALID_URL).run();
   }
 
   @Test
