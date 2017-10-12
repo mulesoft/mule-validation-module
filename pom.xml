@@ -47,7 +47,6 @@
             <version>${commonsLangVersion}</version>
         </dependency>
 
-        <!--TODO: Remove after MULE-13753 is fixed-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
