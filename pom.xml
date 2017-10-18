@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-core-modules-parent</artifactId>
-        <version>1.0.0-rc-SNAPSHOT</version>
+        <version>1.0.0-rc</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.mule.modules</groupId>
     <artifactId>mule-validation-module</artifactId>
     <packaging>mule-extension</packaging>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.1</version>
 
     <name>Validations Module</name>
     <description>A Mule extension that provides functionality for performing validations</description>
@@ -22,7 +22,7 @@
         <commonsLangVersion>3.6</commonsLangVersion>
         <commonsValidatorVersion>1.6</commonsValidatorVersion>
         <guavaVersion>18.0</guavaVersion>
-        <muleSpringModuleVersion>0.9.0-SNAPSHOT</muleSpringModuleVersion>
+        <muleSpringModuleVersion>0.9.0</muleSpringModuleVersion>
         <reflectionsVersion>0.9.10</reflectionsVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
