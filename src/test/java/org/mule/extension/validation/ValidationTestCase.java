@@ -25,7 +25,8 @@ import org.mule.test.runner.ArtifactClassLoaderRunnerConfig;
 
 import io.qameta.allure.Feature;
 
-@ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class, ValidationErrorType.class})
+@ArtifactClassLoaderRunnerConfig(exportPluginClasses = {ValidationMessages.class, ValidationErrorType.class},
+    sharedRuntimeLibs = {"org.mule.tests:mule-tests-unit"})
 @Feature(VALIDATION_EXTENSION)
 abstract class ValidationTestCase extends MuleArtifactFunctionalTestCase {
 
