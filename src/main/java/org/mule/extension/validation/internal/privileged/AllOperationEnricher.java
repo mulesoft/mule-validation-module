@@ -24,6 +24,6 @@ public class AllOperationEnricher implements DeclarationEnricher {
         .findFirst()
         .ifPresent(
                    operation -> operation
-                       .addModelProperty(new ComponentExecutorModelProperty(model -> new AllOperationExecutor())));
+                       .addModelProperty(new ComponentExecutorModelProperty((model, params) -> new AllOperationExecutor())));
   }
 }
