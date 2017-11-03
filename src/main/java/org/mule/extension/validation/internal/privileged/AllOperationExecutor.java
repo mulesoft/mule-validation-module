@@ -9,7 +9,8 @@ package org.mule.extension.validation.internal.privileged;
 import static java.util.Optional.ofNullable;
 import static org.mule.runtime.core.privileged.processor.MessageProcessors.newChildContext;
 import static org.mule.runtime.extension.api.error.MuleErrors.VALIDATION;
-import static org.mule.runtime.module.extension.internal.ExtensionProperties.COMPLETION_CALLBACK_CONTEXT_PARAM;
+import static reactor.core.publisher.Mono.empty;
+import static reactor.core.publisher.Mono.error;
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.runtime.api.component.location.ComponentLocation;
 import org.mule.runtime.api.message.Error;
@@ -21,8 +22,6 @@ import org.mule.runtime.core.privileged.exception.EventProcessingException;
 import org.mule.runtime.core.privileged.processor.chain.HasMessageProcessors;
 import org.mule.runtime.extension.api.runtime.operation.ComponentExecutor;
 import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
-import org.mule.runtime.extension.api.runtime.operation.Result;
-import org.mule.runtime.extension.api.runtime.process.CompletionCallback;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
 import java.util.ArrayList;
@@ -52,7 +51,6 @@ public class AllOperationExecutor implements ComponentExecutor<OperationModel> {
     HasMessageProcessors chain = executionContext.getParameter("validations");
     final ExecutionContextAdapter<OperationModel> context = (ExecutionContextAdapter<OperationModel>) executionContext;
     final CoreEvent event = context.getEvent();
-    final CompletionCallback completionCallback = context.getVariable(COMPLETION_CALLBACK_CONTEXT_PARAM);
     final Optional<ComponentLocation> location = ofNullable(context.getComponentLocation());
 
     List<Error> errors = new ArrayList<>(chain.getMessageProcessors().size());
@@ -65,24 +63,18 @@ public class AllOperationExecutor implements ComponentExecutor<OperationModel> {
         if (error != null && isValidation(error.getErrorType())) {
           errors.add(error);
         } else {
-          return error(completionCallback, e);
+          return error(e);
         }
       } catch (Exception e) {
-        return error(completionCallback, e);
+        return error(e);
       }
     }
 
     if (errors.isEmpty()) {
-      completionCallback.success(Result.<Void, Void>builder().build());
-      return null;
+      return empty();
     }
 
-    return error(completionCallback, MultipleValidationException.of(errors));
-  }
-
-  private Publisher<Object> error(CompletionCallback completionCallback, Exception e) {
-    completionCallback.error(e);
-    return null;
+    return error(MultipleValidationException.of(errors));
   }
 
   private boolean isValidation(ErrorType errorType) {
