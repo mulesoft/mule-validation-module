@@ -19,6 +19,7 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.ExclusiveOptionals;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.ClassValue;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public final class CustomValidatorFactory {
   @Parameter
   @Alias("class")
   @Optional
+  @ClassValue(extendsOrImplements = "org.mule.extension.validation.api.Validator")
   private String type;
 
   @Parameter
