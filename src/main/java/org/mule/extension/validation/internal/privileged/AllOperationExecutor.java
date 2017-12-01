@@ -11,6 +11,7 @@ import static org.mule.runtime.core.privileged.processor.MessageProcessors.newCh
 import static org.mule.runtime.extension.api.error.MuleErrors.VALIDATION;
 import static reactor.core.publisher.Mono.empty;
 import static reactor.core.publisher.Mono.error;
+
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.runtime.api.component.location.ComponentLocation;
 import org.mule.runtime.api.message.Error;
@@ -18,17 +19,18 @@ import org.mule.runtime.api.message.ErrorType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.core.api.event.CoreEvent;
 import org.mule.runtime.core.api.processor.Processor;
+import org.mule.runtime.core.privileged.event.BaseEventContext;
 import org.mule.runtime.core.privileged.exception.EventProcessingException;
 import org.mule.runtime.core.privileged.processor.chain.HasMessageProcessors;
 import org.mule.runtime.extension.api.runtime.operation.ComponentExecutor;
 import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
+import org.reactivestreams.Publisher;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.reactivestreams.Publisher;
 
 /**
  * Custom executor for the {@code all} operation.
@@ -55,10 +57,13 @@ public class AllOperationExecutor implements ComponentExecutor<OperationModel> {
 
     List<Error> errors = new ArrayList<>(chain.getMessageProcessors().size());
     for (Processor processor : chain.getMessageProcessors()) {
-      final CoreEvent processEvent = CoreEvent.builder(newChildContext(event, location), event).build();
+      BaseEventContext childContext = newChildContext(event, location);
+      final CoreEvent processEvent = CoreEvent.builder(childContext, event).build();
       try {
-        processor.process(processEvent);
+        CoreEvent result = processor.process(processEvent);
+        childContext.success(result);
       } catch (EventProcessingException e) {
+        childContext.error(e);
         Error error = e.getEvent().getError().orElse(null);
         if (error != null && isValidation(error.getErrorType())) {
           errors.add(error);
@@ -66,6 +71,7 @@ public class AllOperationExecutor implements ComponentExecutor<OperationModel> {
           return error(e);
         }
       } catch (Exception e) {
+        childContext.error(e);
         return error(e);
       }
     }
