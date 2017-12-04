@@ -8,14 +8,14 @@ package org.mule.extension.validation;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mule.runtime.api.message.Message.of;
-import static org.mule.runtime.core.api.event.EventContextFactory.create;
+
 import org.mule.extension.validation.api.NumberType;
+import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.core.api.construct.FlowConstruct;
 import org.mule.runtime.core.api.el.ExpressionManager;
 import org.mule.runtime.core.api.event.CoreEvent;
+
 import org.junit.Test;
 
 public class ValidationElTestCase extends ValidationTestCase {
@@ -139,7 +139,7 @@ public class ValidationElTestCase extends ValidationTestCase {
   }
 
   //TODO: MULE-10013 use org.mule.tck.junit4.AbstractMuleContextTestCase.eventBuilder instead
-  private CoreEvent.Builder createEventBuilder() {
-    return CoreEvent.builder(create(mock(FlowConstruct.class), TEST_CONNECTOR_LOCATION));
+  private CoreEvent.Builder createEventBuilder() throws MuleException {
+    return CoreEvent.builder(testEvent());
   }
 }
