@@ -23,7 +23,7 @@
         <commonsValidatorVersion>1.6</commonsValidatorVersion>
         <guavaVersion>18.0</guavaVersion>
         <muleSpringModuleVersion>1.1.0-SNAPSHOT</muleSpringModuleVersion>
-        <projectReactorVersion>3.1.1.RELEASE</projectReactorVersion>
+        <projectReactorVersion>3.1.3.errorMode.BUILD-SNAPSHOT</projectReactorVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
     </properties>
