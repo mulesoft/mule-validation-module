@@ -21,7 +21,7 @@
     <properties>
         <commonsLangVersion>3.6</commonsLangVersion>
         <commonsValidatorVersion>1.6</commonsValidatorVersion>
-        <guavaVersion>18.0</guavaVersion>
+        <guavaVersion>23.5-jre</guavaVersion>
         <muleSpringModuleVersion>1.1.0-SNAPSHOT</muleSpringModuleVersion>
         <projectReactorVersion>3.1.1.RELEASE</projectReactorVersion>
 
