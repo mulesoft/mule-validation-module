@@ -56,6 +56,8 @@ public enum ValidationErrorType implements ErrorTypeDefinition<ValidationErrorTy
 
   ELAPSED_TIME(VALIDATION),
 
+  NOT_ELAPSED_TIME(VALIDATION),
+
   MULTIPLE(VALIDATION);
 
   private ErrorTypeDefinition<?> parentErrorType;

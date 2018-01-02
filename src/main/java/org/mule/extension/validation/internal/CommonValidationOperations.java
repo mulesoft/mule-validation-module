@@ -14,11 +14,12 @@ import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
 import org.mule.extension.validation.internal.error.BlankErrorType;
 import org.mule.extension.validation.internal.error.BooleanErrorType;
+import org.mule.extension.validation.internal.error.ElapsedErrorType;
 import org.mule.extension.validation.internal.error.EmailErrorType;
 import org.mule.extension.validation.internal.error.EmptyErrorType;
-import org.mule.extension.validation.internal.error.ElapsedErrorType;
 import org.mule.extension.validation.internal.error.IpErrorType;
 import org.mule.extension.validation.internal.error.NotBlankErrorType;
+import org.mule.extension.validation.internal.error.NotElapsedErrorType;
 import org.mule.extension.validation.internal.error.NotEmptyErrorType;
 import org.mule.extension.validation.internal.error.NotNullErrorType;
 import org.mule.extension.validation.internal.error.NullErrorType;
@@ -28,12 +29,13 @@ import org.mule.extension.validation.internal.error.TimeErrorType;
 import org.mule.extension.validation.internal.error.UrlErrorType;
 import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
+import org.mule.extension.validation.internal.validator.ElapsedValidator;
 import org.mule.extension.validation.internal.validator.EmailValidator;
 import org.mule.extension.validation.internal.validator.EmptyCollectionValidator;
-import org.mule.extension.validation.internal.validator.ElapsedValidator;
 import org.mule.extension.validation.internal.validator.IpValidator;
 import org.mule.extension.validation.internal.validator.MatchesRegexValidator;
 import org.mule.extension.validation.internal.validator.NotBlankStringValidator;
+import org.mule.extension.validation.internal.validator.NotElapsedValidator;
 import org.mule.extension.validation.internal.validator.NotEmptyCollectionValidator;
 import org.mule.extension.validation.internal.validator.NotNullValidator;
 import org.mule.extension.validation.internal.validator.NullValidator;
@@ -47,7 +49,6 @@ import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -258,11 +259,32 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that {@code since} did not occur more than {@code time} amount of {@code timeUnit} units
-   * after the current time.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
+   * specified amount of {@code time}.
    *
    * @param time the interval size
-   * @param timeUnit the interval unit (as a ${@link TimeUnit})
+   * @param timeUnit the interval unit (as a {@link TimeUnit})
+   * @param since the time to validate
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   *
+   * @since 1.1
+   */
+  @Throws(NotElapsedErrorType.class)
+  public void isElapsed(Long time, TimeUnit timeUnit, LocalDateTime since,
+                        @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                        @Config ValidationExtension config)
+      throws Exception {
+    ValidationContext context = createContext(options, config);
+    validateWith(new ElapsedValidator(time, timeUnit, since, context), context);
+  }
+
+  /**
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
+   * specified amount of {@code time}.
+   *
+   * @param time the interval size
+   * @param timeUnit the interval unit (as a {@link TimeUnit})
    * @param since the time to validate
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
@@ -270,12 +292,12 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @since 1.1
    */
   @Throws(ElapsedErrorType.class)
-  public void isElapsed(Long time, TimeUnit timeUnit, LocalDateTime since,
+  public void isNotElapsed(Long time, TimeUnit timeUnit, LocalDateTime since,
                         @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                         @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new ElapsedValidator(time, timeUnit, since, context), context);
+    validateWith(new NotElapsedValidator(time, timeUnit, since, context), context);
   }
 
   /**

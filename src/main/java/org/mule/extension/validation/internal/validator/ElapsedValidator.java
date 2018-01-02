@@ -7,6 +7,7 @@
 package org.mule.extension.validation.internal.validator;
 
 import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
+import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_ELAPSED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
 
 import org.mule.extension.validation.api.ValidationResult;
@@ -21,8 +22,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * An {@link AbstractValidator} which verifies that a {@link java.time.LocalDateTime} did not occur more than a given duration
- * from the current time.
+ * An {@link AbstractValidator} which verifies that a time has elapsed after a given point.
  *
  * @since 1.1
  */
@@ -41,8 +41,8 @@ public class ElapsedValidator extends AbstractValidator {
   @Override
   public ValidationResult validate() {
     LocalDateTime currentTime = LocalDateTime.now();
-    if (!currentTime.isBefore(since.plus(interval))) {
-      errorMessage = getMessages().expiredTime(since, interval, currentTime);
+    if (currentTime.isBefore(since.plus(interval))) {
+      errorMessage = getMessages().notElapsedTime(since, interval, currentTime);
       return fail();
     } else {
       return ok();
@@ -51,7 +51,7 @@ public class ElapsedValidator extends AbstractValidator {
 
   @Override
   protected ValidationErrorType getErrorType() {
-    return ELAPSED_TIME;
+    return NOT_ELAPSED_TIME;
   }
 
   @Override

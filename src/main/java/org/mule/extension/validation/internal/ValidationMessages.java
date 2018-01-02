@@ -213,16 +213,29 @@ public final class ValidationMessages extends I18nMessageFactory {
   }
 
   /**
-   * Generates a {@link I18nMessage} for an expired time ${@code createdTime}, that exceeded duration
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that exceeded duration
    * ${@code expiresIn} after ${@code currentTime}.
    *
-   * @param createdTime time the expirable message was created
+   * @param createdTime the original time to verify
    * @param expiresIn maximum allowed difference between the created and actual time
    * @param currentTime the time used to validate against
    * @return a {@link I18nMessage}
    */
-  public I18nMessage expiredTime(LocalDateTime createdTime, Duration expiresIn, LocalDateTime currentTime) {
+  public I18nMessage elapsedTime(LocalDateTime createdTime, Duration expiresIn, LocalDateTime currentTime) {
     return createMessage(bundlePath, 22, createdTime, expiresIn, currentTime);
+  }
+
+  /**
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that did not exceeded duration
+   * ${@code expiresIn} after ${@code currentTime}.
+   *
+   * @param createdTime the original time to verify
+   * @param expiresIn minimum allowed difference between the created and actual time
+   * @param currentTime the time used to validate against
+   * @return a {@link I18nMessage}
+   */
+  public I18nMessage notElapsedTime(LocalDateTime createdTime, Duration expiresIn, LocalDateTime currentTime) {
+    return createMessage(bundlePath, 23, createdTime, expiresIn, currentTime);
   }
 
   /**
