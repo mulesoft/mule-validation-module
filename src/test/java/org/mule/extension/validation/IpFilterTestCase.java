@@ -93,15 +93,14 @@ public class IpFilterTestCase extends ValidationTestCase {
   @Test
   public void ipFilterIpv6ValidBlackList() throws Exception {
     for (String ip : validBlackListIpsV6) {
-      assertNotNull("ip " + ip + " should not be blocked", flowRunner("flow_blackist_ipv6")
-          .withAttributes(getIpAttributes(ip)).run());
+      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_blackist_ipv6", ip).run());
     }
   }
 
   @Test
   public void ipFilterIpv6InvalidBlackList() throws Exception {
     for (String ip : invalidBlackListIpsV6) {
-      flowRunner("flow_blackist_ipv6").withAttributes(getIpAttributes(ip))
+      createFlowRunner("flow_blackist_ipv6", ip)
           .runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
     }
   }
@@ -116,15 +115,7 @@ public class IpFilterTestCase extends ValidationTestCase {
     flowRunner("flow_blacklist_ipv4").runExpectingException(instanceOf(IllegalArgumentException.class));
   }
 
-  private Object getIpAttributes(String ipFilter) {
-    return new Object() {
-
-      private String ip = ipFilter;
-
-    };
-  }
-
   private FlowRunner createFlowRunner(String flowName, String ip) {
-    return flowRunner(flowName).withAttributes(getIpAttributes(ip));
+    return flowRunner(flowName).withVariable("ip", ip);
   }
 }

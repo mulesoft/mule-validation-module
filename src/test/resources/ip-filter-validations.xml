@@ -8,7 +8,7 @@
     <!-- +++++++++++++++++++++++++++++++++++ -->
 
     <flow name="flow_whitelist_ipv4">
-        <validation:ip-filter-whitelist ipList="whitelist_ipv4" ipAddress="#[attributes.ip]"/>
+        <validation:is-whitelisted-ip whiteList="whitelist_ipv4" ipAddress="#[vars.ip]"/>
         <set-payload value="Valid IP"/>
     </flow>
 
@@ -23,7 +23,7 @@
     <!-- +++++++++++++++++++++++++++++++++++ -->
 
     <flow name="flow_blacklist_ipv4">
-        <validation:ip-filter-blacklist ipList="blacklist_ipv4" ipAddress="#[attributes.ip]"/>
+        <validation:is-not-blacklisted-ip blackList="blacklist_ipv4" ipAddress="#[vars.ip]"/>
         <set-payload value="Valid IP"/>
     </flow>
 
@@ -36,12 +36,12 @@
     <!-- +++++++++++++++++++++++++++++++++++ -->
 
     <flow name="flow_whitelist_ipv6">
-        <validation:ip-filter-whitelist ipList="list_ipv6" ipAddress="#[attributes.ip]"/>
+        <validation:is-whitelisted-ip whiteList="list_ipv6" ipAddress="#[vars.ip]"/>
         <set-payload value="Valid IP"/>
     </flow>
 
     <flow name="flow_blackist_ipv6">
-        <validation:ip-filter-blacklist ipList="list_ipv6" ipAddress="#[attributes.ip]"/>
+        <validation:is-not-blacklisted-ip blackList="list_ipv6" ipAddress="#[vars.ip]"/>
         <set-payload value="Valid IP"/>
     </flow>
 
