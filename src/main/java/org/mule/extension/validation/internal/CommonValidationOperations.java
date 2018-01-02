@@ -16,7 +16,7 @@ import org.mule.extension.validation.internal.error.BlankErrorType;
 import org.mule.extension.validation.internal.error.BooleanErrorType;
 import org.mule.extension.validation.internal.error.EmailErrorType;
 import org.mule.extension.validation.internal.error.EmptyErrorType;
-import org.mule.extension.validation.internal.error.ExpirationErrorType;
+import org.mule.extension.validation.internal.error.ElapsedErrorType;
 import org.mule.extension.validation.internal.error.IpErrorType;
 import org.mule.extension.validation.internal.error.NotBlankErrorType;
 import org.mule.extension.validation.internal.error.NotEmptyErrorType;
@@ -30,7 +30,7 @@ import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
 import org.mule.extension.validation.internal.validator.EmailValidator;
 import org.mule.extension.validation.internal.validator.EmptyCollectionValidator;
-import org.mule.extension.validation.internal.validator.ExpirationValidator;
+import org.mule.extension.validation.internal.validator.ElapsedValidator;
 import org.mule.extension.validation.internal.validator.IpValidator;
 import org.mule.extension.validation.internal.validator.MatchesRegexValidator;
 import org.mule.extension.validation.internal.validator.NotBlankStringValidator;
@@ -46,11 +46,11 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -258,22 +258,24 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that a ${@code time} did not occur more than ${@code expireAmount} amount of ${@code expireUnits} units
+   * Validates that {@code since} did not occur more than {@code time} amount of {@code timeUnit} units
    * after the current time.
    *
-   * @param time the time to validate
-   * @param expireAmount the interval size
-   * @param expireUnit the interval unit (as a ${@link ChronoUnit})
+   * @param time the interval size
+   * @param timeUnit the interval unit (as a ${@link TimeUnit})
+   * @param since the time to validate
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
+   *
+   * @since 1.1
    */
-  @Throws(ExpirationErrorType.class)
-  public void expirationTime(LocalDateTime time, Long expireAmount, ChronoUnit expireUnit,
-                             @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
-                             @Config ValidationExtension config)
+  @Throws(ElapsedErrorType.class)
+  public void isElapsed(Long time, TimeUnit timeUnit, LocalDateTime since,
+                        @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                        @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new ExpirationValidator(time, Duration.of(expireAmount, expireUnit), context), context);
+    validateWith(new ElapsedValidator(time, timeUnit, since, context), context);
   }
 
   /**

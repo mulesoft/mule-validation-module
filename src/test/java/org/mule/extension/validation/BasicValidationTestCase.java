@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
-import static org.mule.extension.validation.api.error.ValidationErrorType.EXPIRED_TIME;
+import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
 
@@ -256,7 +256,7 @@ public class BasicValidationTestCase extends ValidationTestCase {
 
   @Test
   public void expirationFail() throws Exception {
-    expected.expectErrorType(VALIDATION_NAMESPACE, EXPIRED_TIME.name());
+    expected.expectErrorType(VALIDATION_NAMESPACE, ELAPSED_TIME.name());
 
     LocalDateTime currentTime = LocalDateTime.now().minus(1, ChronoUnit.HOURS);
     assertValid(flowRunner("expiration").withVariable("time", currentTime));

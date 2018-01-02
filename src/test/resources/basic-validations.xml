@@ -100,6 +100,6 @@
     </flow>
 
     <flow name="expiration">
-        <validation:expiration-time time="#[vars.time]" expireAmount="20" expireUnit="SECONDS"/>
+        <validation:is-elapsed time="20" timeUnit="SECONDS" since="#[vars.time]"/>
     </flow>
 </mule>

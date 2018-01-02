@@ -6,15 +6,21 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.EXPIRED_TIME;
+import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
 
 import org.mule.extension.validation.api.error.BasicValidationErrorType;
 import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.internal.CommonValidationOperations;
 
-public class ExpirationErrorType extends BasicValidationErrorType {
+/**
+ * Error for the {@link CommonValidationOperations#isElapsed} operation.
+ *
+ * @since 1.1
+ */
+public class ElapsedErrorType extends BasicValidationErrorType {
 
   @Override
   protected ValidationErrorType getErrorType() {
-    return EXPIRED_TIME;
+    return ELAPSED_TIME;
   }
 }
