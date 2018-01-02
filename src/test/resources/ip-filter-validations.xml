@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+       http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <!-- +++++++++++++++++++++++++++++++++++ -->
+
+    <flow name="flow_whitelist_ipv4">
+        <validation:ip-filter-whitelist ipList="whitelist_ipv4" ipAddress="#[attributes.ip]"/>
+        <set-payload value="Valid IP"/>
+    </flow>
+
+    <validation:ip-filter-list name="whitelist_ipv4">
+        <validation:ips>
+            <validation:ip value="192.168.1.0/24"/>
+            <validation:ip value="127.0.0.1"/>
+            <validation:ip value="193.1"/>
+        </validation:ips>
+    </validation:ip-filter-list>
+
+    <!-- +++++++++++++++++++++++++++++++++++ -->
+
+    <flow name="flow_blacklist_ipv4">
+        <validation:ip-filter-blacklist ipList="blacklist_ipv4" ipAddress="#[attributes.ip]"/>
+        <set-payload value="Valid IP"/>
+    </flow>
+
+    <validation:ip-filter-list name="blacklist_ipv4">
+        <validation:ips>
+            <validation:ip value="10.0.0.1/24"/>
+        </validation:ips>
+    </validation:ip-filter-list>
+
+    <!-- +++++++++++++++++++++++++++++++++++ -->
+
+    <flow name="flow_whitelist_ipv6">
+        <validation:ip-filter-whitelist ipList="list_ipv6" ipAddress="#[attributes.ip]"/>
+        <set-payload value="Valid IP"/>
+    </flow>
+
+    <flow name="flow_blackist_ipv6">
+        <validation:ip-filter-blacklist ipList="list_ipv6" ipAddress="#[attributes.ip]"/>
+        <set-payload value="Valid IP"/>
+    </flow>
+
+    <validation:ip-filter-list name="list_ipv6">
+        <validation:ips>
+            <validation:ip value="2001:db8::/48"/>
+        </validation:ips>
+    </validation:ip-filter-list>
+
+</mule>

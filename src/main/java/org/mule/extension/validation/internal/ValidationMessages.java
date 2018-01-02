@@ -131,6 +131,16 @@ public final class ValidationMessages extends I18nMessageFactory {
   }
 
   /**
+   * Generates a {@link I18nMessage} for an ip address filter validation that failed
+   *
+   * @param ip the rejected ip address
+   * @return a {@link I18nMessage}
+   */
+  public I18nMessage rejectedIp(String ip) {
+    return createMessage(bundlePath, 24, ip);
+  }
+
+  /**
    * Generates a {@link I18nMessage} for a value that was expected to have a minimum size but didn't
    *
    * @param value the tested value
