@@ -99,4 +99,7 @@
         <validation:custom-validator ref="customValidator" />
     </flow>
 
+    <flow name="expiration">
+        <validation:expiration-time time="#[vars.time]" expireAmount="20" expireUnit="SECONDS"/>
+    </flow>
 </mule>

@@ -8,6 +8,7 @@ package org.mule.extension.validation.internal;
 
 import static org.mule.extension.validation.api.ValidationExtension.nullSafeLocale;
 import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
+
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.extension.validation.api.ValidationOptions;
 import org.mule.extension.validation.api.Validator;
@@ -15,6 +16,7 @@ import org.mule.extension.validation.internal.error.BlankErrorType;
 import org.mule.extension.validation.internal.error.BooleanErrorType;
 import org.mule.extension.validation.internal.error.EmailErrorType;
 import org.mule.extension.validation.internal.error.EmptyErrorType;
+import org.mule.extension.validation.internal.error.ExpirationErrorType;
 import org.mule.extension.validation.internal.error.IpErrorType;
 import org.mule.extension.validation.internal.error.NotBlankErrorType;
 import org.mule.extension.validation.internal.error.NotEmptyErrorType;
@@ -28,6 +30,7 @@ import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
 import org.mule.extension.validation.internal.validator.EmailValidator;
 import org.mule.extension.validation.internal.validator.EmptyCollectionValidator;
+import org.mule.extension.validation.internal.validator.ExpirationValidator;
 import org.mule.extension.validation.internal.validator.IpValidator;
 import org.mule.extension.validation.internal.validator.MatchesRegexValidator;
 import org.mule.extension.validation.internal.validator.NotBlankStringValidator;
@@ -43,6 +46,9 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Map;
 
@@ -249,6 +255,25 @@ public final class CommonValidationOperations extends ValidationSupport {
       throws Exception {
     ValidationContext context = createContext(options, config);
     validateWith(new TimeValidator(time, nullSafeLocale(locale), pattern, context), context);
+  }
+
+  /**
+   * Validates that a ${@code time} did not occur more than ${@code expireAmount} amount of ${@code expireUnits} units
+   * after the current time.
+   *
+   * @param time the time to validate
+   * @param expireAmount the interval size
+   * @param expireUnit the interval unit (as a ${@link ChronoUnit})
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   */
+  @Throws(ExpirationErrorType.class)
+  public void expirationTime(LocalDateTime time, Long expireAmount, ChronoUnit expireUnit,
+                             @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                             @Config ValidationExtension config)
+      throws Exception {
+    ValidationContext context = createContext(options, config);
+    validateWith(new ExpirationValidator(time, Duration.of(expireAmount, expireUnit), context), context);
   }
 
   /**

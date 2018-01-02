@@ -54,6 +54,8 @@ public enum ValidationErrorType implements ErrorTypeDefinition<ValidationErrorTy
 
   INVALID_URL(VALIDATION),
 
+  EXPIRED_TIME(VALIDATION),
+
   MULTIPLE(VALIDATION);
 
   private ErrorTypeDefinition<?> parentErrorType;

@@ -14,8 +14,10 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
+import static org.mule.extension.validation.api.error.ValidationErrorType.EXPIRED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
+
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
@@ -24,6 +26,8 @@ import org.mule.functional.api.flow.FlowRunner;
 
 import com.google.common.collect.ImmutableList;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -243,6 +247,19 @@ public class BasicValidationTestCase extends ValidationTestCase {
 
     assertThat(getPayloadAsString(flowRunner(flowName).withPayload(VALID_EMAIL).run().getMessage()), is("valid"));
     assertThat(getPayloadAsString(flowRunner(flowName).withPayload(INVALID_EMAIL).run().getMessage()), is("invalid"));
+  }
+
+  @Test
+  public void expirationSuccess() throws Exception {
+    assertValid(flowRunner("expiration").withVariable("time", LocalDateTime.now()));
+  }
+
+  @Test
+  public void expirationFail() throws Exception {
+    expected.expectErrorType(VALIDATION_NAMESPACE, EXPIRED_TIME.name());
+
+    LocalDateTime currentTime = LocalDateTime.now().minus(1, ChronoUnit.HOURS);
+    assertValid(flowRunner("expiration").withVariable("time", currentTime));
   }
 
   private void assertCustomValidator(String flowName, String customMessage, String expectedMessage) throws Exception {
