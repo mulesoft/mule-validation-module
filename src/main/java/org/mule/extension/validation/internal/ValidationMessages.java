@@ -7,11 +7,14 @@
 package org.mule.extension.validation.internal;
 
 import static org.slf4j.LoggerFactory.getLogger;
+
 import org.mule.extension.validation.api.Validator;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.i18n.I18nMessageFactory;
 import org.mule.runtime.core.api.util.StringUtils;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -207,6 +210,32 @@ public final class ValidationMessages extends I18nMessageFactory {
    */
   public I18nMessage invalidTime(String time, String locale, String pattern) {
     return createMessage(bundlePath, 15, time, pattern, locale);
+  }
+
+  /**
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that exceeded duration
+   * ${@code expiresIn} after ${@code currentTime}.
+   *
+   * @param createdTime the original time to verify
+   * @param expiresIn maximum allowed difference between the created and actual time
+   * @param currentTime the time used to validate against
+   * @return a {@link I18nMessage}
+   */
+  public I18nMessage elapsedTime(LocalDateTime createdTime, Duration expiresIn, LocalDateTime currentTime) {
+    return createMessage(bundlePath, 22, createdTime, expiresIn, currentTime);
+  }
+
+  /**
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that did not exceeded duration
+   * ${@code expiresIn} after ${@code currentTime}.
+   *
+   * @param createdTime the original time to verify
+   * @param expiresIn minimum allowed difference between the created and actual time
+   * @param currentTime the time used to validate against
+   * @return a {@link I18nMessage}
+   */
+  public I18nMessage notElapsedTime(LocalDateTime createdTime, Duration expiresIn, LocalDateTime currentTime) {
+    return createMessage(bundlePath, 23, createdTime, expiresIn, currentTime);
   }
 
   /**

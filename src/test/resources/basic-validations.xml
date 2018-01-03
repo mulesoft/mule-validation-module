@@ -99,4 +99,11 @@
         <validation:custom-validator ref="customValidator" />
     </flow>
 
+    <flow name="notElapsed">
+        <validation:is-not-elapsed time="20" timeUnit="SECONDS" since="#[vars.time]"/>
+    </flow>
+
+    <flow name="elapsed">
+        <validation:is-elapsed time="20" timeUnit="SECONDS" since="#[vars.time]"/>
+    </flow>
 </mule>

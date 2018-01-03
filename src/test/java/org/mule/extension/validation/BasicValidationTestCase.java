@@ -6,6 +6,7 @@
  */
 package org.mule.extension.validation;
 
+import static java.time.temporal.ChronoUnit.HOURS;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -14,8 +15,11 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
+import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
+import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_ELAPSED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
+
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.Validator;
@@ -24,6 +28,7 @@ import org.mule.functional.api.flow.FlowRunner;
 
 import com.google.common.collect.ImmutableList;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -243,6 +248,33 @@ public class BasicValidationTestCase extends ValidationTestCase {
 
     assertThat(getPayloadAsString(flowRunner(flowName).withPayload(VALID_EMAIL).run().getMessage()), is("valid"));
     assertThat(getPayloadAsString(flowRunner(flowName).withPayload(INVALID_EMAIL).run().getMessage()), is("invalid"));
+  }
+
+  @Test
+  public void notElapsedSuccess() throws Exception {
+    assertValid(flowRunner("notElapsed").withVariable("time", LocalDateTime.now()));
+  }
+
+  @Test
+  public void notElapsedFail() throws Exception {
+    expected.expectErrorType(VALIDATION_NAMESPACE, ELAPSED_TIME.name());
+
+    LocalDateTime currentTime = LocalDateTime.now().minus(1, HOURS);
+    assertValid(flowRunner("notElapsed").withVariable("time", currentTime));
+  }
+
+  @Test
+  public void elapsedSuccess() throws Exception {
+    LocalDateTime currentTime = LocalDateTime.now().minus(1, HOURS);
+
+    assertValid(flowRunner("elapsed").withVariable("time", currentTime));
+  }
+
+  @Test
+  public void elapsedFail() throws Exception {
+    expected.expectErrorType(VALIDATION_NAMESPACE, NOT_ELAPSED_TIME.name());
+
+    assertValid(flowRunner("elapsed").withVariable("time", LocalDateTime.now()));
   }
 
   private void assertCustomValidator(String flowName, String customMessage, String expectedMessage) throws Exception {
