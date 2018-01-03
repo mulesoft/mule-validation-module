@@ -28,6 +28,8 @@ public enum ValidationErrorType implements ErrorTypeDefinition<ValidationErrorTy
 
   INVALID_IP(VALIDATION),
 
+  REJECTED_IP(VALIDATION),
+
   INVALID_BOOLEAN(VALIDATION),
 
   INVALID_EMAIL(VALIDATION),

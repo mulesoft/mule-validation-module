@@ -7,6 +7,8 @@
 package org.mule.extension.validation.internal;
 
 import static org.mule.extension.validation.api.ValidationExtension.nullSafeLocale;
+import static org.mule.extension.validation.internal.validator.IpFilterValidator.CHECK_RANGE_EXCLUSION;
+import static org.mule.extension.validation.internal.validator.IpFilterValidator.CHECK_RANGE_INCLUSION;
 import static org.mule.runtime.extension.api.annotation.param.Optional.PAYLOAD;
 
 import org.mule.extension.validation.api.ValidationExtension;
@@ -18,6 +20,7 @@ import org.mule.extension.validation.internal.error.ElapsedErrorType;
 import org.mule.extension.validation.internal.error.EmailErrorType;
 import org.mule.extension.validation.internal.error.EmptyErrorType;
 import org.mule.extension.validation.internal.error.IpErrorType;
+import org.mule.extension.validation.internal.error.IpFilterErrorType;
 import org.mule.extension.validation.internal.error.NotBlankErrorType;
 import org.mule.extension.validation.internal.error.NotElapsedErrorType;
 import org.mule.extension.validation.internal.error.NotEmptyErrorType;
@@ -27,11 +30,13 @@ import org.mule.extension.validation.internal.error.RegexErrorType;
 import org.mule.extension.validation.internal.error.SizeErrorType;
 import org.mule.extension.validation.internal.error.TimeErrorType;
 import org.mule.extension.validation.internal.error.UrlErrorType;
+import org.mule.extension.validation.internal.ip.IpFilterList;
 import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
 import org.mule.extension.validation.internal.validator.ElapsedValidator;
 import org.mule.extension.validation.internal.validator.EmailValidator;
 import org.mule.extension.validation.internal.validator.EmptyCollectionValidator;
+import org.mule.extension.validation.internal.validator.IpFilterValidator;
 import org.mule.extension.validation.internal.validator.IpValidator;
 import org.mule.extension.validation.internal.validator.MatchesRegexValidator;
 import org.mule.extension.validation.internal.validator.NotBlankStringValidator;
@@ -332,5 +337,47 @@ public final class CommonValidationOperations extends ValidationSupport {
       throws Exception {
     ValidationContext context = createContext(options, config);
     validateWith(new MatchesRegexValidator(value, regex, caseSensitive, context), context);
+  }
+
+  /**
+   * Validates that a {@code ipAddress} is present in the {@code ipList}.
+   *
+   * @param ipAddress the address to validate
+   * @param whiteList the list of allowed addresses
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   *
+   * @since 1.1
+   */
+  @Throws({IpErrorType.class, IpFilterErrorType.class})
+  public void isWhitelistedIp(String ipAddress,
+                              IpFilterList whiteList,
+                              @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                              @Config ValidationExtension config)
+      throws Exception {
+
+    ValidationContext context = createContext(options, config);
+    validateWith(new IpFilterValidator(ipAddress, whiteList, CHECK_RANGE_INCLUSION, context), context);
+  }
+
+  /**
+   * Validates that a {@code ipAddress} is not present in the {@code ipList}.
+   *
+   * @param ipAddress the address to validate
+   * @param blackList the list of disallowed addresses
+   * @param options the {@link ValidationOptions}
+   * @param config the current {@link ValidationExtension} that serves as config
+   *
+   * @since 1.1
+   */
+  @Throws({IpErrorType.class, IpFilterErrorType.class})
+  public void isNotBlacklistedIp(String ipAddress,
+                                 IpFilterList blackList,
+                                 @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                                 @Config ValidationExtension config)
+      throws Exception {
+
+    ValidationContext context = createContext(options, config);
+    validateWith(new IpFilterValidator(ipAddress, blackList, CHECK_RANGE_EXCLUSION, context), context);
   }
 }
