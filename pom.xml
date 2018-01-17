@@ -22,7 +22,7 @@
         <commonsLangVersion>3.6</commonsLangVersion>
         <commonsValidatorVersion>1.6</commonsValidatorVersion>
         <guavaVersion>23.5-jre</guavaVersion>
-        <muleSpringModuleVersion>1.1.0-SNAPSHOT</muleSpringModuleVersion>
+        <muleSpringModuleVersion>1.2.0-SNAPSHOT</muleSpringModuleVersion>
         <projectReactorVersion>3.1.1.RELEASE</projectReactorVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
