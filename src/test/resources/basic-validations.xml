@@ -65,6 +65,10 @@
         <validation:is-null value="#[payload]"/>
     </flow>
 
+    <flow name="isNotNull">
+        <validation:is-not-null value="#[payload]"/>
+    </flow>
+
     <flow name="all">
         <validation:all>
             <validation:is-url url="#[vars.url]"/>
