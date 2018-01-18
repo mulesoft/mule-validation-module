@@ -222,7 +222,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(NullErrorType.class)
-  public void isNotNull(Object value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+  public void isNotNull(@Optional(defaultValue = PAYLOAD) Object value,
+                        @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                         @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
@@ -237,7 +238,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(NotNullErrorType.class)
-  public void isNull(Object value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+  public void isNull(@Optional(defaultValue = PAYLOAD) Object value,
+                     @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                      @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
