@@ -189,6 +189,22 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   @Test
+  public void isNull() throws Exception {
+    final String flow = "isNull";
+
+    assertValid(flowRunner(flow).withPayload(null));
+    assertInvalid(flowRunner(flow).withPayload("NOT_NULL"), messages.wasExpectingNull());
+  }
+
+  @Test
+  public void isNotNull() throws Exception {
+    final String flow = "isNotNull";
+
+    assertValid(flowRunner(flow).withPayload("NOT_NULL"));
+    assertInvalid(flowRunner(flow).withPayload(null), messages.valueIsNull());
+  }
+
+  @Test
   public void keepsPayloadWhenAllValidationsPass() throws Exception {
     FlowRunner runner = configureGetAllRunner(flowRunner("all"), VALID_EMAIL, VALID_URL);
 
