@@ -52,6 +52,7 @@ import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.runtime.parameter.ParameterResolver;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -222,12 +223,12 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(NullErrorType.class)
-  public void isNotNull(@Optional(defaultValue = PAYLOAD) Object value,
+  public void isNotNull(ParameterResolver<Object> value,
                         @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                         @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new NotNullValidator(value, context), context);
+    validateWith(new NotNullValidator(value.resolve(), context), context);
   }
 
   /**
@@ -238,12 +239,12 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(NotNullErrorType.class)
-  public void isNull(@Optional(defaultValue = PAYLOAD) Object value,
+  public void isNull(ParameterResolver<Object> value,
                      @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                      @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new NullValidator(value, context), context);
+    validateWith(new NullValidator(value.resolve(), context), context);
   }
 
   /**
