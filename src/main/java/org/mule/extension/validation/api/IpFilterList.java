@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.validation.internal.ip;
+package org.mule.extension.validation.api;
 
 import static java.util.stream.Collectors.toList;
 

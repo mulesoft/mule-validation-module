@@ -30,7 +30,7 @@ import org.mule.extension.validation.internal.error.RegexErrorType;
 import org.mule.extension.validation.internal.error.SizeErrorType;
 import org.mule.extension.validation.internal.error.TimeErrorType;
 import org.mule.extension.validation.internal.error.UrlErrorType;
-import org.mule.extension.validation.internal.ip.IpFilterList;
+import org.mule.extension.validation.api.IpFilterList;
 import org.mule.extension.validation.internal.validator.BlankStringValidator;
 import org.mule.extension.validation.internal.validator.BooleanValidator;
 import org.mule.extension.validation.internal.validator.ElapsedValidator;

@@ -13,7 +13,7 @@ import static org.mule.extension.validation.internal.ImmutableValidationResult.o
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationContext;
-import org.mule.extension.validation.internal.ip.IpFilterList;
+import org.mule.extension.validation.api.IpFilterList;
 import org.mule.extension.validation.internal.ip.address.IPAddress;
 import org.mule.extension.validation.internal.ip.address.IPAddressFactory;
 import org.mule.runtime.api.i18n.I18nMessage;
