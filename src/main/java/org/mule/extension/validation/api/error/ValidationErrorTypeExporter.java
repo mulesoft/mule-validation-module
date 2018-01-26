@@ -6,6 +6,7 @@
  */
 package org.mule.extension.validation.api.error;
 
+import org.mule.api.annotation.NoExtend;
 import org.mule.extension.validation.api.ValidationResult;
 
 /**
@@ -14,6 +15,10 @@ import org.mule.extension.validation.api.ValidationResult;
  * a user needs to create a custom validator, implementing the {@link org.mule.extension.validation.api.Validator} interface, they
  * should be able to create a {@link ValidationResult} which returns a {@link ValidationErrorType} for the method
  * {@link ValidationResult#getErrorType()}
+ *
+ * @since 1.2.0
  */
+
+@NoExtend
 public class ValidationErrorTypeExporter {
 }
