@@ -8,6 +8,7 @@ package org.mule.extension.validation.api;
 
 import org.mule.extension.validation.api.error.BasicValidationErrorType;
 import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.error.ValidationErrorTypeExporter;
 import org.mule.extension.validation.internal.CommonValidationOperations;
 import org.mule.extension.validation.internal.CustomValidatorOperation;
 import org.mule.extension.validation.internal.NumberValidationOperation;
@@ -45,6 +46,7 @@ import javax.inject.Inject;
 @Operations({CommonValidationOperations.class, CustomValidatorOperation.class, ValidationStrategies.class,
     NumberValidationOperation.class})
 @Export(
+    classes = {ValidationErrorTypeExporter.class},
     resources = {"/META-INF/org/mule/runtime/core/i18n/validation-messages.properties"})
 @ErrorTypes(ValidationErrorType.class)
 @ExpressionFunctions(ValidationFunctions.class)
