@@ -6,9 +6,14 @@
  */
 package org.mule.extension.validation.api.error;
 
+import org.mule.extension.validation.api.ValidationResult;
+
 /**
- * The only porpouse of this class is to export the {@link ValidationErrorType} with the {@link org.mule.runtime.extension.api.annotation.Export}
- * annotation.
+ * The only porpouse of this class is to export the {@link ValidationErrorType} with the
+ * {@link org.mule.runtime.extension.api.annotation.Export} annotation. {@link ValidationErrorType} should be exported because if
+ * a user needs to create a custom validator, implementing the {@link org.mule.extension.validation.api.Validator} interface, they
+ * should be able to create a {@link ValidationResult} which returns a {@link ValidationErrorType} for the method
+ * {@link ValidationResult#getErrorType()}
  */
 public class ValidationErrorTypeExporter {
 }
