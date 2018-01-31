@@ -12,19 +12,19 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.AllureConstants.HttpFeature.ValidationStory.ERROR_HANDLING;
 import static org.mule.extension.validation.api.NumberType.INTEGER;
-import static org.mule.extension.validation.api.error.ValidationErrorType.EMPTY_COLLECTION;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_BOOLEAN;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_NUMBER;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_SIZE;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_TIME;
-import static org.mule.extension.validation.api.error.ValidationErrorType.MISMATCH;
-import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_EMPTY_COLLECTION;
+import static org.mule.extension.validation.api.ValidationErrorType.EMPTY_COLLECTION;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_BOOLEAN;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_NUMBER;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_SIZE;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_TIME;
+import static org.mule.extension.validation.api.ValidationErrorType.MISMATCH;
+import static org.mule.extension.validation.api.ValidationErrorType.NOT_EMPTY_COLLECTION;
 import static org.mule.functional.api.exception.ExpectedError.none;
 import static org.mule.functional.junit4.matchers.MessageMatchers.hasPayload;
 import static org.mule.tck.junit4.matcher.EventMatcher.hasMessage;
 import org.mule.extension.validation.api.ValidationException;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
 
@@ -122,12 +122,6 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   public void empty() throws Exception {
     expectedError.expectError(VALIDATION, NOT_EMPTY_COLLECTION, ValidationException.class, "Collection is not empty");
     verifyHandlerMessage(flowRunner("empty").withPayload(singletonList("A")), "Not empty error");
-  }
-
-  @Test
-  public void customValidation() throws Exception {
-    expectedError.expectError(VALIDATION, VALIDATION, ValidationException.class, "Do you wanna build a snowman?");
-    verifyHandlerMessage(flowRunner("customValidationByClass").withPayload(TEST_PAYLOAD), "Validation error");
   }
 
   @Test

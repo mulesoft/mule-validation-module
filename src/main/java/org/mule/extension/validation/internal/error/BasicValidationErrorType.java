@@ -4,10 +4,12 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.validation.api.error;
+package org.mule.extension.validation.internal.error;
 
 import static java.util.Collections.singleton;
-import static org.mule.extension.validation.api.error.ValidationErrorType.VALIDATION;
+import static org.mule.extension.validation.api.ValidationErrorType.VALIDATION;
+
+import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationExtension;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypeProvider;
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;

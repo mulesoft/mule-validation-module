@@ -8,7 +8,6 @@ package org.mule.extension.validation.api;
 
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 
-import org.mule.extension.validation.api.error.ValidationErrorType;
 import org.mule.runtime.api.exception.ErrorMessageAwareException;
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.message.Error;

@@ -6,9 +6,9 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_NULL;
-import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import static org.mule.extension.validation.api.ValidationErrorType.NOT_NULL;
+
+import org.mule.extension.validation.api.ValidationErrorType;
 
 public class NotNullErrorType extends BasicValidationErrorType {
 

@@ -6,12 +6,12 @@
  */
 package org.mule.extension.validation.internal.validator;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
+import static org.mule.extension.validation.api.ValidationErrorType.ELAPSED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
 import static org.mule.extension.validation.internal.validator.ElapsedValidator.chronoUnit;
 
 import org.mule.extension.validation.api.ValidationResult;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
 

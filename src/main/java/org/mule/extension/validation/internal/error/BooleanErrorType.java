@@ -6,9 +6,9 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_BOOLEAN;
-import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_BOOLEAN;
+
+import org.mule.extension.validation.api.ValidationErrorType;
 
 public class BooleanErrorType extends BasicValidationErrorType {
 

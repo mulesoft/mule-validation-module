@@ -6,10 +6,9 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.REJECTED_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.REJECTED_IP;
 
-import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.ValidationErrorType;
 
 /**
  * Error thrown by the IP filter validators.

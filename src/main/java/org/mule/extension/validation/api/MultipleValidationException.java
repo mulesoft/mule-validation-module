@@ -6,7 +6,7 @@
  */
 package org.mule.extension.validation.api;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.MULTIPLE;
+import static org.mule.extension.validation.api.ValidationErrorType.MULTIPLE;
 import org.mule.runtime.api.exception.ComposedErrorException;
 import org.mule.runtime.api.i18n.I18nMessageFactory;
 import org.mule.runtime.api.message.Error;

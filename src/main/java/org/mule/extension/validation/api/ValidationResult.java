@@ -6,8 +6,6 @@
  */
 package org.mule.extension.validation.api;
 
-import org.mule.extension.validation.api.error.ValidationErrorType;
-
 /**
  * The result of a validation
  *

@@ -7,8 +7,6 @@
         http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
         http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
-    <spring:config files="custom-validator-beans.xml" name="springConfig"/>
-
     <flow name="email">
         <validation:is-email email="#[payload]"/>
     </flow>
@@ -93,14 +91,6 @@
                 <set-payload value="invalid" />
             </otherwise>
         </choice>
-    </flow>
-
-    <flow name="customValidationByClass">
-        <validation:custom-validator class="org.mule.extension.validation.BasicValidationTestCase$TestCustomValidator" message="#[vars.customMessage]" />
-    </flow>
-
-    <flow name="customValidationByRef">
-        <validation:custom-validator ref="customValidator" />
     </flow>
 
     <flow name="notElapsed">
