@@ -6,10 +6,9 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_ELAPSED_TIME;
+import static org.mule.extension.validation.api.ValidationErrorType.NOT_ELAPSED_TIME;
 
-import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.internal.CommonValidationOperations;
 
 /**

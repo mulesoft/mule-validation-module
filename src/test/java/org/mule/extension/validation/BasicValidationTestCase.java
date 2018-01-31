@@ -15,14 +15,12 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
-import static org.mule.extension.validation.api.error.ValidationErrorType.ELAPSED_TIME;
-import static org.mule.extension.validation.api.error.ValidationErrorType.NOT_ELAPSED_TIME;
+import static org.mule.extension.validation.api.ValidationErrorType.ELAPSED_TIME;
+import static org.mule.extension.validation.api.ValidationErrorType.NOT_ELAPSED_TIME;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
 
 import org.mule.extension.validation.api.MultipleValidationException;
-import org.mule.extension.validation.api.ValidationResult;
-import org.mule.extension.validation.api.Validator;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
 
@@ -38,7 +36,6 @@ import org.junit.Test;
 
 public class BasicValidationTestCase extends ValidationTestCase {
 
-  private static final String CUSTOM_VALIDATOR_MESSAGE = "Do you wanna build a snowman?";
   private static final String EMAIL_VALIDATION_FLOW = "email";
   private static final String VALIDATION_NAMESPACE = "VALIDATION";
   private static final String MULTIPLE_ERROR = "MULTIPLE";
@@ -243,22 +240,6 @@ public class BasicValidationTestCase extends ValidationTestCase {
   }
 
   @Test
-  public void customValidationByClass() throws Exception {
-    assertCustomValidator("customValidationByClass", CUSTOM_VALIDATOR_MESSAGE, CUSTOM_VALIDATOR_MESSAGE);
-  }
-
-  @Test
-  public void customValidationByRef() throws Exception {
-    assertCustomValidator("customValidationByRef", null, CUSTOM_VALIDATOR_MESSAGE);
-  }
-
-  @Test
-  public void customValidatorWithCustomMessage() throws Exception {
-    final String customMessage = "doesn't have to be a snowman";
-    assertCustomValidator("customValidationByClass", customMessage, customMessage);
-  }
-
-  @Test
   public void usesValidatorAsRouter() throws Exception {
     final String flowName = "choice";
 
@@ -335,11 +316,4 @@ public class BasicValidationTestCase extends ValidationTestCase {
     return runner;
   }
 
-  public static class TestCustomValidator implements Validator {
-
-    @Override
-    public ValidationResult validate() {
-      return error(CUSTOM_VALIDATOR_MESSAGE);
-    }
-  }
 }

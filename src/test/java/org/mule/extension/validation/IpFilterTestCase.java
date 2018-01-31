@@ -9,9 +9,9 @@ package org.mule.extension.validation;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertNotNull;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
-import static org.mule.extension.validation.api.error.ValidationErrorType.REJECTED_IP;
-import static org.mule.extension.validation.api.error.ValidationErrorType.VALIDATION;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.REJECTED_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.VALIDATION;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
 
 import org.mule.functional.api.flow.FlowRunner;

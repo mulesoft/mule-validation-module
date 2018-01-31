@@ -7,7 +7,7 @@
 package org.mule.extension.validation.internal.ip.address;
 
 import static java.lang.String.format;
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_IP;
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 
 import org.mule.extension.validation.internal.ip.IpMatcher;

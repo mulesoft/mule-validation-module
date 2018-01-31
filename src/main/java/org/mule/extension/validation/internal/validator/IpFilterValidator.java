@@ -6,12 +6,12 @@
  */
 package org.mule.extension.validation.internal.validator;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.INVALID_IP;
-import static org.mule.extension.validation.api.error.ValidationErrorType.REJECTED_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.INVALID_IP;
+import static org.mule.extension.validation.api.ValidationErrorType.REJECTED_IP;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
 
 import org.mule.extension.validation.api.ValidationResult;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.extension.validation.api.IpFilterList;
 import org.mule.extension.validation.internal.ip.address.IPAddress;

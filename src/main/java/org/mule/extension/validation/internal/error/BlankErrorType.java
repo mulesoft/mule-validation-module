@@ -6,9 +6,9 @@
  */
 package org.mule.extension.validation.internal.error;
 
-import static org.mule.extension.validation.api.error.ValidationErrorType.BLANK_STRING;
-import org.mule.extension.validation.api.error.BasicValidationErrorType;
-import org.mule.extension.validation.api.error.ValidationErrorType;
+import static org.mule.extension.validation.api.ValidationErrorType.BLANK_STRING;
+
+import org.mule.extension.validation.api.ValidationErrorType;
 
 public class BlankErrorType extends BasicValidationErrorType {
 
