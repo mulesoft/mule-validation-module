@@ -14,12 +14,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.extension.validation.api.ValidationErrorType.ELAPSED_TIME;
 import static org.mule.extension.validation.api.ValidationErrorType.NOT_ELAPSED_TIME;
-import static org.mule.extension.validation.internal.ImmutableValidationResult.error;
+import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
-
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
@@ -87,11 +85,16 @@ public class BasicValidationTestCase extends ValidationTestCase {
 
   @Test
   public void time() throws Exception {
-    final String time = "12:08 PM";
+    String time = "12:08 PM";
 
     assertValid(configureTimeRunner(flowRunner("time"), time, "h:mm a"));
     assertValid(configureTimeRunner(flowRunner("time"), "Wed, Jul 4, '01", "EEE, MMM d, ''yy"));
-    final String invalidPattern = "yyMMddHHmmssZ";
+    String invalidPattern = "yyMMddHHmmssZ";
+    assertInvalid(configureTimeRunner(flowRunner("time"), time, invalidPattern),
+                  messages.invalidTime(time, DEFAULT_LOCALE, invalidPattern));
+
+    invalidPattern = "MM/dd/YYYY";
+    time = "34/02/2";
     assertInvalid(configureTimeRunner(flowRunner("time"), time, invalidPattern),
                   messages.invalidTime(time, DEFAULT_LOCALE, invalidPattern));
   }
