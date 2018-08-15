@@ -222,7 +222,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that the given {@code value} is not {@code null}.
+   * Validates that the given {@code value} is not {@code null}. Keep in mind that the definition of {@code null} may vary
+   * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
+   * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
    * @param value the value to test
    * @param options the {@link ValidationOptions}
@@ -238,7 +240,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that the given {@code value} is {@code null}.
+   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary
+   * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
+   * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
    * @param value the value to test
    * @param options the {@link ValidationOptions}
