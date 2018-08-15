@@ -8,10 +8,14 @@ package org.mule.extension.validation.internal.validator;
 
 import static org.mule.extension.validation.api.ValidationErrorType.NULL;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
+import static org.mule.runtime.api.metadata.DataType.BOOLEAN;
 import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
+import org.mule.runtime.api.el.BindingContext;
+import org.mule.runtime.api.el.ExpressionLanguage;
 import org.mule.runtime.api.i18n.I18nMessage;
+import org.mule.runtime.api.metadata.TypedValue;
 
 /**
  * An {@link AbstractValidator} which verifies that a {@link #value} is not {@code null}
@@ -20,16 +24,25 @@ import org.mule.runtime.api.i18n.I18nMessage;
  */
 public class NotNullValidator extends AbstractValidator {
 
-  private final Object value;
+  private final TypedValue<Object> value;
+  private final ExpressionLanguage expressionLanguage;
 
-  public NotNullValidator(Object value, ValidationContext validationContext) {
+  public NotNullValidator(TypedValue<Object> value, ValidationContext validationContext, ExpressionLanguage expressionLanguage) {
     super(validationContext);
     this.value = value;
+    this.expressionLanguage = expressionLanguage;
   }
 
   @Override
   public ValidationResult validate() {
-    return value != null ? ok() : fail();
+    if (value == null) {
+      return fail();
+    }
+
+    BindingContext ctx = BindingContext.builder().addBinding("payload", value).build();
+    TypedValue<Boolean> eval = (TypedValue<Boolean>) expressionLanguage.evaluate("payload != null", BOOLEAN, ctx);
+
+    return eval.getValue() ? ok() : fail();
   }
 
   @Override
