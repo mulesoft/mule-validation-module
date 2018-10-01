@@ -36,4 +36,18 @@ public final class ValidationStrategies {
       throws MultipleValidationException {
     // implemented as privileged operation in AllOperationExecutor
   }
+
+  /**
+   * Perform a list of nested validation operations and informs only one {@code VALIDATION:MULTIPLE} error which
+   * summarizes all of the found errors (if all failed).
+   *
+   * @param validations the nested validation operations
+   * @throws MultipleValidationException if all validators fail and {@code throwsException} is {@code true}
+   */
+  @Throws(AllErrorType.class)
+  public void any(@AllowedStereotypes(ValidatorStereotype.class) Chain validations,
+                  CompletionCallback<Void, Void> callback)
+      throws MultipleValidationException {
+    // implemented as privileged operation in AnyOperationExecutor
+  }
 }

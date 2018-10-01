@@ -82,6 +82,21 @@
         </validation:all>
     </flow>
 
+    <flow name="any">
+        <validation:any>
+            <validation:is-url url="#[vars.url]"/>
+            <validation:is-email email="#[vars.email]"/>
+        </validation:any>
+    </flow>
+
+    <flow name="anyWithNonValidationError">
+        <validation:any>
+            <validation:is-url url="#[vars.url]"/>
+            <validation:is-email email="#[vars.email]"/>
+            <validation:is-true expression="#[al;skdfha;ksdhfl;kjasdhfkljadsh]" />
+        </validation:any>
+    </flow>
+
     <flow name="choice">
         <choice>
             <when expression="#[Validation::isEmail(payload)]">

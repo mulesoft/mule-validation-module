@@ -19,9 +19,13 @@ import static org.mule.extension.validation.api.ValidationErrorType.NOT_ELAPSED_
 import static org.mule.extension.validation.api.ValidationExtension.DEFAULT_LOCALE;
 import static org.mule.runtime.api.metadata.MediaType.APPLICATION_JSON;
 import static org.mule.runtime.extension.api.error.MuleErrors.EXPRESSION;
+
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
+
+import org.junit.Rule;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 
@@ -29,9 +33,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Rule;
-import org.junit.Test;
 
 public class BasicValidationTestCase extends ValidationTestCase {
 
@@ -257,6 +258,40 @@ public class BasicValidationTestCase extends ValidationTestCase {
     expected.expectMessage(containsString(messages.invalidEmail(INVALID_EMAIL).getMessage()));
 
     configureGetAllRunner(flowRunner("all"), INVALID_EMAIL, VALID_URL).run();
+  }
+
+  @Test
+  public void keepsPayloadWhenAnyValidationsPass() throws Exception {
+    FlowRunner runner = configureGetAllRunner(flowRunner("any"), VALID_EMAIL, VALID_URL);
+
+    assertThat(runner.buildEvent().getMessage().getPayload().getValue(),
+               is(sameInstance(runner.run().getMessage().getPayload().getValue())));
+  }
+
+  @Test
+  public void twoFailuresInAny() throws Exception {
+    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectCause(is(instanceOf(MultipleValidationException.class)));
+    expected.expectMessage(equalTo(messages.invalidUrl(INVALID_URL) + "\n" + messages.invalidEmail(INVALID_EMAIL)));
+
+    configureGetAllRunner(flowRunner("any"), INVALID_EMAIL, INVALID_URL).run();
+  }
+
+  @Test
+  public void nonValidationErrorInsideAny() throws Exception {
+    expected.expectErrorType("MULE", EXPRESSION.getType());
+    configureGetAllRunner(flowRunner("anyWithNonValidationError"), VALID_EMAIL, VALID_URL).run();
+  }
+
+  @Test
+  public void nonValidationErrorMixedWithValidationErrorsInsideAny() throws Exception {
+    expected.expectErrorType("MULE", EXPRESSION.getType());
+    configureGetAllRunner(flowRunner("anyWithNonValidationError"), INVALID_EMAIL, INVALID_URL).run();
+  }
+
+  @Test
+  public void oneFailInAny() throws Exception {
+    assertValid(configureGetAllRunner(flowRunner("any"), INVALID_EMAIL, VALID_URL));
   }
 
   @Test
