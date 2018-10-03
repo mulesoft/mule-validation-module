@@ -7,7 +7,7 @@
 package org.mule.extension.validation.internal;
 
 import org.mule.extension.validation.api.MultipleValidationException;
-import org.mule.extension.validation.internal.error.AllErrorType;
+import org.mule.extension.validation.internal.error.MultipleErrorType;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.stereotype.AllowedStereotypes;
 import org.mule.runtime.extension.api.annotation.param.stereotype.Validator;
@@ -30,7 +30,7 @@ public final class ValidationStrategies {
    * @param validations the nested validation operations
    * @throws MultipleValidationException if at least one validator fails and {@code throwsException} is {@code true}
    */
-  @Throws(AllErrorType.class)
+  @Throws(MultipleErrorType.class)
   public void all(@AllowedStereotypes(ValidatorStereotype.class) Chain validations,
                   CompletionCallback<Void, Void> callback)
       throws MultipleValidationException {
@@ -38,13 +38,15 @@ public final class ValidationStrategies {
   }
 
   /**
-   * Perform a list of nested validation operations and informs only one {@code VALIDATION:MULTIPLE} error which
-   * summarizes all of the found errors (if all failed).
+   * Perform a list of nested validation operations and informs only one {@code VALIDATION:MULTIPLE} error which summarizes all of
+   * the found errors (if all failed).
    *
    * @param validations the nested validation operations
    * @throws MultipleValidationException if all validators fail and {@code throwsException} is {@code true}
+   *
+   * @since 1.3
    */
-  @Throws(AllErrorType.class)
+  @Throws(MultipleErrorType.class)
   public void any(@AllowedStereotypes(ValidatorStereotype.class) Chain validations,
                   CompletionCallback<Void, Void> callback)
       throws MultipleValidationException {
