@@ -18,9 +18,9 @@ import org.reactivestreams.Publisher;
 import java.util.List;
 
 /**
- * Custom executor for the {@code all} operation.
+ * Custom executor for the {@code any} operation.
  * <p>
- * The reason why we have this custom executor is that unlike regular scopes, the {@code all} operation requires
+ * The reason why we have this custom executor is that unlike regular scopes, the {@code any} operation requires
  * that all processors are executed regardless of their failures, since what we really want is to aggregate
  * all the validation errors.
  * <p>
@@ -29,13 +29,13 @@ import java.util.List;
  * <p>
  * If only validation errors are found, a {@code VALIDATION:MULTIPLE} error is raised.
  *
- * @since 1.0
+ * @since 1.3
  */
-public class AllOperationExecutor extends AggregateOperationExecutor {
+public class AnyOperationExecutor extends AggregateOperationExecutor {
 
   @Override
   protected Publisher<Object> handleValidationErrors(HasMessageProcessors chain, List<Error> errors) {
-    if (errors.isEmpty()) {
+    if (errors.size() < chain.getMessageProcessors().size()) {
       return empty();
     }
 

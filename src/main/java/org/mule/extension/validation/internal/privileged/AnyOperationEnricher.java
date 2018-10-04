@@ -7,19 +7,19 @@
 package org.mule.extension.validation.internal.privileged;
 
 /**
- * Sets {@link AllOperationExecutor} as the executor of the {@code all} operation
+ * Sets {@link AnyOperationExecutor} as the executor of the {@code any} operation
  *
- * @since 1.0
+ * @since 1.3
  */
-public class AllOperationEnricher extends AggregateOperationEnricher {
+public class AnyOperationEnricher extends AggregateOperationEnricher {
 
   @Override
   String getOperationName() {
-    return "all";
+    return "any";
   }
 
   @Override
   AggregateOperationExecutor getOperationExecutor() {
-    return new AllOperationExecutor();
+    return new AnyOperationExecutor();
   }
 }

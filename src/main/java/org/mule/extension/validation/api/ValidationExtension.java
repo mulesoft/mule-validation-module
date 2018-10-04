@@ -6,13 +6,14 @@
  */
 package org.mule.extension.validation.api;
 
-import org.mule.extension.validation.internal.error.BasicValidationErrorType;
 import org.mule.extension.validation.internal.CommonValidationOperations;
 import org.mule.extension.validation.internal.NumberValidationOperation;
 import org.mule.extension.validation.internal.ValidationMessages;
 import org.mule.extension.validation.internal.ValidationStrategies;
 import org.mule.extension.validation.internal.el.ValidationFunctions;
+import org.mule.extension.validation.internal.error.BasicValidationErrorType;
 import org.mule.extension.validation.internal.privileged.AllOperationEnricher;
+import org.mule.extension.validation.internal.privileged.AnyOperationEnricher;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.api.meta.NamedObject;
@@ -46,7 +47,7 @@ import javax.inject.Inject;
 @ErrorTypes(ValidationErrorType.class)
 @ExpressionFunctions(ValidationFunctions.class)
 @Throws(BasicValidationErrorType.class)
-@DeclarationEnrichers(AllOperationEnricher.class)
+@DeclarationEnrichers({AllOperationEnricher.class, AnyOperationEnricher.class})
 public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public static final String DEFAULT_LOCALE = Locale.getDefault().getLanguage();

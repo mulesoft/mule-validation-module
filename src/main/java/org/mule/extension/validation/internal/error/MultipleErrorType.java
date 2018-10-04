@@ -10,7 +10,7 @@ import static org.mule.extension.validation.api.ValidationErrorType.MULTIPLE;
 
 import org.mule.extension.validation.api.ValidationErrorType;
 
-public class AllErrorType extends BasicValidationErrorType {
+public class MultipleErrorType extends BasicValidationErrorType {
 
   @Override
   protected ValidationErrorType getErrorType() {
