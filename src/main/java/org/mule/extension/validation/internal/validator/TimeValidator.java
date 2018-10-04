@@ -13,9 +13,9 @@ import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.i18n.I18nMessage;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
-
-import org.joda.time.format.DateTimeFormat;
 
 /**
  * An {@link AbstractValidator} which verifies that a {@link #time} represented as a {@link String} can be parsed using a given
@@ -41,8 +41,8 @@ public class TimeValidator extends AbstractValidator {
   public ValidationResult validate() {
     Locale locale = new Locale(this.locale);
     try {
-      DateTimeFormat.forPattern(pattern).withLocale(locale).parseDateTime(time);
-    } catch (IllegalArgumentException e) {
+      DateTimeFormatter.ofPattern(pattern).withLocale(locale).parse(time);
+    } catch (DateTimeParseException e) {
       errorMessage = getMessages().invalidTime(time, this.locale, pattern);
       return fail();
     }
