@@ -6,13 +6,15 @@
  */
 package org.mule.extension.validation.api;
 
+import java.io.Serializable;
+
 /**
  * The result of a validation
  *
  * @see Validator
  * @since 1.0
  */
-public interface ValidationResult {
+public interface ValidationResult extends Serializable {
 
   /**
    * Returns a message associated with the execution of the validation. If the validation failed (which means that
