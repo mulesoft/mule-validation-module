@@ -150,12 +150,12 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(SizeErrorType.class)
-  public void validateSize(Object value, @Optional(defaultValue = "0") int min, @Optional Integer max,
+  public void validateSize(TypedValue<Object> value, @Optional(defaultValue = "0") int min, @Optional Integer max,
                            @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                            @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new SizeValidator(value, min, max, context), context);
+    validateWith(new SizeValidator(value, min, max, context, expressionLanguage), context);
   }
 
   /**
@@ -240,9 +240,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary
-   * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
-   * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
+   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary depending
+   * on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer. However, is the
+   * mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
    * @param value the value to test
    * @param options the {@link ValidationOptions}
@@ -277,8 +277,8 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
    * @param time the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})
@@ -298,8 +298,8 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
    * @param time the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+
+    <file:config name="config">
+        <file:connection workingDir="${workingDir}"/>
+    </file:config>
+
+    <flow name="file-validation-test">
+        <file:list config-ref="config" directoryPath="."/>
+        <validation:validate-size value="#[payload]" min="${minSize}" max="${maxSize}"/>
+    </flow>
+</mule>

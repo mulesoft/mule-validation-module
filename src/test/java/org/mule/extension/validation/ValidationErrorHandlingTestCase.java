@@ -85,7 +85,7 @@ public class ValidationErrorHandlingTestCase extends ValidationTestCase {
   @Test
   public void size() throws Exception {
     expectedError.expectError(VALIDATION, INVALID_SIZE, ValidationException.class,
-                              "value abcd was expected to have a length of at most 3 characters but it has 4");
+                              "value abcd was expected to have a size of at most 3 but it has 4");
     verifyHandlerMessage(flowRunner("size")
         .withPayload("abcd")
         .withVariable("minLength", 1)
