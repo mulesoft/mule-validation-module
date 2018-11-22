@@ -72,5 +72,4 @@ public class ValidateCsvSizeFunctionalTestCase extends AbstractValidateSizeFunct
     stringBuilder.append(CSV_HEADERS);
   }
 
-
 }

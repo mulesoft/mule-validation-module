@@ -6,6 +6,8 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.mule.extension.validation.api.ValidationErrorType.INVALID_SIZE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
 import static org.mule.runtime.api.metadata.DataType.NUMBER;
@@ -14,12 +16,16 @@ import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
 import org.mule.runtime.api.el.BindingContext;
+import org.mule.runtime.api.el.ExpressionExecutionException;
 import org.mule.runtime.api.el.ExpressionLanguage;
 import org.mule.runtime.api.i18n.I18nMessage;
 import org.mule.runtime.api.metadata.TypedValue;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * An {@link AbstractValidator} which verifies that {@link #typedValue} has a size between certain inclusive boundaries. This
@@ -33,6 +39,8 @@ public class SizeValidator extends AbstractValidator {
   private final int minSize;
   private final Integer maxSize;
   private final ExpressionLanguage expressionLanguage;
+  private final static String PAYLOAD = "payload";
+  private static final String FAILED_EXPRESSION_MESSAGE = "There was a problem while calculating the size for the validation";
 
   private I18nMessage errorMessage;
 
@@ -61,18 +69,38 @@ public class SizeValidator extends AbstractValidator {
     return ok();
   }
 
-  private int getSize(TypedValue typedValue) {
+  private int getSize(TypedValue<Object> typedValue) {
     checkArgument(typedValue.getValue() != null, "Cannot check size of a null value");
+    return getSizeFromJavaType(typedValue.getValue()).orElseGet(() -> getSizeFromDataWeaveExpression(typedValue));
+  }
 
-    BindingContext context = BindingContext.builder().addBinding("payload", typedValue).build();
-    Object expressionValue = expressionLanguage.evaluate("#[sizeOf(payload)]",
-                                                         NUMBER,
-                                                         context)
-        .getValue();
-    if (expressionValue instanceof Integer) {
-      return (Integer) expressionValue;
+  private Optional<Integer> getSizeFromJavaType(Object value) {
+    if (value instanceof String) {
+      return of(((String) value).length());
+    } else if (value instanceof Collection) {
+      return of(((Collection<?>) value).size());
+    } else if (value instanceof Map) {
+      return of(((Map<?, ?>) value).size());
+    } else if (value.getClass().isArray()) {
+      return of(ArrayUtils.getLength(value));
     } else {
-      throw new IllegalArgumentException("There was a problem while calculating the size for the validation");
+      return empty();
+    }
+  }
+
+  private Integer getSizeFromDataWeaveExpression(TypedValue<Object> typedValue) {
+    BindingContext context = BindingContext.builder().addBinding(PAYLOAD, typedValue).build();
+    try {
+      Object expressionValue = expressionLanguage.evaluate("#[sizeOf(" + PAYLOAD + ")]",
+                                                           NUMBER, context)
+          .getValue();
+      if (expressionValue instanceof Integer) {
+        return (Integer) expressionValue;
+      } else {
+        throw new IllegalArgumentException(FAILED_EXPRESSION_MESSAGE);
+      }
+    } catch (ExpressionExecutionException e) {
+      throw new RuntimeException(FAILED_EXPRESSION_MESSAGE, e);
     }
   }
 
