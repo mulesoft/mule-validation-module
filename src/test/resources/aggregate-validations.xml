@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns:heisenberg="http://www.mulesoft.org/schema/mule/heisenberg"
       xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-        http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
-        http://www.mulesoft.org/schema/mule/heisenberg http://www.mulesoft.org/schema/mule/heisenberg/current/mule-heisenberg.xsd">
-
-    <heisenberg:config name="heisenberg"
-                       myName="heisenberg"
-                       age="50"
-                       cancer="true"
-                       dateOfBirth="1959-09-07T00:00:00"
-                       dateOfDeath="2011-09-07T00:00:00-05:00"
-                       money="100000"
-                       initialHealth="CANCER"
-                       finalHealth="CANCER" >
-        <heisenberg:enemies>
-            <heisenberg:enemy value="Gustavo Fring"/>
-            <heisenberg:enemy value="Hank"/>
-        </heisenberg:enemies>
-        <heisenberg:monthly-incomes>
-            <heisenberg:monthly-income value="12000"/>
-            <heisenberg:monthly-income value="500"/>
-        </heisenberg:monthly-incomes>
-        <heisenberg:known-addresses>
-            <heisenberg:known-address value="one address"/>
-        </heisenberg:known-addresses>
-    </heisenberg:config>
+        http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
     <flow name="all">
         <validation:all>
@@ -36,19 +12,19 @@
         </validation:all>
     </flow>
 
-<!-- MULE-15778 -->
-<!--     <flow name="allWithAnotherExtension"> -->
-<!--         <validation:all> -->
-<!--             <validation:is-url url="#[vars.url]"/> -->
-<!--             <heisenberg:validate-money/> -->
-<!--         </validation:all> -->
-<!--     </flow> -->
+    <!-- MULE-15778 -->
+    <!--     <flow name="allWithAnotherExtension"> -->
+    <!--         <validation:all> -->
+    <!--             <validation:is-url url="#[vars.url]"/> -->
+    <!--             <heisenberg:validate-money/> -->
+    <!--         </validation:all> -->
+    <!--     </flow> -->
 
     <flow name="allWithNonValidationError">
         <validation:all>
             <validation:is-url url="#[vars.url]"/>
             <validation:is-email email="#[vars.email]"/>
-            <validation:is-true expression="#[al;skdfha;ksdhfl;kjasdhfkljadsh]" />
+            <validation:is-true expression="#[al;skdfha;ksdhfl;kjasdhfkljadsh]"/>
         </validation:all>
     </flow>
 
@@ -59,19 +35,19 @@
         </validation:any>
     </flow>
 
-<!-- MULE-15778 -->
-<!--     <flow name="anyWithAnotherExtension"> -->
-<!--         <validation:any> -->
-<!--             <validation:is-url url="#[vars.url]"/> -->
-<!--             <heisenberg:validate-money/> -->
-<!--         </validation:any> -->
-<!--     </flow> -->
+    <!-- MULE-15778 -->
+    <!--     <flow name="anyWithAnotherExtension"> -->
+    <!--         <validation:any> -->
+    <!--             <validation:is-url url="#[vars.url]"/> -->
+    <!--             <heisenberg:validate-money/> -->
+    <!--         </validation:any> -->
+    <!--     </flow> -->
 
     <flow name="anyWithNonValidationError">
         <validation:any>
             <validation:is-url url="#[vars.url]"/>
             <validation:is-email email="#[vars.email]"/>
-            <validation:is-true expression="#[al;skdfha;ksdhfl;kjasdhfkljadsh]" />
+            <validation:is-true expression="#[al;skdfha;ksdhfl;kjasdhfkljadsh]"/>
         </validation:any>
     </flow>
 </mule>

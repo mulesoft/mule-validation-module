@@ -7,12 +7,8 @@
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 
-    <file:config name="config">
-        <file:connection workingDir="${workingDir}"/>
-    </file:config>
-
-    <flow name="file-validation-test">
-        <file:list config-ref="config" directoryPath="."/>
-        <validation:validate-size value="#[payload]" min="${minSize}" max="${maxSize}"/>
+    <flow name="file-list-validation">
+        <file:list config-ref="fileConfig" directoryPath="."/>
+        <validation:validate-size value="#[payload]" min="#[vars.minSize]" max="#[vars.maxSize]"/>
     </flow>
 </mule>

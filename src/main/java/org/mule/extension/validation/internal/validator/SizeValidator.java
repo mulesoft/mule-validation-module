@@ -71,10 +71,14 @@ public class SizeValidator extends AbstractValidator {
 
   private int getSize(TypedValue<Object> typedValue) {
     checkArgument(typedValue.getValue() != null, "Cannot check size of a null value");
-    return getSizeFromJavaType(typedValue.getValue()).orElseGet(() -> getSizeFromDataWeaveExpression(typedValue));
+    return getSizeFromJavaType(typedValue).orElseGet(() -> getSizeFromDataWeaveExpression(typedValue));
   }
 
-  private Optional<Integer> getSizeFromJavaType(Object value) {
+  private Optional<Integer> getSizeFromJavaType(TypedValue<Object> typedValue) {
+    if (!isJavaType(typedValue)) {
+      return empty();
+    }
+    Object value = typedValue.getValue();
     if (value instanceof String) {
       return of(((String) value).length());
     } else if (value instanceof Collection) {
@@ -86,6 +90,11 @@ public class SizeValidator extends AbstractValidator {
     } else {
       return empty();
     }
+  }
+
+  private boolean isJavaType(TypedValue<Object> typedValue) {
+    String mediaTypeString = typedValue.getDataType().getMediaType().toRfcString();
+    return mediaTypeString.startsWith("*/*") || mediaTypeString.startsWith("application/java");
   }
 
   private Integer getSizeFromDataWeaveExpression(TypedValue<Object> typedValue) {

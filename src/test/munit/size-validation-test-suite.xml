@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+
+    <munit:config name="size-validation-test-suite.xml"/>
+
+    <munit:before-test name="beforeSizeValidationTest">
+        <set-variable value="8" variableName="validSize"/>
+        <set-variable value="20" variableName="invalidSize"/>
+        <set-variable value="5" variableName="minSize"/>
+        <set-variable value="10" variableName="maxSize"/>
+    </munit:before-test>
+
+    <munit:test name="validCsvFileSize"
+                description="Use the size validation to validate the size of a csv File with valid size">
+        <munit:behavior>
+            <set-variable value="#[vars.validSize]" variableName="size"/>
+            <set-variable value="file.csv" variableName="csvFileName"/>
+            <flow-ref name="createCsvFile"/>
+        </munit:behavior>
+        <munit:execution>
+            <flow-ref name="csv-validation"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="invalidCsvFileSize"
+                description="Use the size validation to validate the size of a csv File with invalid size"
+                expectedErrorType="VALIDATION:INVALID_SIZE">
+        <munit:behavior>
+            <set-variable value="#[vars.invalidSize]" variableName="size"/>
+            <set-variable value="file.csv" variableName="csvFileName"/>
+            <flow-ref name="createCsvFile"/>
+        </munit:behavior>
+        <munit:execution>
+            <flow-ref name="csv-validation"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="validFileListSize"
+                description="Use the size validation to validate the size of a csv File with valid size">
+        <munit:behavior>
+            <set-variable value="#[vars.validSize]" variableName="size"/>
+            <flow-ref name="createFiles"/>
+        </munit:behavior>
+        <munit:execution>
+            <flow-ref name="file-list-validation"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="invalidFileListSize"
+                description="Use the size validation to validate the size of a csv File with invalid size"
+                expectedErrorType="VALIDATION:INVALID_SIZE">
+        <munit:behavior>
+            <set-variable value="#[vars.invalidSize]" variableName="size"/>
+            <flow-ref name="createFiles"/>
+        </munit:behavior>
+        <munit:execution>
+            <flow-ref name="file-list-validation"/>
+        </munit:execution>
+    </munit:test>
+
+
+    <flow name="createFiles">
+        <set-payload value="#[1 to vars.size]"/>
+        <foreach>
+            <file:write config-ref="fileConfig" path="#[payload ++ '.txt']">
+                <file:content>
+                    #["FileContent"]
+                </file:content>
+            </file:write>
+        </foreach>
+    </flow>
+
+    <flow name="createCsvFile">
+        <file:write config-ref="fileConfig" path="#[vars.csvFileName]">
+            <file:content>
+                <![CDATA[#[%dw 2.0
+output application/csv
+---
+(1 to vars.size) map ((n) -> {a: 1, b:2, c:3})]]]>
+            </file:content>
+        </file:write>
+    </flow>
+
+</mule>
