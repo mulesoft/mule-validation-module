@@ -45,15 +45,6 @@ public class AggregateValidationTestCase extends ValidationTestCase {
   }
 
   @Test
-  @Ignore("MULE-15778")
-  public void keepsPayloadWhenAllWithAnotherExtensionValidationsPass() throws Exception {
-    FlowRunner runner = configureGetAllRunner(flowRunner("allWithAnotherExtension"), VALID_EMAIL, VALID_URL);
-
-    assertThat(runner.buildEvent().getMessage().getPayload().getValue(),
-               is(sameInstance(runner.run().getMessage().getPayload().getValue())));
-  }
-
-  @Test
   public void twoFailuresInAll() throws Exception {
     expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
     expected.expectCause(is(instanceOf(MultipleValidationException.class)));
@@ -86,15 +77,6 @@ public class AggregateValidationTestCase extends ValidationTestCase {
   @Test
   public void keepsPayloadWhenAnyValidationsPass() throws Exception {
     FlowRunner runner = configureGetAllRunner(flowRunner("any"), VALID_EMAIL, VALID_URL);
-
-    assertThat(runner.buildEvent().getMessage().getPayload().getValue(),
-               is(sameInstance(runner.run().getMessage().getPayload().getValue())));
-  }
-
-  @Test
-  @Ignore("MULE-15778")
-  public void keepsPayloadWhenAnyWithAnotherExtensionValidationsPass() throws Exception {
-    FlowRunner runner = configureGetAllRunner(flowRunner("anyWithAnotherExtension"), VALID_EMAIL, VALID_URL);
 
     assertThat(runner.buildEvent().getMessage().getPayload().getValue(),
                is(sameInstance(runner.run().getMessage().getPayload().getValue())));

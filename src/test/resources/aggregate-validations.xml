@@ -12,14 +12,6 @@
         </validation:all>
     </flow>
 
-    <!-- MULE-15778 -->
-    <!--     <flow name="allWithAnotherExtension"> -->
-    <!--         <validation:all> -->
-    <!--             <validation:is-url url="#[vars.url]"/> -->
-    <!--             <heisenberg:validate-money/> -->
-    <!--         </validation:all> -->
-    <!--     </flow> -->
-
     <flow name="allWithNonValidationError">
         <validation:all>
             <validation:is-url url="#[vars.url]"/>
@@ -34,14 +26,6 @@
             <validation:is-email email="#[vars.email]"/>
         </validation:any>
     </flow>
-
-    <!-- MULE-15778 -->
-    <!--     <flow name="anyWithAnotherExtension"> -->
-    <!--         <validation:any> -->
-    <!--             <validation:is-url url="#[vars.url]"/> -->
-    <!--             <heisenberg:validate-money/> -->
-    <!--         </validation:any> -->
-    <!--     </flow> -->
 
     <flow name="anyWithNonValidationError">
         <validation:any>
