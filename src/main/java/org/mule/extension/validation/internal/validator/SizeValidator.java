@@ -6,70 +6,110 @@
  */
 package org.mule.extension.validation.internal.validator;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.mule.extension.validation.api.ValidationErrorType.INVALID_SIZE;
 import static org.mule.extension.validation.internal.ImmutableValidationResult.ok;
+import static org.mule.runtime.api.metadata.DataType.NUMBER;
 import static org.mule.runtime.api.util.Preconditions.checkArgument;
 import org.mule.extension.validation.api.ValidationErrorType;
 import org.mule.extension.validation.api.ValidationResult;
 import org.mule.extension.validation.internal.ValidationContext;
+import org.mule.runtime.api.el.BindingContext;
+import org.mule.runtime.api.el.ExpressionExecutionException;
+import org.mule.runtime.api.el.ExpressionLanguage;
 import org.mule.runtime.api.i18n.I18nMessage;
+import org.mule.runtime.api.metadata.TypedValue;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
- * An {@link AbstractValidator} which verifies that {@link #value} has a size between certain inclusive boundaries. This validator
- * is capable of handling instances of {@link String}, {@link Collection}, {@link Map} and arrays
+ * An {@link AbstractValidator} which verifies that {@link #typedValue} has a size between certain inclusive boundaries. This
+ * validator is capable of handling instances of {@link String}, {@link Collection}, {@link Map} and arrays
  *
  * @since 1.0
  */
 public class SizeValidator extends AbstractValidator {
 
-  private final Object value;
+  private final TypedValue typedValue;
   private final int minSize;
   private final Integer maxSize;
+  private final ExpressionLanguage expressionLanguage;
+  private final static String PAYLOAD = "payload";
+  private static final String FAILED_EXPRESSION_MESSAGE = "There was a problem while calculating the size for the validation";
 
   private I18nMessage errorMessage;
 
-  public SizeValidator(Object value, int minSize, Integer maxSize, ValidationContext validationContext) {
+  public SizeValidator(TypedValue typedValue, int minSize, Integer maxSize, ValidationContext validationContext,
+                       ExpressionLanguage expressionLanguage) {
     super(validationContext);
-    this.value = value;
+    this.typedValue = typedValue;
     this.minSize = minSize;
     this.maxSize = maxSize;
+    this.expressionLanguage = expressionLanguage;
   }
 
   @Override
   public ValidationResult validate() {
-    int inputLength = getSize(value);
+    int inputLength = getSize(typedValue);
     if (inputLength < minSize) {
-      errorMessage = getMessages().lowerThanMinSize(value, minSize, inputLength);
+      errorMessage = getMessages().lowerThanMinSize(typedValue.getValue(), minSize, inputLength);
       return fail();
     }
 
     if (maxSize != null && inputLength > maxSize) {
-      errorMessage = getMessages().greaterThanMaxSize(value, maxSize, inputLength);
+      errorMessage = getMessages().greaterThanMaxSize(typedValue.getValue(), maxSize, inputLength);
       return fail();
     }
 
     return ok();
   }
 
-  private int getSize(Object value) {
-    checkArgument(value != null, "Cannot check size of a null value");
+  private int getSize(TypedValue<Object> typedValue) {
+    checkArgument(typedValue.getValue() != null, "Cannot check size of a null value");
+    return getSizeFromJavaType(typedValue).orElseGet(() -> getSizeFromDataWeaveExpression(typedValue));
+  }
+
+  private Optional<Integer> getSizeFromJavaType(TypedValue<Object> typedValue) {
+    if (!isJavaType(typedValue)) {
+      return empty();
+    }
+    Object value = typedValue.getValue();
     if (value instanceof String) {
-      return ((String) value).length();
+      return of(((String) value).length());
     } else if (value instanceof Collection) {
-      return ((Collection<?>) value).size();
+      return of(((Collection<?>) value).size());
     } else if (value instanceof Map) {
-      return ((Map<?, ?>) value).size();
+      return of(((Map<?, ?>) value).size());
     } else if (value.getClass().isArray()) {
-      return ArrayUtils.getLength(value);
+      return of(ArrayUtils.getLength(value));
     } else {
-      throw new IllegalArgumentException(String.format(
-                                                       "Only instances of Map, Collection, Array and String can be checked for size. Instance of %s was found instead",
-                                                       value.getClass().getName()));
+      return empty();
+    }
+  }
+
+  private boolean isJavaType(TypedValue<Object> typedValue) {
+    String mediaTypeString = typedValue.getDataType().getMediaType().toRfcString();
+    return mediaTypeString.startsWith("*/*") || mediaTypeString.startsWith("application/java");
+  }
+
+  private Integer getSizeFromDataWeaveExpression(TypedValue<Object> typedValue) {
+    BindingContext context = BindingContext.builder().addBinding(PAYLOAD, typedValue).build();
+    try {
+      Object expressionValue = expressionLanguage.evaluate("#[sizeOf(" + PAYLOAD + ")]",
+                                                           NUMBER, context)
+          .getValue();
+      if (expressionValue instanceof Integer) {
+        return (Integer) expressionValue;
+      } else {
+        throw new IllegalArgumentException(FAILED_EXPRESSION_MESSAGE);
+      }
+    } catch (ExpressionExecutionException e) {
+      throw new RuntimeException(FAILED_EXPRESSION_MESSAGE, e);
     }
   }
 

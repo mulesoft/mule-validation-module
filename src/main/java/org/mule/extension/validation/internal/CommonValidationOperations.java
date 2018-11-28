@@ -150,12 +150,12 @@ public final class CommonValidationOperations extends ValidationSupport {
    * @param config the current {@link ValidationExtension} that serves as config
    */
   @Throws(SizeErrorType.class)
-  public void validateSize(Object value, @Optional(defaultValue = "0") int min, @Optional Integer max,
+  public void validateSize(TypedValue<Object> value, @Optional(defaultValue = "0") int min, @Optional Integer max,
                            @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
                            @Config ValidationExtension config)
       throws Exception {
     ValidationContext context = createContext(options, config);
-    validateWith(new SizeValidator(value, min, max, context), context);
+    validateWith(new SizeValidator(value, min, max, context, expressionLanguage), context);
   }
 
   /**
