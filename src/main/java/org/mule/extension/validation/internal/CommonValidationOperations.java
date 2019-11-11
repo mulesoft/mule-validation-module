@@ -59,6 +59,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -240,9 +241,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary
-   * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
-   * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
+   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary depending
+   * on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer. However, is the
+   * mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
    * @param value the value to test
    * @param options the {@link ValidationOptions}
@@ -277,8 +278,8 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
    * @param time the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})
@@ -298,8 +299,8 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
    * @param time the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})
