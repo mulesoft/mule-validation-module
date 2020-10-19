@@ -18,7 +18,6 @@ import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.functional.api.flow.FlowRunner;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
