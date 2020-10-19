@@ -24,11 +24,11 @@ import org.mule.runtime.extension.api.runtime.operation.ComponentExecutor;
 import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
-import org.reactivestreams.Publisher;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.reactivestreams.Publisher;
 
 abstract class AggregateOperationExecutor implements ComponentExecutor<OperationModel> {
 
@@ -52,7 +52,8 @@ abstract class AggregateOperationExecutor implements ComponentExecutor<Operation
         if (error != null && isValidation(error.getErrorType())) {
           errors.add(error);
         } else {
-          return error(e);
+          // propagated error must have its event tied to the context of the originally passed event, not a child
+          return error(new EventProcessingException(CoreEvent.builder(event.getContext(), event).build(), e.getCause()));
         }
       } catch (Exception e) {
         childContext.error(e);
