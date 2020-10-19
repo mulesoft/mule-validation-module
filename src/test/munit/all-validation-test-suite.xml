@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xsi:schemaLocation="
+    http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+    http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+    http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+    http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <munit:config name="all-validation-test-suite.xml"/>
+
+    <munit:test name="allValidationWithErrorMappingFailingInForeach"
+                description=""
+                tags="MULE-18900">
+        <munit:execution>
+        
+            <foreach collection="#[[1, 2]]">
+                <try>
+                    <validation:all>
+                        <validation:is-not-null value="#[null]">
+                            <error-mapping sourceType="VALIDATION:NULL" targetType="TEST:NULL" />
+                        </validation:is-not-null>
+                    </validation:all>
+                 
+                    <error-handler>
+                        <on-error-continue>
+                            <munit-tools:queue/>
+                        </on-error-continue>
+                    </error-handler>
+                </try>
+            </foreach>
+        </munit:execution>
+        
+        <munit:validation>
+            <munit-tools:dequeue/>
+            <munit-tools:dequeue/>
+        </munit:validation>
+    </munit:test>
+
+</mule>
