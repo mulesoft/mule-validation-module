@@ -27,7 +27,10 @@
                     </validation:all>
                  
                     <error-handler>
-                        <on-error-continue>
+                        <on-error-continue type="VALIDATION:MULTIPLE">
+                            <munit-tools:queue/>
+                        </on-error-continue>
+                        <on-error-continue type="TEST:NULL">
                             <munit-tools:queue/>
                         </on-error-continue>
                     </error-handler>

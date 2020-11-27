@@ -53,7 +53,9 @@ abstract class AggregateOperationExecutor implements ComponentExecutor<Operation
           errors.add(error);
         } else {
           // propagated error must have its event tied to the context of the originally passed event, not a child
-          return error(new EventProcessingException(CoreEvent.builder(event.getContext(), event).build(), e.getCause()));
+          return error(new EventProcessingException(CoreEvent.builder(event.getContext(), event)
+              .error(error)
+              .build(), e.getCause()));
         }
       } catch (Exception e) {
         childContext.error(e);
