@@ -41,4 +41,27 @@
         </munit:validation>
     </munit:test>
 
+    <munit:test name="validationAllWithErrorMappingResolvingToMuleUnknown"
+                description=""
+                tags="MULE-19139">
+        <munit:execution>
+            <try>
+                <validation:all>
+                    <validation:is-not-null value="#[null]">
+                        <error-mapping sourceType="VALIDATION:NULL" targetType="TEST:NULL" />
+                    </validation:is-not-null>
+                </validation:all>
+                <error-handler>
+                    <on-error-continue type="TEST:NULL">
+                        <munit-tools:queue/>
+                    </on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+
+        <munit:validation>
+            <munit-tools:dequeue/>
+        </munit:validation>
+    </munit:test>
+
 </mule>
