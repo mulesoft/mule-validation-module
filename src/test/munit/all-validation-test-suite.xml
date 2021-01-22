@@ -17,7 +17,6 @@
                 description=""
                 tags="MULE-18900">
         <munit:execution>
-        
             <foreach collection="#[[1, 2]]">
                 <try>
                     <validation:all>
@@ -44,7 +43,7 @@
     <munit:test name="validationAllWithErrorMappingResolvingToMuleUnknown"
                 description=""
                 tags="MULE-19139"
-                ignore="#[Munit::muleVersionPriorTo('4.2.3')]">
+                ignore="#[Munit::muleVersionPriorTo('4.2.2') or Munit::muleVersionEqualTo('4.2.2')]">
         <munit:execution>
             <try>
                 <validation:all>
