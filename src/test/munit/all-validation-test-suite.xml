@@ -43,7 +43,7 @@
     <munit:test name="validationAllWithErrorMappingResolvingToMuleUnknown"
                 description=""
                 tags="MULE-19139"
-                ignore="#[Munit::muleVersionPriorTo('4.2.2') or Munit::muleVersionEqualTo('4.2.2')]">
+                ignore="#[Munit::muleVersionPriorTo('4.2.3-SNAPSHOT')]">
         <munit:execution>
             <try>
                 <validation:all>
