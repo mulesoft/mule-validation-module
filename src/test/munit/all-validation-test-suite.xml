@@ -17,7 +17,6 @@
                 description=""
                 tags="MULE-18900">
         <munit:execution>
-        
             <foreach collection="#[[1, 2]]">
                 <try>
                     <validation:all>
@@ -37,6 +36,30 @@
         
         <munit:validation>
             <munit-tools:dequeue/>
+            <munit-tools:dequeue/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="validationAllWithErrorMappingResolvingToMuleUnknown"
+                description=""
+                tags="MULE-19139"
+                ignore="#[Munit::muleVersionPriorTo('4.2.3-SNAPSHOT') or Munit::muleVersionEqualTo('4.3.0')]">
+        <munit:execution>
+            <try>
+                <validation:all>
+                    <validation:is-not-null value="#[null]">
+                        <error-mapping sourceType="VALIDATION:NULL" targetType="TEST:NULL" />
+                    </validation:is-not-null>
+                </validation:all>
+                <error-handler>
+                    <on-error-continue type="TEST:NULL">
+                        <munit-tools:queue/>
+                    </on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+
+        <munit:validation>
             <munit-tools:dequeue/>
         </munit:validation>
     </munit:test>
