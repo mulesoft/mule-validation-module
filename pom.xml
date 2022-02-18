@@ -24,7 +24,7 @@
         <guavaVersion>31.0.1-jre</guavaVersion>
 
         <muleSpringModuleVersion>1.3.6</muleSpringModuleVersion>
-        <projectReactorVersion>3.4.14</projectReactorVersion>
+        <projectReactorVersion>3.4.15</projectReactorVersion>
 
 
         <munit.input.directory>src/test/munit</munit.input.directory>
