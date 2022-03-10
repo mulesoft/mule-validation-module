@@ -58,8 +58,8 @@ public final class ValidationFunctions {
   /**
    * Tests if the {@code value} matches the {@code regex} regular expression
    *
-   * @param value the value to check
-   * @param regex the regular expression to check against
+   * @param value         the value to check
+   * @param regex         the regular expression to check against
    * @param caseSensitive when {@code true} matching is case sensitive, otherwise matching is case in-sensitive
    * @return {@code true} if the validation succeeded. {@code false} otherwise
    */
@@ -68,12 +68,12 @@ public final class ValidationFunctions {
   }
 
   /**
-   * Tests if the {@code time} in {@link String} format is valid for the given {@code pattern} and {@code locale}. If no
-   * pattern is provided, then the {@code locale}'s default will be used
+   * Tests if the {@code time} in {@link String} format is valid for the given {@code pattern} and {@code locale}. If no pattern
+   * is provided, then the {@code locale}'s default will be used
    *
-   * @param time A date in String format
+   * @param time    A date in String format
    * @param pattern the pattern for the {@code date}
-   * @param locale a {@link Locale} key
+   * @param locale  a {@link Locale} key
    * @return {@code true} if the validation succeeded. {@code false} otherwise
    */
   public boolean isTime(String time, @Optional String pattern, @Optional String locale) {
@@ -85,7 +85,7 @@ public final class ValidationFunctions {
    * <p/>
    * No boundaries are checked. Default system pattern and {@link Locale} are used
    *
-   * @param value the value to test
+   * @param value      the value to test
    * @param numberType the type of number to validate against
    * @return {@code true} if the validation succeeded. {@code false} otherwise
    */

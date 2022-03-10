@@ -46,7 +46,7 @@ public class ImmutableValidationResult implements ValidationResult {
    * {@code type}.
    *
    * @param message a message
-   * @param type an error type
+   * @param type    an error type
    * @return a new instance of {@link ImmutableValidationResult}
    */
   public static ValidationResult error(String message, ValidationErrorType type) {
@@ -69,7 +69,7 @@ public class ImmutableValidationResult implements ValidationResult {
    * {@code type}.
    *
    * @param message a message
-   * @param type an error type
+   * @param type    an error type
    * @return a new instance of {@link ImmutableValidationResult}
    */
   public static ValidationResult error(I18nMessage message, ValidationErrorType type) {

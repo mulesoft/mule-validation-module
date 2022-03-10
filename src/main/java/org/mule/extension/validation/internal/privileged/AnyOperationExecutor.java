@@ -20,12 +20,11 @@ import java.util.List;
 /**
  * Custom executor for the {@code any} operation.
  * <p>
- * The reason why we have this custom executor is that unlike regular scopes, the {@code any} operation requires
- * that all processors are executed regardless of their failures, since what we really want is to aggregate
- * all the validation errors.
+ * The reason why we have this custom executor is that unlike regular scopes, the {@code any} operation requires that all
+ * processors are executed regardless of their failures, since what we really want is to aggregate all the validation errors.
  * <p>
- * However, if one of the nested processors fail with a non validation error, then the execution is aborted and the
- * unexpected error is raised.
+ * However, if one of the nested processors fail with a non validation error, then the execution is aborted and the unexpected
+ * error is raised.
  * <p>
  * If only validation errors are found, a {@code VALIDATION:MULTIPLE} error is raised.
  *

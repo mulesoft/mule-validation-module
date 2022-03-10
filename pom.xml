@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-core-modules-parent</artifactId>
-        <version>1.1.8</version>
+        <version>1.4.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,7 +26,7 @@
         <muleSpringModuleVersion>1.3.6</muleSpringModuleVersion>
         <projectReactorVersion>3.4.15</projectReactorVersion>
 
-
+        <mule.sdk.api.version>0.4.0</mule.sdk.api.version>
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
 
@@ -38,6 +38,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.mule.sdk</groupId>
+            <artifactId>mule-sdk-api</artifactId>
+            <version>${mule.sdk.api.version}</version>
+        </dependency>
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>

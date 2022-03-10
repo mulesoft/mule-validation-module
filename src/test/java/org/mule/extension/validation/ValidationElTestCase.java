@@ -138,7 +138,7 @@ public class ValidationElTestCase extends ValidationTestCase {
     assertThat(evaluate(expression, event), is(expected));
   }
 
-  //TODO: MULE-10013 use org.mule.tck.junit4.AbstractMuleContextTestCase.eventBuilder instead
+  // TODO: MULE-10013 use org.mule.tck.junit4.AbstractMuleContextTestCase.eventBuilder instead
   private CoreEvent.Builder createEventBuilder() throws MuleException {
     return CoreEvent.builder(testEvent());
   }

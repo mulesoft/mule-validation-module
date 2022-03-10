@@ -47,7 +47,7 @@ public final class ValidationMessages extends I18nMessageFactory {
    * Creates an instance which points to the given {@code bundlePath} and {@code locale}
    *
    * @param bundlePath the path to a bundle
-   * @param locale a locale key to be used to construct a {@link java.util.Locale}
+   * @param locale     a locale key to be used to construct a {@link java.util.Locale}
    */
   public ValidationMessages(String bundlePath, String locale) {
     this.bundlePath = bundlePath;
@@ -69,7 +69,7 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Generates a {@link I18nMessage} for a boolean validation that failed
    *
-   * @param value the value that was obtained
+   * @param value    the value that was obtained
    * @param expected the value that was expected
    * @return a {@link I18nMessage}
    */
@@ -80,7 +80,7 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Generates a {@link I18nMessage} for a number type validation that failed
    *
-   * @param value the value that was tested
+   * @param value      the value that was tested
    * @param numberType the type that the tested value was expected to have
    * @return a {@link I18nMessage}
    */
@@ -91,7 +91,7 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Returns a message for a {@code value} that was expected to be lower than {@code boundary} but isn't
    *
-   * @param value the value
+   * @param value    the value
    * @param boundary the boundary
    * @return a {@link I18nMessage}
    */
@@ -102,7 +102,7 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Returns a message for a {@code value} that was expected to be greater than {@code boundary} but isn't
    *
-   * @param value the value
+   * @param value    the value
    * @param boundary the boundary
    * @return a {@link I18nMessage}
    */
@@ -143,8 +143,8 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Generates a {@link I18nMessage} for a value that was expected to have a minimum size but didn't
    *
-   * @param value the tested value
-   * @param minSize the minimum boundary used in the validation
+   * @param value      the tested value
+   * @param minSize    the minimum boundary used in the validation
    * @param actualSize the actual {@code value} size
    * @return a {@link I18nMessage}
    */
@@ -155,8 +155,8 @@ public final class ValidationMessages extends I18nMessageFactory {
   /**
    * Generates a {@link I18nMessage} for a value that was expected to have a maximum size but didn't
    *
-   * @param value the tested value
-   * @param maxSize the maximum boundary used in the validation
+   * @param value      the tested value
+   * @param maxSize    the maximum boundary used in the validation
    * @param actualSize the actual {@code value} size
    * @return a {@link I18nMessage}
    */
@@ -213,8 +213,8 @@ public final class ValidationMessages extends I18nMessageFactory {
    * Generates a {@link I18nMessage} for a {@code time} expressed as a {@link String} but couldn't be parsed using the given
    * {@code locale} and {@code pattern}
    *
-   * @param time the {@link String} that couldn't be parsed
-   * @param locale the locale that was used when parsing
+   * @param time    the {@link String} that couldn't be parsed
+   * @param locale  the locale that was used when parsing
    * @param pattern the pattern that was used when parsing
    * @return a {@link I18nMessage}
    */
@@ -223,11 +223,11 @@ public final class ValidationMessages extends I18nMessageFactory {
   }
 
   /**
-   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that exceeded duration
-   * ${@code expiresIn} after ${@code currentTime}.
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that exceeded duration ${@code expiresIn} after
+   * ${@code currentTime}.
    *
    * @param createdTime the original time to verify
-   * @param expiresIn maximum allowed difference between the created and actual time
+   * @param expiresIn   maximum allowed difference between the created and actual time
    * @param currentTime the time used to validate against
    * @return a {@link I18nMessage}
    */
@@ -236,11 +236,11 @@ public final class ValidationMessages extends I18nMessageFactory {
   }
 
   /**
-   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that did not exceeded duration
-   * ${@code expiresIn} after ${@code currentTime}.
+   * Generates a {@link I18nMessage} for an elapsed time ${@code createdTime} that did not exceeded duration ${@code expiresIn}
+   * after ${@code currentTime}.
    *
    * @param createdTime the original time to verify
-   * @param expiresIn minimum allowed difference between the created and actual time
+   * @param expiresIn   minimum allowed difference between the created and actual time
    * @param currentTime the time used to validate against
    * @return a {@link I18nMessage}
    */

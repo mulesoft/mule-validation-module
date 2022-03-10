@@ -24,8 +24,8 @@ import org.mule.runtime.extension.api.stereotype.ValidatorStereotype;
 public final class ValidationStrategies {
 
   /**
-   * Perform a list of nested validation operations and informs only one {@code VALIDATION:MULTIPLE} error which
-   * summarizes all of the found errors (if any).
+   * Perform a list of nested validation operations and informs only one {@code VALIDATION:MULTIPLE} error which summarizes all of
+   * the found errors (if any).
    *
    * @param validations the nested validation operations
    * @throws MultipleValidationException if at least one validator fails and {@code throwsException} is {@code true}

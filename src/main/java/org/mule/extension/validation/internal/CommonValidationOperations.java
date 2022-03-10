@@ -80,8 +80,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that the given {@code value} is {@code true}
    *
    * @param expression the boolean to test
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param options    the {@link ValidationOptions}
+   * @param config     the current {@link ValidationExtension} that serves as config
    * @throws Exception if the value is not {@code true}
    */
   @Throws(BooleanErrorType.class)
@@ -96,8 +96,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that the given {@code value} is {@code false}
    *
    * @param expression the boolean to test
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param options    the {@link ValidationOptions}
+   * @param config     the current {@link ValidationExtension} that serves as config
    * @throws Exception if the value is not {@code true}
    */
   @Throws(BooleanErrorType.class)
@@ -111,9 +111,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that the {@code email} address is valid
    *
-   * @param email an email address
+   * @param email   an email address
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(EmailErrorType.class)
   public void isEmail(String email, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
@@ -126,9 +126,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that an {@code ip} address represented as a {@link String} is valid
    *
-   * @param ip the ip address to validate
+   * @param ip      the ip address to validate
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @DisplayName("Is IP")
   @Throws(IpErrorType.class)
@@ -143,11 +143,11 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that {@code value} has a size between certain inclusive boundaries. This validator is capable of handling instances
    * of {@link String}, {@link Collection}, {@link Map} and arrays
    *
-   * @param value the value to validate
-   * @param min the minimum expected length (inclusive, defaults to zero)
-   * @param max the maximum expected length (inclusive). Leave unspecified or {@code null} to allow any max length
+   * @param value   the value to validate
+   * @param min     the minimum expected length (inclusive, defaults to zero)
+   * @param max     the maximum expected length (inclusive). Leave unspecified or {@code null} to allow any max length
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(SizeErrorType.class)
   public void validateSize(TypedValue<Object> value, @Optional(defaultValue = "0") int min, @Optional Integer max,
@@ -161,9 +161,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code value} is not a blank String.
    *
-   * @param value the String to check
+   * @param value   the String to check
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(BlankErrorType.class)
   public void isNotBlankString(@Optional(defaultValue = PAYLOAD) String value,
@@ -177,9 +177,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code value} is not an empty collection.
    *
-   * @param values the value to check
+   * @param values  the value to check
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(EmptyErrorType.class)
   public void isNotEmptyCollection(@Optional(defaultValue = PAYLOAD) Collection<Object> values,
@@ -193,9 +193,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code value} is a blank String.
    *
-   * @param value the value to check
+   * @param value   the value to check
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(NotBlankErrorType.class)
   public void isBlankString(String value, @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
@@ -208,9 +208,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code value} is an empty collection.
    *
-   * @param values the value to check
+   * @param values  the value to check
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(NotEmptyErrorType.class)
   public void isEmptyCollection(@Optional(defaultValue = PAYLOAD) Collection<Object> values,
@@ -226,9 +226,9 @@ public final class CommonValidationOperations extends ValidationSupport {
    * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
    * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
-   * @param value the value to test
+   * @param value   the value to test
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(NullErrorType.class)
   public void isNotNull(ParameterResolver<TypedValue<Object>> value,
@@ -240,13 +240,13 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary
-   * depending on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer.
-   * However, is the mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
+   * Validates that the given {@code value} is {@code null}. Keep in mind that the definition of {@code null} may vary depending
+   * on the value's mimeType. For example, for an {@code application/java} mimeType, null means a blank pointer. However, is the
+   * mimeType is {@code application/json} then the String &quot;null&quot; is also a null value.
    *
-   * @param value the value to test
+   * @param value   the value to test
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(NotNullErrorType.class)
   public void isNull(ParameterResolver<TypedValue<Object>> value,
@@ -261,11 +261,11 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that a {@code time} in {@link String} format is valid for the given {@code pattern} and {@code locale}. If no
    * pattern is provided, then the {@code locale}'s default will be used
    *
-   * @param time A date in String format
-   * @param locale the locale of the String
+   * @param time    A date in String format
+   * @param locale  the locale of the String
    * @param pattern the pattern for the {@code date}
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @Throws(TimeErrorType.class)
   public void isTime(String time, @Optional String locale, @Optional String pattern,
@@ -277,14 +277,14 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
-   * @param time the interval size
+   * @param time     the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})
-   * @param since the time to validate
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param since    the time to validate
+   * @param options  the {@link ValidationOptions}
+   * @param config   the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
@@ -298,14 +298,14 @@ public final class CommonValidationOperations extends ValidationSupport {
   }
 
   /**
-   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an
-   * specified amount of {@code time}.
+   * Validates the amount of time that has elapsed since the moment in the {@code since} parameter is greater than an specified
+   * amount of {@code time}.
    *
-   * @param time the interval size
+   * @param time     the interval size
    * @param timeUnit the interval unit (as a {@link TimeUnit})
-   * @param since the time to validate
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param since    the time to validate
+   * @param options  the {@link ValidationOptions}
+   * @param config   the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
@@ -321,9 +321,9 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code url} is a valid one
    *
-   * @param url the URL to validate as a {@link String}
+   * @param url     the URL to validate as a {@link String}
    * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param config  the current {@link ValidationExtension} that serves as config
    */
   @DisplayName("Is URL")
   @Throws(UrlErrorType.class)
@@ -337,11 +337,11 @@ public final class CommonValidationOperations extends ValidationSupport {
   /**
    * Validates that {@code value} matches the {@code regex} regular expression
    *
-   * @param value the value to check
-   * @param regex the regular expression to check against
+   * @param value         the value to check
+   * @param regex         the regular expression to check against
    * @param caseSensitive when {@code true} matching is case sensitive, otherwise matching is case in-sensitive
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param options       the {@link ValidationOptions}
+   * @param config        the current {@link ValidationExtension} that serves as config
    */
   @Throws(RegexErrorType.class)
   public void matchesRegex(String value, String regex, @Optional(defaultValue = "true") boolean caseSensitive,
@@ -357,8 +357,8 @@ public final class CommonValidationOperations extends ValidationSupport {
    *
    * @param ipAddress the address to validate
    * @param allowList the list of allowed addresses
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param options   the {@link ValidationOptions}
+   * @param config    the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
@@ -377,9 +377,9 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that a {@code ipAddress} is not present in the {@code ipList}.
    *
    * @param ipAddress the address to validate
-   * @param denyList the list of denied addresses
-   * @param options the {@link ValidationOptions}
-   * @param config the current {@link ValidationExtension} that serves as config
+   * @param denyList  the list of denied addresses
+   * @param options   the {@link ValidationOptions}
+   * @param config    the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
