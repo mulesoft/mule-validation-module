@@ -356,41 +356,41 @@ public final class CommonValidationOperations extends ValidationSupport {
    * Validates that a {@code ipAddress} is present in the {@code ipList}.
    *
    * @param ipAddress the address to validate
-   * @param whiteList the list of allowed addresses
+   * @param allowList the list of allowed addresses
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
   @Throws({IpErrorType.class, IpFilterErrorType.class})
-  public void isWhitelistedIp(String ipAddress,
-                              IpFilterList whiteList,
-                              @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
-                              @Config ValidationExtension config)
+  public void isAllowedIp(String ipAddress,
+                          IpFilterList allowList,
+                          @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                          @Config ValidationExtension config)
       throws Exception {
 
     ValidationContext context = createContext(options, config);
-    validateWith(new IpFilterValidator(ipAddress, whiteList, CHECK_RANGE_INCLUSION, context), context);
+    validateWith(new IpFilterValidator(ipAddress, allowList, CHECK_RANGE_INCLUSION, context), context);
   }
 
   /**
    * Validates that a {@code ipAddress} is not present in the {@code ipList}.
    *
    * @param ipAddress the address to validate
-   * @param blackList the list of disallowed addresses
+   * @param denyList the list of denied addresses
    * @param options the {@link ValidationOptions}
    * @param config the current {@link ValidationExtension} that serves as config
    *
    * @since 1.1
    */
   @Throws({IpErrorType.class, IpFilterErrorType.class})
-  public void isNotBlacklistedIp(String ipAddress,
-                                 IpFilterList blackList,
-                                 @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
-                                 @Config ValidationExtension config)
+  public void isNotDeniedIp(String ipAddress,
+                            IpFilterList denyList,
+                            @ParameterGroup(name = ERROR_GROUP) ValidationOptions options,
+                            @Config ValidationExtension config)
       throws Exception {
 
     ValidationContext context = createContext(options, config);
-    validateWith(new IpFilterValidator(ipAddress, blackList, CHECK_RANGE_EXCLUSION, context), context);
+    validateWith(new IpFilterValidator(ipAddress, denyList, CHECK_RANGE_EXCLUSION, context), context);
   }
 }

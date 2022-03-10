@@ -22,18 +22,18 @@ import org.junit.Test;
 
 public class IpFilterTestCase extends ValidationTestCase {
 
-  private List<String> invalidBlackListIps = asList("10.0.0.5");
-  private List<String> validBlackListIps = asList("127.0.0.1");
+  private List<String> invalidDenyListIps = asList("10.0.0.5");
+  private List<String> validDenyListIps = asList("127.0.0.1");
 
-  private List<String> invalidWhiteListIps = asList("192.168.2.1", "193.100.0.1");
-  private List<String> validWhiteListIps = asList("192.168.1.1", "127.0.0.1", "193.1.0.1");
+  private List<String> invalidAllowListIps = asList("192.168.2.1", "193.100.0.1");
+  private List<String> validAllowListIps = asList("192.168.1.1", "127.0.0.1", "193.1.0.1");
 
 
-  private List<String> invalidBlackListIpsV6 = asList("2001:db8:0:0:0:0:0:0");
-  private List<String> validBlackListIpsV6 = asList("2002:db8:0:ffff:ffff:ffff:ffff:ffff");
+  private List<String> invalidDenyListIpsV6 = asList("2001:db8:0:0:0:0:0:0");
+  private List<String> validDenyListIpsV6 = asList("2002:db8:0:ffff:ffff:ffff:ffff:ffff");
 
-  private List<String> invalidWhiteListIpsV6 = asList("2002:db8:0:ffff:ffff:ffff:ffff:ffff");
-  private List<String> validWhiteListIpsV6 = asList("2001:db8:0:0:0:0:0:0");
+  private List<String> invalidAllowListIpsV6 = asList("2002:db8:0:ffff:ffff:ffff:ffff:ffff");
+  private List<String> validAllowListIpsV6 = asList("2001:db8:0:0:0:0:0:0");
 
   @Override
   protected String getConfigFile() {
@@ -41,78 +41,78 @@ public class IpFilterTestCase extends ValidationTestCase {
   }
 
   @Test
-  public void ipFilterIpv4ConfigurationWhitelistValidIps() throws Exception {
-    for (String ip : validWhiteListIps) {
-      assertNotNull(createFlowRunner("flow_whitelist_ipv4", ip).run());
+  public void ipFilterIpv4ConfigurationAllowListValidIps() throws Exception {
+    for (String ip : validAllowListIps) {
+      assertNotNull(createFlowRunner("flow_allowlist_ipv4", ip).run());
     }
   }
 
   @Test
-  public void ipFilterIpv4ConfigurationWhitelistInvalidIps() throws Exception {
-    for (String ip : invalidWhiteListIps) {
-      createFlowRunner("flow_whitelist_ipv4", ip)
+  public void ipFilterIpv4ConfigurationAllowlistInvalidIps() throws Exception {
+    for (String ip : invalidAllowListIps) {
+      createFlowRunner("flow_allowlist_ipv4", ip)
           .runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
     }
   }
 
   @Test
   public void ipFilterIpv4MalformedIp() throws Exception {
-    createFlowRunner("flow_whitelist_ipv4", "400.24.1.1900")
+    createFlowRunner("flow_allowlist_ipv4", "400.24.1.1900")
         .runExpectingException(errorType(VALIDATION.name(), INVALID_IP.name()));
   }
 
   @Test
-  public void ipFilterIpv4ConfigurationBlacklistValidIps() throws Exception {
-    for (String ip : validBlackListIps) {
-      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_blacklist_ipv4", ip).run());
+  public void ipFilterIpv4ConfigurationDenyListValidIps() throws Exception {
+    for (String ip : validDenyListIps) {
+      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_denylist_ipv4", ip).run());
     }
   }
 
   @Test
-  public void ipFilterIpv4ConfigurationBlacklistInvalidIps() throws Exception {
-    for (String ip : invalidBlackListIps) {
-      createFlowRunner("flow_blacklist_ipv4", ip)
+  public void ipFilterIpv4ConfigurationDenyListInvalidIps() throws Exception {
+    for (String ip : invalidDenyListIps) {
+      createFlowRunner("flow_denylist_ipv4", ip)
           .runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
     }
   }
 
   @Test
-  public void ipFilterIpv6ValidWhiteList() throws Exception {
-    for (String ip : validWhiteListIpsV6) {
-      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_whitelist_ipv6", ip).run());
+  public void ipFilterIpv6ValidAllowList() throws Exception {
+    for (String ip : validAllowListIpsV6) {
+      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_allowlist_ipv6", ip).run());
     }
   }
 
   @Test
-  public void ipFilterIpv6InvalidWhiteList() throws Exception {
-    for (String ip : invalidWhiteListIpsV6) {
-      createFlowRunner("flow_whitelist_ipv6", ip).runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
+  public void ipFilterIpv6InvalidAllowList() throws Exception {
+    for (String ip : invalidAllowListIpsV6) {
+      createFlowRunner("flow_allowlist_ipv6", ip).runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
     }
   }
 
   @Test
-  public void ipFilterIpv6ValidBlackList() throws Exception {
-    for (String ip : validBlackListIpsV6) {
-      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_blackist_ipv6", ip).run());
+  public void ipFilterIpv6ValidDenyList() throws Exception {
+    for (String ip : validDenyListIpsV6) {
+      assertNotNull("ip " + ip + " should not be blocked", createFlowRunner("flow_denylist_ipv6", ip).run());
     }
   }
 
   @Test
-  public void ipFilterIpv6InvalidBlackList() throws Exception {
-    for (String ip : invalidBlackListIpsV6) {
-      createFlowRunner("flow_blackist_ipv6", ip)
+  public void ipFilterIpv6InvalidDenyList() throws Exception {
+    for (String ip : invalidDenyListIpsV6) {
+      createFlowRunner("flow_denylist_ipv6", ip)
           .runExpectingException(errorType(VALIDATION.name(), REJECTED_IP.name()));
     }
   }
 
   @Test
-  public void whiteListExpressionResolvesToNull() throws Exception {
-    flowRunner("flow_whitelist_ipv4").runExpectingException(instanceOf(IllegalArgumentException.class));
+  public void allowListExpressionResolvesToNull() throws Exception {
+    flowRunner("flow_allowlist_ipv4").runExpectingException(instanceOf(IllegalArgumentException.class));
   }
 
   @Test
-  public void blackListExpressionResolvesToNull() throws Exception {
-    flowRunner("flow_blacklist_ipv4").runExpectingException(instanceOf(IllegalArgumentException.class));
+  public void denyListExpressionResolvesToNull() throws Exception {
+    flowRunner("flow_denylist_ipv4").runExpectingException(instanceOf(IllegalArgumentException.class));
   }
 
   private FlowRunner createFlowRunner(String flowName, String ip) {
