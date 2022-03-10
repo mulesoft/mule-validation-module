@@ -9,7 +9,6 @@ package org.mule.extension.validation.internal.privileged;
 import static java.util.Optional.ofNullable;
 import static org.mule.runtime.core.privileged.processor.MessageProcessors.newChildContext;
 import static org.mule.runtime.extension.api.error.MuleErrors.VALIDATION;
-import static reactor.core.publisher.Mono.error;
 
 import org.mule.runtime.api.component.location.ComponentLocation;
 import org.mule.runtime.api.message.Error;
@@ -20,7 +19,7 @@ import org.mule.runtime.core.api.processor.Processor;
 import org.mule.runtime.core.privileged.event.BaseEventContext;
 import org.mule.runtime.core.privileged.exception.EventProcessingException;
 import org.mule.runtime.core.privileged.processor.chain.HasMessageProcessors;
-import org.mule.runtime.extension.api.runtime.operation.ComponentExecutor;
+import org.mule.runtime.extension.api.runtime.operation.CompletableComponentExecutor;
 import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
@@ -28,12 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.reactivestreams.Publisher;
+abstract class AggregateOperationExecutor implements CompletableComponentExecutor<OperationModel> {
 
-abstract class AggregateOperationExecutor implements ComponentExecutor<OperationModel> {
+  public void execute(ExecutionContext<OperationModel> executionContext, ExecutorCallback callback) {
 
-  @Override
-  public Publisher<Object> execute(ExecutionContext<OperationModel> executionContext) {
     HasMessageProcessors chain = executionContext.getParameter("validations");
     final ExecutionContextAdapter<OperationModel> context = (ExecutionContextAdapter<OperationModel>) executionContext;
     final CoreEvent event = context.getEvent();
@@ -53,20 +50,19 @@ abstract class AggregateOperationExecutor implements ComponentExecutor<Operation
           errors.add(error);
         } else {
           // propagated error must have its event tied to the context of the originally passed event, not a child
-          return error(new EventProcessingException(CoreEvent.builder(event.getContext(), event)
+          callback.error(new EventProcessingException(CoreEvent.builder(event.getContext(), event)
               .error(error)
               .build(), e.getCause()));
         }
       } catch (Exception e) {
         childContext.error(e);
-        return error(e);
+        callback.error(e);
       }
     }
-
-    return handleValidationErrors(chain, errors);
+    handleValidationErrors(callback, chain, errors);
   }
 
-  protected abstract Publisher<Object> handleValidationErrors(HasMessageProcessors chain, List<Error> errors);
+  protected abstract void handleValidationErrors(ExecutorCallback callback, HasMessageProcessors chain, List<Error> errors);
 
   private boolean isValidation(ErrorType errorType) {
     if (errorType == null) {

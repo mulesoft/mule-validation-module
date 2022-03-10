@@ -6,14 +6,9 @@
  */
 package org.mule.extension.validation.internal.privileged;
 
-import static reactor.core.publisher.Mono.empty;
-import static reactor.core.publisher.Mono.error;
-
 import org.mule.extension.validation.api.MultipleValidationException;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.core.privileged.processor.chain.HasMessageProcessors;
-
-import org.reactivestreams.Publisher;
 
 import java.util.List;
 
@@ -33,12 +28,11 @@ import java.util.List;
 public class AllOperationExecutor extends AggregateOperationExecutor {
 
   @Override
-  protected Publisher<Object> handleValidationErrors(HasMessageProcessors chain, List<Error> errors) {
+  protected void handleValidationErrors(ExecutorCallback callback, HasMessageProcessors chain, List<Error> errors) {
     if (errors.isEmpty()) {
-      return empty();
+      callback.complete(null);
+      return;
     }
-
-    return error(MultipleValidationException.of(errors));
+    callback.error(MultipleValidationException.of(errors));
   }
-
 }
