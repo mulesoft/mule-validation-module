@@ -20,6 +20,7 @@ import org.apache.commons.validator.routines.ShortValidator;
  * @since 1.0
  */
 public enum NumberType {
+
   INTEGER {
 
     @Override
@@ -64,9 +65,9 @@ public enum NumberType {
   /**
    * Parses the given {@code value} using a {@code pattern} and {@code locale} into a {@link Number} instance
    *
-   * @param value the {@link String} to parse
+   * @param value   the {@link String} to parse
    * @param pattern the pattern to parse against. If {@code null} then a system default is used
-   * @param locale the {@link Locale} to use when parsing
+   * @param locale  the {@link Locale} to use when parsing
    * @return a {@link Number}
    */
   public abstract Number toNumber(String value, String pattern, Locale locale);

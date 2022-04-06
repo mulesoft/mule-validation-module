@@ -32,13 +32,13 @@ public class NumberValidationOperation extends ValidationSupport {
    * Receives a numeric {@code value} as a {@link String} and validates that it can be parsed per the rules of a
    * {@code numberType}
    *
-   * @param value the value to be tested
-   * @param locale The locale to use for the format. If not provided it defaults to the system {@link Locale}
-   * @param pattern The pattern used to format the value
-   * @param minValue If provided, check that the parsed value is greater or equal than this value
-   * @param maxValue If provided, check that the parsed value is less or equal than this value
+   * @param value      the value to be tested
+   * @param locale     The locale to use for the format. If not provided it defaults to the system {@link Locale}
+   * @param pattern    The pattern used to format the value
+   * @param minValue   If provided, check that the parsed value is greater or equal than this value
+   * @param maxValue   If provided, check that the parsed value is less or equal than this value
    * @param numberType the type of number to test {@code value} against
-   * @param options the {@link ValidationOptions}
+   * @param options    the {@link ValidationOptions}
    */
   @Throws(NumberErrorType.class)
   public void isNumber(String value, @Optional String locale, @Optional String pattern,

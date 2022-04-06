@@ -60,7 +60,7 @@ public class AggregateValidationTestCase extends ValidationTestCase {
 
   @Test
   public void nonValidationErrorMixedWithValidationErrorsInsideAll() throws Exception {
-    expected.expectErrorType("MULE", EXPRESSION.getType());
+    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
     configureGetAllRunner(flowRunner("allWithNonValidationError"), INVALID_EMAIL, INVALID_URL).run();
   }
 

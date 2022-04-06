@@ -8,7 +8,7 @@ package org.mule.extension.validation.internal.privileged;
 
 import org.mule.runtime.extension.api.loader.DeclarationEnricher;
 import org.mule.runtime.extension.api.loader.ExtensionLoadingContext;
-import org.mule.runtime.module.extension.api.loader.java.property.ComponentExecutorModelProperty;
+import org.mule.runtime.module.extension.api.loader.java.property.CompletableComponentExecutorModelProperty;
 
 abstract class AggregateOperationEnricher implements DeclarationEnricher {
 
@@ -19,7 +19,8 @@ abstract class AggregateOperationEnricher implements DeclarationEnricher {
         .findFirst()
         .ifPresent(
                    operation -> operation
-                       .addModelProperty(new ComponentExecutorModelProperty((model, params) -> getOperationExecutor())));
+                       .addModelProperty(new CompletableComponentExecutorModelProperty((model,
+                                                                                        params) -> getOperationExecutor())));
   }
 
   abstract String getOperationName();
