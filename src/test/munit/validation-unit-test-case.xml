@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <munit:config name="validation-test-suite.xml" />
+    <validation:config name="Validation_Config" />
+    <munit:test name="is-blank-string-with-not-blank-string" expectedErrorType="VALIDATION:NOT_BLANK_STRING">
+        <munit:execution>
+            <set-payload value='#["test"]' />
+            <validation:is-blank-string value="#[payload]" />
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-blank-string">
+        <munit:execution>
+            <set-payload value='#[""]' />
+            <validation:is-blank-string value="#[payload]" />
+            <set-variable value="string is blank" variableName="result"/>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('string is blank')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-not-blank-string-with-blank-string" expectedErrorType="VALIDATION:BLANK_STRING">
+        <munit:execution>
+            <set-payload value='#[""]' />
+            <validation:is-not-blank-string value="#[payload]" />
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-not-blank-string">
+        <munit:execution>
+            <set-payload value='#["test"]' />
+            <validation:is-not-blank-string value="#[payload]" />
+            <set-variable value="string is not blank" variableName="result"/>
+        </munit:execution>
+        <munit:validation >
+            <munit-tools:assert-that is="#[MunitTools::containsString('string is not blank')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-elapsed-not-elapsed" expectedErrorType="VALIDATION:NOT_ELAPSED_TIME">
+        <munit:execution>
+            <set-variable value="#[%dw 2.0&#10;output application/java&#10;import * from dw::Runtime&#10;---&#10;now() as LocalDateTime {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;} wait 500]" variableName="begin"/>
+            <validation:is-elapsed time="2000" timeUnit="MILLISECONDS" config-ref="Validation_Config" since="#[vars.begin]"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-elapsed">
+        <munit:execution>
+            <set-variable value="#[%dw 2.0&#10;output application/java&#10;import * from dw::Runtime&#10;---&#10;now() as LocalDateTime {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;} wait 500]" variableName="begin"/>
+            <validation:is-elapsed time="1" timeUnit="MILLISECONDS" config-ref="Validation_Config" since="#[vars.begin]"/>
+            <set-variable value="time elapsed" variableName="result"/>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('time elapsed')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-not-elapsed">
+        <munit:execution>
+            <set-variable value="#[%dw 2.0&#10;output application/java&#10;import * from dw::Runtime&#10;---&#10;now() as LocalDateTime {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;} wait 500]" variableName="begin"/>
+            <validation:is-not-elapsed time="1" timeUnit="HOURS" config-ref="Validation_Config" since="#[vars.begin]"/>
+            <set-variable value="time not elapsed" variableName="result"/>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('time not elapsed')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-not-elapsed-elapsed" expectedErrorType="VALIDATION:ELAPSED_TIME">
+        <munit:execution>
+            <set-variable value="#[%dw 2.0&#10;output application/java&#10;import * from dw::Runtime&#10;---&#10;now() as LocalDateTime {format: &quot;yyyy-MM-dd'T'HH:mm:ss.SSS'Z'&quot;} wait 500]" variableName="begin"/>
+            <validation:is-not-elapsed time="2" timeUnit="MILLISECONDS" config-ref="Validation_Config" since="#[vars.begin]"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-email-invalid-email" expectedErrorType="VALIDATION:INVALID_EMAIL">
+        <munit:execution>
+            <set-payload value="not_an_email" />
+            <validation:is-email config-ref="Validation_Config" email="#[payload]"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-email">
+        <munit:execution>
+            <set-payload value="user@domain.com"/>
+            <choice doc:name="Choice" >
+                <when expression="#[Validation::isEmail(payload)]">
+                    <set-variable value="valid email" variableName="result"/>
+                </when>
+                <otherwise>
+                    <set-variable value="invalid" variableName="result" />
+                </otherwise>
+            </choice>
+        </munit:execution>
+        <munit:validation >
+            <munit-tools:assert-that is="#[MunitTools::containsString('valid email')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-empty-collection-not-empty" expectedErrorType="VALIDATION:NOT_EMPTY_COLLECTION">
+        <munit:execution>
+            <set-payload value="#[[1, 2, 3]]" />
+            <validation:is-empty-collection config-ref="Validation_Config"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-empty-collection">
+        <munit:execution>
+            <set-payload value="#[[]]" />
+            <validation:is-empty-collection config-ref="Validation_Config"/>
+            <set-variable value="collection is empty" variableName="result"/>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('collection is empty')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-false-invalid-boolean" expectedErrorType="VALIDATION:INVALID_BOOLEAN">
+        <munit:execution>
+            <set-variable value="true" variableName="withFailures"/>
+            <validation:is-false config-ref="Validation_Config" expression="#[vars.withFailures]"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-false">
+        <munit:execution>
+            <set-variable value="false" variableName="withFailures"/>
+            <validation:is-false config-ref="Validation_Config" expression="#[vars.withFailures]"/>
+            <set-variable value="is false" variableName="result"/>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('is false')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="invalid-ip" expectedErrorType="VALIDATION:INVALID_IP">
+        <munit:execution>
+            <set-payload value="192.168.1.2000"/>
+            <validation:is-ip config-ref="Validation_Config" ip="#[payload]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that is="#[MunitTools::containsString('Valid IP')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-not-blacklisted-ip">
+        <munit:execution>
+            <set-payload value="12.12.1.2"/>
+            <validation:is-not-denied-ip config-ref="Validation_Config" ipAddress="#[payload]" >
+                <validation:deny-list>
+                    <validation:ips>
+                        <validation:ip value="192.168.1.2"/>
+                        <validation:ip value="12.123.1.2"/>
+                    </validation:ips>
+                </validation:deny-list>
+            </validation:is-not-denied-ip>
+            <set-variable value="is not blacklisted" variableName="result"/>
+        </munit:execution>
+        <munit:validation >
+            <munit-tools:assert-that is="#[MunitTools::containsString('is not blacklisted')]" expression="#[vars.result]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="is-not-blacklisted-ip-invalid-ip" expectedErrorType="VALIDATION:INVALID_IP">
+        <munit:execution>
+            <set-payload value="12.12.1.2000"/>
+            <validation:is-not-denied-ip config-ref="Validation_Config" ipAddress="#[payload]" >
+                <validation:deny-list>
+                    <validation:ips>
+                        <validation:ip value="192.168.1.2"/>
+                        <validation:ip value="12.123.1.2"/>
+                    </validation:ips>
+                </validation:deny-list>
+            </validation:is-not-denied-ip>
+            <set-variable value="is not blacklisted" variableName="result"/>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="is-not-blacklisted-ip-rejected-ip" expectedErrorType="VALIDATION:REJECTED_IP">
+        <munit:execution>
+            <set-payload value="12.123.1.2"/>
+            <validation:is-not-denied-ip config-ref="Validation_Config" ipAddress="#[payload]" >
+                <validation:deny-list>
+                    <validation:ips>
+                        <validation:ip value="192.168.1.2"/>
+                        <validation:ip value="12.123.1.2"/>
+                    </validation:ips>
+                </validation:deny-list>
+            </validation:is-not-denied-ip>
+            <set-variable value="is not blacklisted" variableName="result"/>
+        </munit:execution>
+    </munit:test>
+
+</mule>
