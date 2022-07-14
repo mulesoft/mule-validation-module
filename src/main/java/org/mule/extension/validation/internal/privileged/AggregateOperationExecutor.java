@@ -30,10 +30,10 @@ import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
 import java.lang.reflect.Field;
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Optional;
 
 abstract class AggregateOperationExecutor implements CompletableComponentExecutor<OperationModel> {
 
