@@ -68,7 +68,8 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
             e.getEvent().getError().orElse(null);
         if (error != null && isValidation(error.getErrorType())) {
           errors.add(error);
-        } else { // propagated error must have its event tied to the context of the originally passed event, not a child
+        } else {
+          // propagated error must have its event tied to the context of the originally passed event, not a child
           callback.error(new EventProcessingException(CoreEvent.builder(event.getContext(), event).error(error).build(),
                                                       e.getCause()));
         }
