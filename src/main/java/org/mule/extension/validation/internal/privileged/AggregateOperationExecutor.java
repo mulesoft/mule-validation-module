@@ -14,11 +14,11 @@ import static org.mule.runtime.core.privileged.processor.MessageProcessors.newCh
 import static org.mule.runtime.extension.api.error.MuleErrors.VALIDATION;
 
 import org.mule.runtime.api.component.location.ComponentLocation;
-import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.message.ErrorType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.core.api.MuleContext;
+import org.mule.runtime.core.api.context.MuleContextAware;
 import org.mule.runtime.core.api.event.CoreEvent;
 import org.mule.runtime.core.api.processor.Processor;
 import org.mule.runtime.core.privileged.event.BaseEventContext;
@@ -29,26 +29,20 @@ import org.mule.runtime.extension.api.runtime.operation.CompletableComponentExec
 import org.mule.runtime.extension.api.runtime.operation.ExecutionContext;
 import org.mule.runtime.module.extension.api.runtime.privileged.ExecutionContextAdapter;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-abstract class AggregateOperationExecutor implements CompletableComponentExecutor<OperationModel> {
+abstract class AggregateOperationExecutor implements CompletableComponentExecutor<OperationModel>, MuleContextAware {
+
+  private MuleContext muleContext;
+
+  public void setMuleContext(MuleContext context) {
+    this.muleContext = context;
+  }
 
   public void execute(ExecutionContext<OperationModel> executionContext, ExecutorCallback callback) {
-
-    MuleContext muleContext = null;
-    try {
-      Field field = executionContext.getClass().getDeclaredField("muleContext");
-      field.setAccessible(true);
-      muleContext = (MuleContext) field.get(executionContext);
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (NoSuchFieldException e) {
-      e.printStackTrace();
-    }
 
     HasMessageProcessors chain = executionContext.getParameter("validations");
 
@@ -58,18 +52,16 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
 
     List<Error> errorList = new ArrayList<>(chain.getMessageProcessors().size());
     for (Processor processor : chain.getMessageProcessors()) {
-      List<Processor> processorList = Collections.singletonList(processor);
+      // A new chain is created for each processor so that they can be intercepted by MUnit
       MessageProcessorChain messageChain = newChain(Optional.empty(),
-                                                    processorList);
+                                                    Collections.singletonList(processor));
       BaseEventContext childContext = newChildContext(event, location);
       final CoreEvent processEvent = CoreEvent.builder(childContext, event).build();
       try {
+        //The chain is initialized with the muleContext so that it can run correctly
         initialiseIfNeeded(messageChain, muleContext);
         CoreEvent result = messageChain.process(processEvent);
         childContext.success(result);
-      } catch (InitialisationException e) {
-        childContext.error(e);
-        callback.error(e);
       } catch (EventProcessingException e) {
         childContext.error(e);
         Error error =
@@ -85,10 +77,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
         callback.error(e);
       }
     }
-
-    handleValidationErrors(callback,
-                           chain, errorList);
-
+    handleValidationErrors(callback, chain, errorList);
   }
 
   protected abstract void handleValidationErrors(ExecutorCallback callback, HasMessageProcessors chain, List<Error> errors);
@@ -104,5 +93,4 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
 
     return isValidation(errorType.getParentErrorType());
   }
-
 }
