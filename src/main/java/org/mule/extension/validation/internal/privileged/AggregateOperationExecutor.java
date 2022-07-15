@@ -50,7 +50,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
     final CoreEvent event = context.getEvent();
     final Optional<ComponentLocation> location = ofNullable(context.getComponent().getLocation());
 
-    List<Error> errorList = new ArrayList<>(chain.getMessageProcessors().size());
+    List<Error> errors = new ArrayList<>(chain.getMessageProcessors().size());
     for (Processor processor : chain.getMessageProcessors()) {
       // A new chain is created for each processor so that they can be intercepted by MUnit
       MessageProcessorChain messageChain = newChain(Optional.empty(),
@@ -58,7 +58,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
       BaseEventContext childContext = newChildContext(event, location);
       final CoreEvent processEvent = CoreEvent.builder(childContext, event).build();
       try {
-        //The chain is initialized with the muleContext so that it can run correctly
+        // The chain is initialized with the muleContext so that it can run correctly
         initialiseIfNeeded(messageChain, muleContext);
         CoreEvent result = messageChain.process(processEvent);
         childContext.success(result);
@@ -67,7 +67,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
         Error error =
             e.getEvent().getError().orElse(null);
         if (error != null && isValidation(error.getErrorType())) {
-          errorList.add(error);
+          errors.add(error);
         } else { // propagated error must have its event tied to the context of the originally passed event, not a child
           callback.error(new EventProcessingException(CoreEvent.builder(event.getContext(), event).error(error).build(),
                                                       e.getCause()));
@@ -77,7 +77,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
         callback.error(e);
       }
     }
-    handleValidationErrors(callback, chain, errorList);
+    handleValidationErrors(callback, chain, errors);
   }
 
   protected abstract void handleValidationErrors(ExecutorCallback callback, HasMessageProcessors chain, List<Error> errors);
