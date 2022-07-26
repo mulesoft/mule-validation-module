@@ -8,7 +8,7 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
 
-    <munit:config name="size-validation-test-suite.xml"/>
+    <munit:config name="size-validation-test-suite.xml" minMuleVersion="4.4.0"/>
 
     <munit:before-test name="beforeSizeValidationTest">
         <set-variable value="8" variableName="validSize"/>
