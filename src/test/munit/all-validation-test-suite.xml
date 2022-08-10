@@ -11,7 +11,7 @@
     http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
     http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
-    <munit:config name="all-validation-test-suite.xml"/>
+    <munit:config name="all-validation-test-suite.xml" minMuleVersion="4.4.0"/>
 
     <munit:test name="allValidationWithErrorMappingFailingInForeach"
                 description=""

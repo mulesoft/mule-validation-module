@@ -9,7 +9,7 @@
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
 
-    <munit:config name="validation-test-suite.xml" />
+    <munit:config name="validation-test-suite.xml" minMuleVersion="4.4.0"/>
     <validation:config name="Validation_Config" />
     <munit:test name="is-blank-string-with-not-blank-string" expectedErrorType="VALIDATION:NOT_BLANK_STRING">
         <munit:execution>
