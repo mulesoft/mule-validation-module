@@ -21,7 +21,7 @@
     <properties>
         <commonsLangVersion>3.12.0</commonsLangVersion>
         <commonsValidatorVersion>1.7</commonsValidatorVersion>
-        <guavaVersion>30.1.1-jre</guavaVersion>
+        <guavaVersion>31.1-jre</guavaVersion>
 
         <muleSpringModuleVersion>1.3.6</muleSpringModuleVersion>
         <projectReactorVersion>3.4.6</projectReactorVersion>
@@ -30,9 +30,9 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
 
-        <munit.extensions.maven.plugin.version>1.1.1</munit.extensions.maven.plugin.version>
-        <munit.version>2.3.4</munit.version>
-        <mavenResources.version>3.2.0</mavenResources.version>
+        <munit.extensions.maven.plugin.version>1.1.2</munit.extensions.maven.plugin.version>
+        <munit.version>2.3.12</munit.version>
+        <mavenResources.version>3.3.0</mavenResources.version>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
     </properties>
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
-            <version>1.3.4</version>
+            <version>1.4.1</version>
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
