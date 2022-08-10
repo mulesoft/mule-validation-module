@@ -63,5 +63,27 @@
             <munit-tools:dequeue/>
         </munit:validation>
     </munit:test>
-
+    <munit:test name="testInterceptorVerifyCall">
+        <munit:execution >
+            <munit:set-event>
+                <munit:payload value='#[{
+&#10;"email" : "test@gmail.com",
+&#10;"count" : 8,
+&#10;"name" : "name"
+&#10;}]' />
+            </munit:set-event>
+            <validation:all>
+                <validation:is-email email="#[payload.email]" message='"Please provide a valid email id"' />
+                <validation:is-number value="#[payload.count]" minValue="5" maxValue="500" numberType="INTEGER" message='"Please provide valid count"' />
+                <validation:is-not-blank-string value="#[payload.name]" message="Pleas provide a valid name" />
+            </validation:all>
+        </munit:execution>
+        <munit:validation >
+            <munit-tools:verify-call processor="validation:is-number" atLeast="1">
+                <munit-tools:with-attributes >
+                    <munit-tools:with-attribute whereValue="500" attributeName="maxValue" />
+                </munit-tools:with-attributes>
+            </munit-tools:verify-call>
+        </munit:validation>
+    </munit:test>
 </mule>
