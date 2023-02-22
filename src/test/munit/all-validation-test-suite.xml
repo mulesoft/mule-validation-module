@@ -47,12 +47,12 @@
         <munit:execution>
             <try>
                 <validation:all>
-                    <validation:is-not-null value="#[null]">
-                        <error-mapping sourceType="VALIDATION:NULL" targetType="TEST:NULL" />
+                         <error-mapping sourceType="VALIDATION:MULTIPLE" targetType="TEST:MULTIPLE" />
+                        <validation:is-not-null value="#[null]">
                     </validation:is-not-null>
                 </validation:all>
                 <error-handler>
-                    <on-error-continue type="TEST:NULL">
+                    <on-error-continue type="TEST:MULTIPLE">
                         <munit-tools:queue/>
                     </on-error-continue>
                 </error-handler>
