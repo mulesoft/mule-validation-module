@@ -54,13 +54,13 @@ public class AggregateValidationTestCase extends ValidationTestCase {
 
   @Test
   public void nonValidationErrorInsideAll() throws Exception {
-    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectErrorType("MULE", EXPRESSION.getType());
     configureGetAllRunner(flowRunner("allWithNonValidationError"), VALID_EMAIL, VALID_URL).run();
   }
 
   @Test
   public void nonValidationErrorMixedWithValidationErrorsInsideAll() throws Exception {
-    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectErrorType("MULE", EXPRESSION.getType());
     configureGetAllRunner(flowRunner("allWithNonValidationError"), INVALID_EMAIL, INVALID_URL).run();
   }
 
@@ -92,15 +92,13 @@ public class AggregateValidationTestCase extends ValidationTestCase {
 
   @Test
   public void nonValidationErrorInsideAny() throws Exception {
-    FlowRunner runner = configureGetAllRunner(flowRunner("anyWithNonValidationError"), VALID_EMAIL, VALID_URL);
-
-    assertThat(runner.buildEvent().getMessage().getPayload().getValue(),
-               is(sameInstance(runner.run().getMessage().getPayload().getValue())));
+    expected.expectErrorType("MULE", EXPRESSION.getType());
+    configureGetAllRunner(flowRunner("anyWithNonValidationError"), VALID_EMAIL, VALID_URL).run();
   }
 
   @Test
   public void nonValidationErrorMixedWithValidationErrorsInsideAny() throws Exception {
-    expected.expectErrorType(VALIDATION_NAMESPACE, MULTIPLE_ERROR);
+    expected.expectErrorType("MULE", EXPRESSION.getType());
     configureGetAllRunner(flowRunner("anyWithNonValidationError"), INVALID_EMAIL, INVALID_URL).run();
   }
 
