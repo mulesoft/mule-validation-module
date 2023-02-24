@@ -78,6 +78,7 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
           // propagated error must have its event tied to the context of the originally passed event, not a child
           callback.error(new EventProcessingException(CoreEvent.builder(event.getContext(), event).error(error).build(),
                                                       e.getCause()));
+          return;
         }
       } catch (Exception e) {
         childContext.error(e);
