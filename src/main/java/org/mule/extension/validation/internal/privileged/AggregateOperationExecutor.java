@@ -64,10 +64,12 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
       final CoreEvent processEvent = CoreEvent.builder(childContext, event).build();
       try {
         // The chain is initialized with the muleContext so that it can run correctly
-        initialiseIfNeeded(messageChain, muleContext);
-        startIfNeeded(messageChain);
-        CoreEvent result = messageChain.process(processEvent);
-        childContext.success(result);
+        synchronized (processor) {
+          initialiseIfNeeded(messageChain, muleContext);
+          startIfNeeded(messageChain);
+          CoreEvent result = messageChain.process(processEvent);
+          childContext.success(result);
+        }
       } catch (EventProcessingException e) {
         childContext.error(e);
         Error error =
