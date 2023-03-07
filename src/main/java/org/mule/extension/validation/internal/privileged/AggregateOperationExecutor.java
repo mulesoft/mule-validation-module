@@ -63,8 +63,11 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
       BaseEventContext childContext = newChildContext(event, location);
       final CoreEvent processEvent = CoreEvent.builder(childContext, event).build();
       try {
-        // The chain is initialized with the muleContext so that it can run correctly
+        // It was detected that the variable "processor" has a race condition causing some threads to trigger NPE when the load of
+        // this operation is massive,
+        // so we decided to synchronize it in this code block. | W-12566283
         synchronized (processor) {
+          // The chain is initialized with the muleContext so that it can run correctly
           initialiseIfNeeded(messageChain, muleContext);
           startIfNeeded(messageChain);
           CoreEvent result = messageChain.process(processEvent);
