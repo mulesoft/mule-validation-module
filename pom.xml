@@ -31,8 +31,9 @@
         <munit.extensions.maven.plugin.version>1.1.2</munit.extensions.maven.plugin.version>
         <munit.version>2.3.15</munit.version>
         <mavenResources.version>3.3.0</mavenResources.version>
-
         <formatterConfigPath>formatter.xml</formatterConfigPath>
+        <jacoco.version>0.8.10</jacoco.version>
+        <mtf.javaopts></mtf.javaopts>
     </properties>
 
     <dependencies>
@@ -135,6 +136,11 @@
                             -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${session.executionRootDirectory}/target/jacoco.exec
                         </argLine>
                     </argLines>
+                    <environmentVariables>
+                        <!-- Toggles the JDK17 style flag -->
+                        <!-- ugly hack -->
+                        <_JAVA_OPTIONS>-XX:+PrintCommandLineFlags ${mtf.javaopts}</_JAVA_OPTIONS>
+                    </environmentVariables>
                     <runtimeConfiguration>
                         <discoverRuntimes>
                             <product>ALL</product>
@@ -156,6 +162,22 @@
                         <classifier>mule-plugin</classifier>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jdeps-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jdkinternals</goal> <!-- verify main classes -->
+                            <goal>test-jdkinternals</goal> <!-- verify test classes -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnWarning>true</failOnWarning>
+                </configuration>
             </plugin>
         </plugins>
     </build>
