@@ -37,12 +37,22 @@ public class I18NConfig {
   @Optional(defaultValue = EMPTY)
   private String locale;
 
+  public I18NConfig() {}
+
   public String getBundlePath() {
     return bundlePath;
   }
 
   public String getLocale() {
     return locale;
+  }
+
+  public void setBundlePath(String bundlePath) {
+    this.bundlePath = bundlePath;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
   }
 
   @Override

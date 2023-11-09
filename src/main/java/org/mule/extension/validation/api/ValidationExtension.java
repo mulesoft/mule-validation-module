@@ -68,6 +68,8 @@ public class ValidationExtension implements Config, NamedObject, Initialisable {
   @Optional
   private I18NConfig i18n;
 
+  public ValidationExtension() {}
+
   @Override
   public void initialise() throws InitialisationException {
     initialiseMessageFactory();
@@ -92,5 +94,17 @@ public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public MuleContext getMuleContext() {
     return muleContext;
+  }
+
+  public I18NConfig getI18n() {
+    return i18n;
+  }
+
+  public void setI18n(I18NConfig i18n) {
+    this.i18n = i18n;
+  }
+
+  public void setMessageFactory(ValidationMessages messageFactory) {
+    this.messageFactory = messageFactory;
   }
 }
