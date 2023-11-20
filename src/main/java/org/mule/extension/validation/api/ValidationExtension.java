@@ -28,6 +28,8 @@ import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.privileged.DeclarationEnrichers;
+import org.mule.sdk.api.annotation.JavaVersionSupport;
+import org.mule.sdk.api.meta.JavaVersion;
 
 import java.util.Locale;
 
@@ -48,6 +50,7 @@ import javax.inject.Inject;
 @ExpressionFunctions(ValidationFunctions.class)
 @Throws(BasicValidationErrorType.class)
 @DeclarationEnrichers({AllOperationEnricher.class, AnyOperationEnricher.class})
+@JavaVersionSupport({JavaVersion.JAVA_8, JavaVersion.JAVA_11, JavaVersion.JAVA_17})
 public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public static final String DEFAULT_LOCALE = Locale.getDefault().getLanguage();
