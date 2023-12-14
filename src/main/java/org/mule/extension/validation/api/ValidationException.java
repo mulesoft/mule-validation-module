@@ -27,7 +27,7 @@ public class ValidationException extends ModuleException implements ErrorMessage
 
   private static final long serialVersionUID = -7191589190396052480L;
 
-  private final ValidationResult validationResult;
+  private ValidationResult validationResult;
 
   /**
    * Creates a new instance for the given {@code validationResult}
@@ -50,5 +50,9 @@ public class ValidationException extends ModuleException implements ErrorMessage
 
   public ValidationResult getValidationResult() {
     return validationResult;
+  }
+
+  public void setValidationResult(ValidationResult validationResult) {
+    this.validationResult = validationResult;
   }
 }

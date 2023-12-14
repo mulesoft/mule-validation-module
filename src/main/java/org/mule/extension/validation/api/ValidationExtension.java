@@ -28,6 +28,8 @@ import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.privileged.DeclarationEnrichers;
+import org.mule.sdk.api.annotation.JavaVersionSupport;
+import org.mule.sdk.api.meta.JavaVersion;
 
 import java.util.Locale;
 
@@ -48,6 +50,7 @@ import javax.inject.Inject;
 @ExpressionFunctions(ValidationFunctions.class)
 @Throws(BasicValidationErrorType.class)
 @DeclarationEnrichers({AllOperationEnricher.class, AnyOperationEnricher.class})
+@JavaVersionSupport({JavaVersion.JAVA_8, JavaVersion.JAVA_11, JavaVersion.JAVA_17})
 public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public static final String DEFAULT_LOCALE = Locale.getDefault().getLanguage();
@@ -67,6 +70,8 @@ public class ValidationExtension implements Config, NamedObject, Initialisable {
   @Parameter
   @Optional
   private I18NConfig i18n;
+
+  public ValidationExtension() {}
 
   @Override
   public void initialise() throws InitialisationException {
@@ -92,5 +97,17 @@ public class ValidationExtension implements Config, NamedObject, Initialisable {
 
   public MuleContext getMuleContext() {
     return muleContext;
+  }
+
+  public I18NConfig getI18n() {
+    return i18n;
+  }
+
+  public void setI18n(I18NConfig i18n) {
+    this.i18n = i18n;
+  }
+
+  public void setMessageFactory(ValidationMessages messageFactory) {
+    this.messageFactory = messageFactory;
   }
 }
