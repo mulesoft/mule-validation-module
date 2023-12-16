@@ -18,7 +18,7 @@
     <description>A Mule extension that provides functionality for performing validations</description>
 
     <properties>
-        <commonsLangVersion>3.13.0</commonsLangVersion>
+        <commonsLangVersion>3.14.0</commonsLangVersion>
         <commonsValidatorVersion>1.7</commonsValidatorVersion>
         <guavaVersion>32.1.2-jre</guavaVersion>
         <mule.extensions.maven.plugin.version>1.5.0</mule.extensions.maven.plugin.version>
