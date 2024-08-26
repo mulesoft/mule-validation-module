@@ -28,8 +28,22 @@ public class IpFilterList {
   @Parameter
   private List<String> ips;
 
+  public IpFilterList() {}
+
   public List<String> getIps() {
     return ips;
+  }
+
+  public IPAddressFactory getFactory() {
+    return factory;
+  }
+
+  public void setFactory(IPAddressFactory factory) {
+    this.factory = factory;
+  }
+
+  public void setIps(List<String> ips) {
+    this.ips = ips;
   }
 
   public List<IPAddress> ipAddresses() {

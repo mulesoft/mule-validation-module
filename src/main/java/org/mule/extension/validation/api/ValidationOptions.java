@@ -25,7 +25,13 @@ public final class ValidationOptions {
   @Optional
   private String message = null;
 
+  public ValidationOptions() {}
+
   public String getMessage() {
     return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
   }
 }
