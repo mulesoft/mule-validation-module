@@ -58,10 +58,6 @@
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>commons-collections</groupId>
-                    <artifactId>commons-collections</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -86,7 +82,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!-- redefined, since newer versions were moved to another group and artifact, but this is inherited from the parent pom -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/commons-collections-empty.jar</systemPath>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
