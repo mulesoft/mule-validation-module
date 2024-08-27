@@ -20,7 +20,7 @@
     <properties>
         <commonsLangVersion>3.13.0</commonsLangVersion>
         <commonsValidatorVersion>1.7</commonsValidatorVersion>
-        <commonsCollectionsVersion>4.3</commonsCollectionsVersion>
+        <commonsCollections4Version>4.3</commonsCollections4Version>
         <guavaVersion>31.1-jre</guavaVersion>
         <mule.extensions.maven.plugin.version>1.5.0</mule.extensions.maven.plugin.version>
 
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>${commonsCollectionsVersion}</version>
+            <version>${commonsCollections4Version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
