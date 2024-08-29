@@ -76,6 +76,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+
         <!-- test dependencies -->
         <dependency>
             <groupId>org.mule.modules</groupId>
