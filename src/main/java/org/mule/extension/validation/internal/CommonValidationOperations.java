@@ -47,6 +47,7 @@ import org.mule.extension.validation.internal.validator.SizeValidator;
 import org.mule.extension.validation.internal.validator.TimeValidator;
 import org.mule.extension.validation.internal.validator.UrlValidator;
 import org.mule.runtime.api.el.ExpressionLanguage;
+import org.mule.runtime.api.lifecycle.Disposable;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.param.Config;
@@ -71,7 +72,7 @@ import javax.inject.Inject;
  * @since 1.0
  */
 @org.mule.runtime.extension.api.annotation.param.stereotype.Validator
-public final class CommonValidationOperations extends ValidationSupport {
+public final class CommonValidationOperations extends ValidationSupport implements Disposable {
 
   @Inject
   private ExpressionLanguage expressionLanguage;
@@ -392,5 +393,10 @@ public final class CommonValidationOperations extends ValidationSupport {
 
     ValidationContext context = createContext(options, config);
     validateWith(new IpFilterValidator(ipAddress, denyList, CHECK_RANGE_EXCLUSION, context), context);
+  }
+
+  @Override
+  public void dispose() {
+
   }
 }
