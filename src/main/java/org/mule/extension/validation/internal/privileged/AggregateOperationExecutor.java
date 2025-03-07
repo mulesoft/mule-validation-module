@@ -88,8 +88,9 @@ abstract class AggregateOperationExecutor implements CompletableComponentExecuto
       } catch (Exception e) {
         childContext.error(e);
         callback.error(e);
+      } finally {
+        stopChain(messageChain);
       }
-      stopChain(messageChain);
     }
     handleValidationErrors(callback, chain, errors);
   }
