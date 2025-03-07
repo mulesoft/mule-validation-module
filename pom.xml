@@ -139,6 +139,7 @@
                     <runtimeConfiguration>
                         <discoverRuntimes>
                             <product>ALL</product>
+                            <minMuleVersion>${minVersion}</minMuleVersion>
                             <includeSnapshots>false</includeSnapshots>
                         </discoverRuntimes>
                     </runtimeConfiguration>
