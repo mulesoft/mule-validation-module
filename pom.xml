@@ -138,7 +138,6 @@
                     </argLines>
                     <runtimeConfiguration>
                         <discoverRuntimes>
-                            <product>ALL</product>
                             <minMuleVersion>${minVersion}</minMuleVersion>
                             <includeSnapshots>false</includeSnapshots>
                             <product>EE</product>
